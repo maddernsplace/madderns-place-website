@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maddern's Place Garden & Landscaping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a1f;
+    --green-mid: #2d5a34;
+    --green-light: #4a8c55;
+    --green-pale: #a8c5a0;
+    --brown-dark: #3d2b1a;
+    --brown-mid: #6b4c2e;
+    --brown-light: #c4a882;
+    --cream: #f5f0e8;
+    --white: #fdfcfa;
+    --text-dark: #1e1e1e;
+    --text-mid: #4a4a4a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Raleway', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(26,58,31,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(168,197,160,0.2);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--brown-light);
+    letter-spacing: 0.04em;
+  }
+  .logo span { color: var(--green-pale); font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream); text-decoration: none;
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--brown-light); }
+  .nav-cta {
+    background: var(--brown-mid); color: var(--cream) !important;
+    padding: 0.5rem 1.4rem !important; border-radius: 2px;
+  }
+  .nav-cta:hover { background: var(--brown-light); color: var(--brown-dark) !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, var(--green-deep) 0%, #2a4a1e 40%, #1e3a28 100%);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(74,140,85,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(107,76,46,0.2) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234a8c55' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-leaves {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(circle at 10% 80%, rgba(45,90,52,0.4) 0%, transparent 35%),
+      radial-gradient(circle at 90% 10%, rgba(45,90,52,0.3) 0%, transparent 30%),
+      radial-gradient(circle at 60% 90%, rgba(26,58,31,0.5) 0%, transparent 25%);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto; padding: 0 4rem;
+    padding-top: 6rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--brown-light);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 40px; height: 1px;
+    background: var(--brown-light);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    color: var(--cream);
+    line-height: 1.05;
+    max-width: 750px;
+    animation: fadeUp 1s ease both;
+  }
+  .hero h1 em { color: var(--green-pale); font-style: italic; }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem; font-weight: 300;
+    color: rgba(245,240,232,0.75);
+    max-width: 480px; line-height: 1.7;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+  .hero-btns {
+    margin-top: 2.5rem; display: flex; gap: 1.2rem; flex-wrap: wrap;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+  .btn-primary {
+    background: var(--brown-mid); color: var(--cream);
+    padding: 1rem 2.2rem; border: none; border-radius: 2px;
+    font-family: 'Raleway', sans-serif; font-size: 0.85rem;
+    font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: pointer; text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--brown-light); color: var(--brown-dark); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--cream);
+    padding: 1rem 2.2rem; border: 1px solid rgba(245,240,232,0.4);
+    border-radius: 2px; font-family: 'Raleway', sans-serif;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; cursor: pointer; text-decoration: none;
+    transition: border-color 0.3s, background 0.3s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--green-pale); background: rgba(168,197,160,0.1); }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(245,240,232,0.5); font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; animation: bounce 2s infinite;
+  }
+  .hero-scroll::after {
+    content: ''; display: block; width: 1px; height: 40px;
+    background: rgba(245,240,232,0.3);
+  }
+
+  /* ─── SECTION COMMON ─── */
+  section { padding: 7rem 4rem; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--green-light);
+    display: flex; align-items: center; gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .section-label::before {
+    content: ''; display: block; width: 30px; height: 1px;
+    background: var(--green-light);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.2; color: var(--green-deep);
+    margin-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; color: var(--green-light); }
+
+  /* ─── ABOUT ─── */
+  #about { background: var(--cream); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-visual {
+    position: relative;
+  }
+  .about-img-placeholder {
+    width: 100%; aspect-ratio: 4/5;
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+    border-radius: 4px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .leaf-illustration {
+    font-size: 8rem; opacity: 0.3;
+  }
+  .about-badge {
+    position: absolute; bottom: -2rem; right: -2rem;
+    width: 140px; height: 140px;
+    background: var(--brown-mid); border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; color: var(--cream);
+  }
+  .about-badge span:first-child {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 700; line-height: 1;
+  }
+  .about-badge span:last-child { font-size: 0.65rem; letter-spacing: 0.1em; text-align: center; }
+  .about-text p {
+    font-size: 1.05rem; line-height: 1.8; color: var(--text-mid);
+    margin-bottom: 1.2rem;
+  }
+  .stats-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 3rem;
+    border-top: 1px solid rgba(45,90,52,0.15);
+    padding-top: 2rem;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; color: var(--green-mid);
+    display: block; line-height: 1;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--text-mid); letter-spacing: 0.1em; margin-top: 0.3rem; }
+
+  /* ─── SERVICES ─── */
+  #services { background: var(--white); }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+  .service-card {
+    background: var(--cream); border-radius: 4px;
+    padding: 2.5rem 2rem; position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-bottom: 3px solid transparent;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(26,58,31,0.12);
+    border-bottom-color: var(--green-light);
+  }
+  .service-icon {
+    font-size: 2.5rem; margin-bottom: 1.5rem; display: block;
+  }
+  .service-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; color: var(--green-deep); margin-bottom: 0.8rem;
+  }
+  .service-card p { font-size: 0.92rem; line-height: 1.7; color: var(--text-mid); }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: linear-gradient(90deg, var(--green-mid), var(--green-light));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  /* ─── HOW IT WORKS ─── */
+  #process { background: var(--green-deep); color: var(--cream); }
+  #process .section-title { color: var(--cream); }
+  #process .section-title em { color: var(--green-pale); }
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 4rem;
+    position: relative;
+  }
+  .process-steps::before {
+    content: ''; position: absolute; top: 28px; left: 60px; right: 60px;
+    height: 1px; background: rgba(168,197,160,0.3);
+  }
+  .step { text-align: center; position: relative; padding-top: 1rem; }
+  .step-num {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(168,197,160,0.15); border: 1px solid rgba(168,197,160,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 1.3rem;
+    color: var(--green-pale); margin: 0 auto 1.5rem;
+    position: relative; z-index: 1;
+  }
+  .step h4 {
+    font-family: 'Playfair Display', serif; font-size: 1.15rem;
+    color: var(--cream); margin-bottom: 0.7rem;
+  }
+  .step p { font-size: 0.85rem; line-height: 1.7; color: rgba(245,240,232,0.65); }
+
+  /* ─── GALLERY ─── */
+  #gallery { background: var(--cream); }
+  .gallery-mosaic {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 220px);
+    gap: 12px; margin-top: 3rem;
+  }
+  .gallery-item {
+    border-radius: 4px; overflow: hidden;
+    transition: opacity 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+  .gallery-item:hover { opacity: 0.9; transform: scale(1.02); }
+  .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .gallery-item:nth-child(4) { grid-column: span 2; }
+  .gi-inner {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; font-weight: 300;
+  }
+  .gi-1 { background: linear-gradient(135deg, #2d5a34, #1a3a1f); }
+  .gi-2 { background: linear-gradient(135deg, #4a6741, #2d5a34); }
+  .gi-3 { background: linear-gradient(135deg, #6b4c2e, #3d2b1a); }
+  .gi-4 { background: linear-gradient(135deg, #5a7a52, #3d6645); }
+  .gi-5 { background: linear-gradient(135deg, #8a6a3e, #6b4c2e); }
+
+  /* ─── TESTIMONIALS ─── */
+  #testimonials { background: var(--white); }
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem;
+  }
+  .testimonial {
+    background: var(--cream); padding: 2.5rem; border-radius: 4px;
+    position: relative;
+  }
+  .testimonial::before {
+    content: '"'; font-family: 'Playfair Display', serif;
+    font-size: 5rem; color: var(--green-pale);
+    position: absolute; top: -0.5rem; left: 1.5rem;
+    line-height: 1;
+  }
+  .testimonial p {
+    font-size: 0.95rem; line-height: 1.8; color: var(--text-mid);
+    margin-bottom: 1.5rem; padding-top: 1rem; font-style: italic;
+  }
+  .testimonial-author strong { color: var(--green-deep); font-size: 0.9rem; }
+  .testimonial-author span { color: var(--text-mid); font-size: 0.8rem; display: block; }
+  .stars { color: #c4a832; font-size: 0.85rem; margin-bottom: 0.5rem; }
+
+  /* ─── CONTACT ─── */
+  #contact {
+    background: linear-gradient(135deg, var(--green-deep) 0%, #1e2e1a 100%);
+    color: var(--cream);
+  }
+  #contact .section-title { color: var(--cream); }
+  #contact .section-title em { color: var(--green-pale); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; margin-top: 3rem; }
+  .contact-info p {
+    font-size: 1rem; line-height: 1.8; color: rgba(245,240,232,0.7);
+    margin-bottom: 2rem;
+  }
+  .contact-details { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-item { display: flex; align-items: center; gap: 1rem; }
+  .contact-item-icon {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(168,197,160,0.15); border: 1px solid rgba(168,197,160,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .contact-item-text span { font-size: 0.75rem; color: var(--green-pale); display: block; }
+  .contact-item-text strong { font-size: 0.95rem; color: var(--cream); }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-pale); }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(168,197,160,0.25);
+    border-radius: 2px; padding: 0.85rem 1rem;
+    color: var(--cream); font-family: 'Raleway', sans-serif; font-size: 0.9rem;
+    transition: border-color 0.3s;
+    outline: none;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(245,240,232,0.35); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--green-pale); }
+  .form-group select option { background: var(--green-deep); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .btn-submit {
+    background: var(--brown-mid); color: var(--cream);
+    padding: 1rem 2.5rem; border: none; border-radius: 2px;
+    font-family: 'Raleway', sans-serif; font-size: 0.85rem;
+    font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; transition: background 0.3s, transform 0.2s;
+    align-self: flex-start;
+  }
+  .btn-submit:hover { background: var(--brown-light); color: var(--brown-dark); transform: translateY(-2px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--brown-dark); color: rgba(245,240,232,0.6);
+    padding: 3rem 4rem;
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1.5rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--brown-light);
+  }
+  .footer-logo span { color: var(--green-pale); font-style: italic; }
+  .footer-copy { font-size: 0.8rem; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    color: rgba(245,240,232,0.5); text-decoration: none;
+    font-size: 0.78rem; letter-spacing: 0.08em;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--brown-light); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  .fade-in {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 2rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-badge { right: 0; bottom: -1rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .process-steps::before { display: none; }
+    .gallery-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+    .gallery-item:nth-child(4) { grid-column: span 1; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Maddern's <span>Place</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-leaves"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Garden & Landscaping Specialists</div>
+    <h1>Where <em>Nature</em><br>Meets Design</h1>
+    <p class="hero-sub">Transforming outdoor spaces into living works of art. We bring your garden vision to life with care, craft, and decades of expertise.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">Get a Free Quote</a>
+      <a href="#services" class="btn-outline">Our Services</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual fade-in">
+        <div class="about-img-placeholder">
+          <span class="leaf-illustration">🌿</span>
+        </div>
+        <div class="about-badge">
+          <span>15+</span>
+          <span>Years of<br>Excellence</span>
+        </div>
+      </div>
+      <div class="about-text fade-in">
+        <div class="section-label">About Us</div>
+        <h2 class="section-title">Passionate About <em>Every</em> Garden</h2>
+        <p>At Maddern's Place, we believe a beautiful garden is more than aesthetics — it's a sanctuary. Founded on a love for the land and a deep respect for the natural world, we've been crafting stunning outdoor spaces across the region for over 15 years.</p>
+        <p>Our team combines horticultural expertise with creative vision to deliver gardens that thrive in every season. From the first consultation to the finishing touches, we're with you every step of the way.</p>
+        <div class="stats-row">
+          <div class="stat">
+            <span class="stat-num">500+</span>
+            <div class="stat-label">Projects Completed</div>
+          </div>
+          <div class="stat">
+            <span class="stat-num">98%</span>
+            <div class="stat-label">Client Satisfaction</div>
+          </div>
+          <div class="stat">
+            <span class="stat-num">15+</span>
+            <div class="stat-label">Years Experience</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Our <em>Services</em></h2>
+    <p style="color:var(--text-mid); max-width:560px; line-height:1.8; margin-top:0.5rem;">From weekly lawn care to complete garden transformations, we offer a full range of services tailored to your needs and budget.</p>
+    <div class="services-grid">
+      <div class="service-card fade-in">
+        <span class="service-icon">🌱</span>
+        <h3>Lawn Care & Mowing</h3>
+        <p>Keep your lawn lush, healthy, and immaculate year-round. Our regular maintenance programs include mowing, edging, fertilisation, and seasonal treatments for a lawn that always looks its best.</p>
+      </div>
+      <div class="service-card fade-in">
+        <span class="service-icon">🌸</span>
+        <h3>Garden Design</h3>
+        <p>Our designers collaborate with you to create a garden that reflects your style and suits your lifestyle. From cottage gardens to contemporary escapes, we design spaces that delight the senses.</p>
+      </div>
+      <div class="service-card fade-in">
+        <span class="service-icon">🏡</span>
+        <h3>Landscaping</h3>
+        <p>Complete outdoor transformations including retaining walls, pathways, decking, water features, and planting. We handle everything from concept to completion with minimal disruption to your life.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="process">
+  <div class="container">
+    <div class="section-label" style="color:var(--green-pale)">Our Process</div>
+    <h2 class="section-title">How It <em>Works</em></h2>
+    <div class="process-steps">
+      <div class="step fade-in">
+        <div class="step-num">01</div>
+        <h4>Consultation</h4>
+        <p>We meet at your property to discuss your vision, needs, and budget. No obligation, no pressure — just honest conversation.</p>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">02</div>
+        <h4>Design & Quote</h4>
+        <p>We prepare a detailed design concept and transparent quote so you know exactly what to expect before any work begins.</p>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">03</div>
+        <h4>We Get to Work</h4>
+        <p>Our skilled team transforms your space with precision and care, keeping you informed at every stage of the project.</p>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">04</div>
+        <h4>Enjoy Your Garden</h4>
+        <p>We do a final walkthrough together and hand over a space you'll love. Ongoing maintenance plans available.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-label">Our Work</div>
+    <h2 class="section-title">Recent <em>Projects</em></h2>
+    <div class="gallery-mosaic">
+      <div class="gallery-item">
+        <div class="gi-inner gi-1">🌳</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gi-inner gi-2">🌺</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gi-inner gi-3">🪨</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gi-inner gi-4">🌿</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gi-inner gi-5">🍃</div>
+      </div>
+    </div>
+    <p style="margin-top:1.5rem; color:var(--text-mid); font-size:0.85rem; font-style:italic;">
+      * Replace placeholder tiles with your actual project photos
+    </p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-label">Kind Words</div>
+    <h2 class="section-title">What Our Clients <em>Say</em></h2>
+    <div class="testimonials-grid">
+      <div class="testimonial fade-in">
+        <div class="stars">★★★★★</div>
+        <p>Maddern's Place completely transformed our backyard. The team was professional, creative, and the result exceeded all our expectations. Our garden is now the envy of the neighbourhood!</p>
+        <div class="testimonial-author">
+          <strong>Sarah & Tom W.</strong>
+          <span>Garden Design & Landscaping</span>
+        </div>
+      </div>
+      <div class="testimonial fade-in">
+        <div class="stars">★★★★★</div>
+        <p>We've used Maddern's Place for weekly lawn care for two years now. Reliable, thorough, and our lawn has never looked better. Wouldn't use anyone else.</p>
+        <div class="testimonial-author">
+          <strong>Michael R.</strong>
+          <span>Ongoing Lawn Care</span>
+        </div>
+      </div>
+      <div class="testimonial fade-in">
+        <div class="stars">★★★★★</div>
+        <p>From the initial design consultation to the final reveal, the whole experience was seamless. They really listened to what we wanted and delivered something truly special.</p>
+        <div class="testimonial-author">
+          <strong>Karen & James H.</strong>
+          <span>Full Garden Redesign</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label" style="color:var(--green-pale)">Get in Touch</div>
+    <h2 class="section-title">Request a Free <em>Quote</em></h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>Ready to transform your outdoor space? We'd love to hear about your project. Get in touch for a free, no-obligation consultation and quote.</p>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-item-icon">📞</div>
+            <div class="contact-item-text">
+              <span>Phone</span>
+              <strong>(08) 1234 5678</strong>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">✉️</div>
+            <div class="contact-item-text">
+              <span>Email</span>
+              <strong>hello@madderns.com.au</strong>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div class="contact-item-text">
+              <span>Service Area</span>
+              <strong>Adelaide & Surrounds, SA</strong>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">🕐</div>
+            <div class="contact-item-text">
+              <span>Hours</span>
+              <strong>Mon–Sat, 7am–5pm</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="John">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Smith">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" placeholder="04XX XXX XXX">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="john@email.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Service Required</label>
+          <select>
+            <option value="">Select a service...</option>
+            <option>Lawn Care & Mowing</option>
+            <option>Garden Design</option>
+            <option>Landscaping</option>
+            <option>Multiple Services</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell us about your project</label>
+          <textarea placeholder="Describe your garden, what you're hoping to achieve, approximate size, timeline..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Send My Request →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Maddern's <span>Place</span><br><small style="font-family:'Raleway',sans-serif; font-size:0.7rem; letter-spacing:0.1em; color:rgba(245,240,232,0.4);">GARDEN & LANDSCAPING</small></div>
+    <div class="footer-copy">© 2025 Maddern's Place Garden & Landscaping. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Form submission
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = '✓ Message Sent!';
+    btn.style.background = '#2d5a34';
+    setTimeout(() => {
+      btn.textContent = 'Send My Request →';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3000);
+  }
+</script>
+</body>
+</html>
