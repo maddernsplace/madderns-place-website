@@ -182,6 +182,9 @@
     border-radius: 4px; overflow: hidden;
     display: flex; align-items: center; justify-content: center;
   }
+  .about-img-placeholder img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
   .leaf-illustration {
     font-size: 8rem; opacity: 0.3;
   }
@@ -290,14 +293,42 @@
   .gallery-item:nth-child(4) { grid-column: span 2; }
   .gi-inner {
     width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 3rem; font-weight: 300;
+    display: flex; align-items: flex-end; justify-content: flex-start;
+    padding: 1.2rem; position: relative; overflow: hidden;
   }
-  .gi-1 { background: linear-gradient(135deg, #2d5a34, #1a3a1f); }
-  .gi-2 { background: linear-gradient(135deg, #4a6741, #2d5a34); }
-  .gi-3 { background: linear-gradient(135deg, #6b4c2e, #3d2b1a); }
-  .gi-4 { background: linear-gradient(135deg, #5a7a52, #3d6645); }
-  .gi-5 { background: linear-gradient(135deg, #8a6a3e, #6b4c2e); }
+  .gi-label {
+    background: rgba(0,0,0,0.45); backdrop-filter: blur(6px);
+    color: #fff; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.35rem 0.75rem; border-radius: 2px;
+    position: relative; z-index: 2;
+  }
+  .gi-1 {
+    background:
+      radial-gradient(ellipse at 30% 60%, rgba(74,140,85,0.6) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 30%, rgba(45,90,52,0.5) 0%, transparent 45%),
+      linear-gradient(160deg, #1a3a1f 0%, #2d5a34 50%, #4a7a40 100%);
+  }
+  .gi-2 {
+    background:
+      radial-gradient(ellipse at 60% 40%, rgba(168,197,160,0.3) 0%, transparent 50%),
+      linear-gradient(135deg, #4a6741 0%, #2d5a34 100%);
+  }
+  .gi-3 {
+    background:
+      radial-gradient(ellipse at 40% 70%, rgba(196,168,130,0.4) 0%, transparent 55%),
+      linear-gradient(160deg, #3d2b1a 0%, #6b4c2e 60%, #8a6a3e 100%);
+  }
+  .gi-4 {
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(90,122,82,0.5) 0%, transparent 60%),
+      linear-gradient(135deg, #3d6645 0%, #5a7a52 100%);
+  }
+  .gi-5 {
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(138,106,62,0.4) 0%, transparent 50%),
+      linear-gradient(135deg, #6b4c2e 0%, #8a6a3e 100%);
+  }
 
   /* ─── TESTIMONIALS ─── */
   #testimonials { background: var(--white); }
@@ -471,7 +502,7 @@
     <div class="about-grid">
       <div class="about-visual fade-in">
         <div class="about-img-placeholder">
-          <span class="leaf-illustration">🌿</span>
+          <img src="Labradoodle.jpeg" alt="Maddern's Place garden">
         </div>
         <div class="about-badge">
           <span>15+</span>
@@ -565,24 +596,21 @@
     <h2 class="section-title">Recent <em>Projects</em></h2>
     <div class="gallery-mosaic">
       <div class="gallery-item">
-        <div class="gi-inner gi-1">🌳</div>
+        <div class="gi-inner gi-1"><span class="gi-label">Garden Transformation</span></div>
       </div>
       <div class="gallery-item">
-        <div class="gi-inner gi-2">🌺</div>
+        <div class="gi-inner gi-2"><span class="gi-label">Cottage Planting</span></div>
       </div>
       <div class="gallery-item">
-        <div class="gi-inner gi-3">🪨</div>
+        <div class="gi-inner gi-3"><span class="gi-label">Stonework & Paths</span></div>
       </div>
       <div class="gallery-item">
-        <div class="gi-inner gi-4">🌿</div>
+        <div class="gi-inner gi-4"><span class="gi-label">Lawn Renewal</span></div>
       </div>
       <div class="gallery-item">
-        <div class="gi-inner gi-5">🍃</div>
+        <div class="gi-inner gi-5"><span class="gi-label">Retaining Walls</span></div>
       </div>
     </div>
-    <p style="margin-top:1.5rem; color:var(--text-mid); font-size:0.85rem; font-style:italic;">
-      * Replace placeholder tiles with your actual project photos
-    </p>
   </div>
 </section>
 
