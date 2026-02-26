@@ -67,17 +67,16 @@
     min-height: 100vh;
     display: flex; align-items: center;
     position: relative; overflow: hidden;
-    background: url('Labradoodle.jpeg') center center / cover no-repeat;
+    background: #111;
   }
   .hero-bg {
     position: absolute; inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: url('Labradoodle.jpeg') center center / cover no-repeat;
+    filter: grayscale(100%);
   }
   .hero-leaves {
     position: absolute; inset: 0; pointer-events: none;
-    background:
-      radial-gradient(ellipse at 0% 100%, rgba(26,58,31,0.35) 0%, transparent 50%),
-      radial-gradient(ellipse at 100% 0%, rgba(26,58,31,0.25) 0%, transparent 45%);
+    background: rgba(0,0,0,0.45);
   }
   .hero-content {
     position: relative; z-index: 2;
@@ -199,6 +198,14 @@
   .about-text p {
     font-size: 1.05rem; line-height: 1.8; color: var(--text-mid);
     margin-bottom: 1.2rem;
+  }
+  .about-text ul {
+    margin: 0.5rem 0 1.4rem 1.2rem;
+    padding: 0;
+  }
+  .about-text ul li {
+    font-size: 1.05rem; line-height: 1.8; color: var(--text-mid);
+    margin-bottom: 0.3rem;
   }
   .stats-row {
     display: grid; grid-template-columns: repeat(3, 1fr);
@@ -565,9 +572,19 @@
       </div>
       <div class="about-text fade-in">
         <div class="section-label">About Us</div>
-        <h2 class="section-title">Passionate About <em>Every</em> Garden</h2>
-        <p>At Maddern's Place, we believe a beautiful garden is more than aesthetics — it's a sanctuary. Founded on a love for the land and a deep respect for the natural world, we've been crafting stunning outdoor spaces across the region for over 15 years.</p>
-        <p>Our team combines horticultural expertise with creative vision to deliver gardens that thrive in every season. From the first consultation to the finishing touches, we're with you every step of the way.</p>
+        <h2 class="section-title">Professional Landscaping Across <em>Adelaide's</em> South</h2>
+        <p>At Maddern's Place Garden &amp; Landscaping, we deliver professional landscaping services across Hackham, Morphett Vale, and the wider Adelaide southern suburbs. Whether you're upgrading your front yard, building a retaining wall, or laying premium turf, we create stunning, functional outdoor spaces tailored to your needs.</p>
+        <p>As a trusted landscaping business in Adelaide, we specialise in:</p>
+        <ul>
+          <li>Landscape design and construction</li>
+          <li>Retaining wall installation</li>
+          <li>New turf installation (Kikuyu, Sir Walter, and more)</li>
+          <li>Irrigation systems using Hunter MP Rotators and Bluetooth NODE timers</li>
+          <li>Lawn renovations and maintenance</li>
+          <li>Gutter vacuum cleaning services</li>
+        </ul>
+        <p>With a strong focus on residential and commercial landscaping, we pride ourselves on attention to detail, reliable communication, and high-quality workmanship. Every project is managed with care to ensure your outdoor area not only looks great but adds real value to your property.</p>
+        <p>If you're searching for landscapers near me, turf installation in Adelaide, or irrigation experts in Hackham, you're in the right place.</p>
         <div class="stats-row">
           <div class="stat">
             <span class="stat-num">500+</span>
