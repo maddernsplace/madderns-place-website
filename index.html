@@ -70,11 +70,17 @@
     background: var(--green-deep);
   }
   .hero-bg {
-    position: absolute; inset: 0;
-    background: url("Labradoodle.jpeg") center center / cover no-repeat;
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+  }
+  .hero-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
   }
   .hero-leaves {
-    position: absolute; inset: 0; pointer-events: none;
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
     background: rgba(26,58,31,0.55);
   }
   .hero-content {
@@ -486,7 +492,7 @@
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-bg"></div>
+  <div class="hero-bg"><img src="Labradoodle.jpeg" alt=""></div>
   <div class="hero-leaves"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Garden & Landscaping Specialists</div>
