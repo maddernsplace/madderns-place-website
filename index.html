@@ -222,33 +222,25 @@
 
   /* ─── SERVICES ─── */
   #services { background: var(--white); }
-  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+  .services-grid { display: flex; flex-direction: column; gap: 0; margin-top: 3rem; }
   .service-card {
-    background: var(--cream); border-radius: 4px;
-    padding: 2.5rem 2rem; position: relative; overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    border-bottom: 3px solid transparent;
+    display: flex; align-items: flex-start; gap: 2rem;
+    padding: 2rem 2.5rem; position: relative;
+    border-bottom: 1px solid rgba(26,58,31,0.1);
+    transition: background 0.3s;
   }
-  .service-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 50px rgba(26,58,31,0.12);
-    border-bottom-color: var(--green-light);
-  }
+  .service-card:first-child { border-top: 1px solid rgba(26,58,31,0.1); }
+  .service-card:hover { background: var(--cream); }
   .service-icon {
-    font-size: 2.5rem; margin-bottom: 1.5rem; display: block;
+    font-size: 2rem; flex-shrink: 0; margin-top: 0.2rem;
+    width: 3rem; text-align: center;
   }
+  .service-card-body { flex: 1; }
   .service-card h3 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.4rem; color: var(--green-deep); margin-bottom: 0.8rem;
+    font-size: 1.25rem; color: var(--green-deep); margin-bottom: 0.4rem;
   }
-  .service-card p { font-size: 0.92rem; line-height: 1.7; color: var(--text-mid); }
-  .service-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0;
-    height: 3px; background: linear-gradient(90deg, var(--green-mid), var(--green-light));
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.3s;
-  }
-  .service-card:hover::before { transform: scaleX(1); }
+  .service-card p { font-size: 0.92rem; line-height: 1.7; color: var(--text-mid); margin: 0; }
 
   /* ─── HOW IT WORKS ─── */
   #process { background: var(--green-deep); color: var(--cream); }
@@ -491,7 +483,7 @@
     section { padding: 5rem 2rem; }
     .about-grid { grid-template-columns: 1fr; }
     .about-badge { right: 0; bottom: -1rem; }
-    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 1.5rem 1rem; gap: 1.2rem; }
     .process-steps { grid-template-columns: 1fr 1fr; }
     .process-steps::before { display: none; }
     .gallery-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
@@ -598,23 +590,31 @@
     <div class="services-grid">
       <div class="service-card fade-in">
         <span class="service-icon">🌱</span>
-        <h3>Lawn Care & Mowing</h3>
-        <p>Keep your lawn lush, healthy, and immaculate year-round. Our regular maintenance programs include mowing, edging, fertilisation, and seasonal treatments for a lawn that always looks its best.</p>
+        <div class="service-card-body">
+          <h3>Lawn Care & Mowing</h3>
+          <p>Keep your lawn lush, healthy, and immaculate year-round. Our regular maintenance programs include mowing, edging, fertilisation, and seasonal treatments for a lawn that always looks its best.</p>
+        </div>
       </div>
       <div class="service-card fade-in">
         <span class="service-icon">🌸</span>
-        <h3>Garden Design</h3>
-        <p>Our designers collaborate with you to create a garden that reflects your style and suits your lifestyle. From cottage gardens to contemporary escapes, we design spaces that delight the senses.</p>
+        <div class="service-card-body">
+          <h3>Garden Design</h3>
+          <p>Our designers collaborate with you to create a garden that reflects your style and suits your lifestyle. From cottage gardens to contemporary escapes, we design spaces that delight the senses.</p>
+        </div>
       </div>
       <div class="service-card fade-in">
         <span class="service-icon">🏡</span>
-        <h3>Landscaping</h3>
-        <p>Complete outdoor transformations by Madderns Place Garden & Landscaping. We specialise in block retaining walls, turf installation, irrigation systems, drainage solutions, and tailored planting. From concept through to completion, we manage every stage of the project with clear communication and minimal disruption to your home.</p>
+        <div class="service-card-body">
+          <h3>Landscaping</h3>
+          <p>Complete outdoor transformations by Madderns Place Garden & Landscaping. We specialise in block retaining walls, turf installation, irrigation systems, drainage solutions, and tailored planting. From concept through to completion, we manage every stage of the project with clear communication and minimal disruption to your home.</p>
+        </div>
       </div>
       <div class="service-card fade-in">
         <span class="service-icon">💧</span>
-        <h3>Irrigation Installation & Repair</h3>
-        <p>Irrigation installation, upgrades, and repairs — designed for efficient water use and healthy lawn growth. From new system setups to fault finding and repairs, we ensure your watering system works exactly as it should.</p>
+        <div class="service-card-body">
+          <h3>Irrigation Installation & Repair</h3>
+          <p>Irrigation installation, upgrades, and repairs — designed for efficient water use and healthy lawn growth. From new system setups to fault finding and repairs, we ensure your watering system works exactly as it should.</p>
+        </div>
       </div>
     </div>
   </div>
