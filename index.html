@@ -139,7 +139,7 @@
   }
   .btn-outline:hover { border-color: var(--green-pale); background: rgba(168,197,160,0.1); }
   .hero-scroll {
-    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    position: absolute; bottom: 5.5rem; left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
     color: rgba(245,240,232,0.5); font-size: 0.7rem; letter-spacing: 0.15em;
     text-transform: uppercase; animation: bounce 2s infinite;
@@ -147,6 +147,11 @@
   .hero-scroll::after {
     content: ''; display: block; width: 1px; height: 40px;
     background: rgba(245,240,232,0.3);
+  }
+
+  /* ─── MARQUEE pinned to bottom of hero ─── */
+  .hero-marquee {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
   }
 
   /* ─── SECTION COMMON ─── */
@@ -499,29 +504,30 @@
     </div>
   </div>
   <div class="hero-scroll">Scroll</div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-strip" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="marquee-item">Lawn Care <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Garden Design <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Landscaping <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Seasonal Planting <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Hardscaping <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Garden Maintenance <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Irrigation Systems <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Outdoor Living Spaces <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Lawn Care <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Garden Design <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Landscaping <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Seasonal Planting <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Hardscaping <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Garden Maintenance <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Irrigation Systems <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Outdoor Living Spaces <span class="marquee-sep">✦</span></span>
+  <!-- MARQUEE pinned to bottom of hero so it's visible on load -->
+  <div class="hero-marquee" aria-hidden="true">
+    <div class="marquee-strip">
+      <div class="marquee-track">
+        <span class="marquee-item">Lawn Care <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Garden Design <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Landscaping <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Seasonal Planting <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Hardscaping <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Garden Maintenance <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Irrigation Systems <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Outdoor Living Spaces <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Lawn Care <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Garden Design <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Landscaping <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Seasonal Planting <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Hardscaping <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Garden Maintenance <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Irrigation Systems <span class="marquee-sep">✦</span></span>
+        <span class="marquee-item">Outdoor Living Spaces <span class="marquee-sep">✦</span></span>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- ABOUT -->
 <section id="about">
