@@ -399,6 +399,42 @@
   }
   .footer-links a:hover { color: var(--brown-light); }
 
+  /* ─── MARQUEE ─── */
+  .marquee-strip {
+    background: var(--green-deep);
+    overflow: hidden;
+    padding: 1.1rem 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .marquee-track {
+    display: flex;
+    white-space: nowrap;
+    animation: marqueeScroll 30s linear infinite;
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+  .marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.4rem;
+    padding: 0 2rem;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0.9;
+  }
+  .marquee-sep {
+    color: var(--green-pale);
+    font-size: 0.55rem;
+    flex-shrink: 0;
+  }
+  @keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
   /* ─── ANIMATIONS ─── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(30px); }
@@ -464,6 +500,28 @@
   </div>
   <div class="hero-scroll">Scroll</div>
 </section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Lawn Care <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Garden Design <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Landscaping <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Seasonal Planting <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Hardscaping <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Garden Maintenance <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Irrigation Systems <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Outdoor Living Spaces <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Lawn Care <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Garden Design <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Landscaping <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Seasonal Planting <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Hardscaping <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Garden Maintenance <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Irrigation Systems <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Outdoor Living Spaces <span class="marquee-sep">✦</span></span>
+  </div>
+</div>
 
 <!-- ABOUT -->
 <section id="about">
