@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Maddern's Place Garden & Landscaping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a1f; --green-mid: #2d5a34; --green-light: #4a8c55;
+    --green-pale: #a8c5a0; --brown-dark: #3d2b1a; --brown-mid: #6b4c2e;
+    --brown-light: #c4a882; --cream: #f5f0e8; --white: #fdfcfa;
+    --text-dark: #1e1e1e; --text-mid: #4a4a4a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Raleway', sans-serif; background: var(--white); color: var(--text-dark); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(26,58,31,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(168,197,160,0.2);
+  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--brown-light); letter-spacing: 0.04em; text-decoration: none; }
+  .logo span { color: var(--green-pale); font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: var(--cream); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--brown-light); }
+  .nav-cta { background: var(--brown-mid); color: var(--cream) !important; padding: 0.5rem 1.4rem !important; border-radius: 2px; }
+  .nav-cta:hover { background: var(--brown-light) !important; color: var(--brown-dark) !important; }
+
+  /* ─── PAGE HERO ─── */
+  .page-hero {
+    padding: 11rem 4rem 5rem;
+    background: linear-gradient(155deg, var(--green-deep) 0%, #1c3020 60%, #213820 100%);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(168,197,160,0.08) 0%, transparent 60%);
+  }
+  .page-hero .label {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--green-pale); display: inline-flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;
+  }
+  .page-hero .label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--green-pale); }
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem); color: var(--cream); line-height: 1.1;
+    margin-bottom: 1.2rem; position: relative;
+  }
+  .page-hero h1 em { color: var(--green-pale); font-style: italic; }
+  .page-hero p { color: rgba(245,240,232,0.7); font-size: 1rem; max-width: 480px; margin: 0 auto; line-height: 1.7; position: relative; }
+
+  /* ─── BLOG SECTION ─── */
+  .blog-section { padding: 5rem 4rem; background: var(--cream); }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .blog-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+  }
+
+  .blog-card {
+    background: var(--white); border-radius: 6px; overflow: hidden;
+    border: 1px solid rgba(26,58,31,0.08); transition: box-shadow 0.3s, transform 0.3s;
+    cursor: pointer; display: flex; flex-direction: column;
+  }
+  .blog-card:hover { box-shadow: 0 10px 40px rgba(26,58,31,0.12); transform: translateY(-5px); }
+
+  .blog-card-img {
+    width: 100%; height: 210px; overflow: hidden; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; color: rgba(255,255,255,0.3);
+  }
+  .blog-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+  .blog-card:hover .blog-card-img img { transform: scale(1.04); }
+
+  .blog-card-body { padding: 1.6rem; flex: 1; display: flex; flex-direction: column; }
+  .blog-card-date { font-size: 0.72rem; color: var(--green-light); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .blog-card-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--green-deep); margin-bottom: 0.7rem; line-height: 1.3; }
+  .blog-card-excerpt { font-size: 0.88rem; color: var(--text-mid); line-height: 1.75; flex: 1; }
+  .blog-card-cta { margin-top: 1.3rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-mid); display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; }
+  .blog-card:hover .blog-card-cta { gap: 0.8rem; }
+
+  .no-posts {
+    grid-column: 1 / -1; text-align: center; padding: 5rem 2rem; color: var(--text-mid);
+  }
+  .no-posts .no-icon { font-size: 3.5rem; margin-bottom: 1.2rem; }
+  .no-posts h3 { font-family: 'Playfair Display', serif; color: var(--green-deep); font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .no-posts p { line-height: 1.8; max-width: 400px; margin: 0 auto; }
+
+  /* ─── POST OVERLAY ─── */
+  .overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(10,25,13,0.65); backdrop-filter: blur(4px);
+    display: none; align-items: flex-start; justify-content: center;
+    padding: 2rem; overflow-y: auto;
+  }
+  .overlay.open { display: flex; }
+
+  .post-modal {
+    background: var(--white); border-radius: 8px; max-width: 780px; width: 100%;
+    margin: 5rem auto 3rem; overflow: hidden; position: relative;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+  }
+
+  .modal-topbar {
+    position: sticky; top: 0; z-index: 10; background: var(--white);
+    border-bottom: 1px solid rgba(26,58,31,0.1);
+    padding: 0.9rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
+  }
+  .modal-topbar .modal-date { font-size: 0.75rem; color: var(--text-mid); letter-spacing: 0.08em; }
+  .modal-close {
+    background: none; border: 1px solid rgba(26,58,31,0.2); padding: 0.38rem 1rem;
+    border-radius: 3px; cursor: pointer; font-family: 'Raleway', sans-serif;
+    font-size: 0.78rem; color: var(--text-mid); transition: all 0.2s;
+  }
+  .modal-close:hover { background: var(--cream); color: var(--text-dark); }
+
+  .post-hero-img { width: 100%; max-height: 440px; object-fit: cover; display: block; }
+
+  .post-body-wrap { padding: 3rem; }
+  .post-body-wrap h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem); color: var(--green-deep); line-height: 1.2; margin-bottom: 1.8rem;
+  }
+  .post-body { font-size: 1rem; line-height: 1.85; color: var(--text-mid); }
+  .post-body h2 { font-family: 'Playfair Display', serif; color: var(--green-deep); font-size: 1.5rem; margin: 2rem 0 0.6rem; }
+  .post-body h3 { font-family: 'Playfair Display', serif; color: var(--green-mid); font-size: 1.2rem; margin: 1.5rem 0 0.5rem; }
+  .post-body p { margin-bottom: 1rem; }
+  .post-body img { max-width: 100%; border-radius: 4px; margin: 1rem 0; display: block; }
+  .post-body ul, .post-body ol { margin: 0.5rem 0 1rem 1.5rem; }
+  .post-body li { margin-bottom: 0.4rem; }
+  .post-body a { color: var(--green-mid); }
+  .post-body hr { border: none; border-top: 1px solid rgba(26,58,31,0.15); margin: 2rem 0; }
+  .post-body strong { color: var(--text-dark); }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--brown-dark); color: rgba(245,240,232,0.6); padding: 3rem 4rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--brown-light); }
+  .footer-logo span { color: var(--green-pale); font-style: italic; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { color: rgba(245,240,232,0.5); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.08em; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--brown-light); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    .page-hero { padding: 9rem 2rem 4rem; }
+    .blog-section { padding: 3rem 2rem; }
+    .blog-grid { grid-template-columns: 1fr 1fr; }
+    .post-modal { margin: 4rem auto 2rem; }
+    .post-body-wrap { padding: 2rem 1.5rem; }
+    .overlay { padding: 1rem; }
+  }
+  @media (max-width: 580px) {
+    .blog-grid { grid-template-columns: 1fr; }
+    footer { padding: 2.5rem 1.5rem; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Maddern's <span>Place</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="label">Garden Insights</div>
+  <h1>From the <em>Blog</em></h1>
+  <p>Expert tips, project stories and seasonal advice to help your outdoor space flourish.</p>
+</div>
+
+<section class="blog-section">
+  <div class="container">
+    <div class="blog-grid" id="blogGrid"></div>
+  </div>
+</section>
+
+<!-- Post overlay -->
+<div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+  <div class="post-modal" id="postModal">
+    <div class="modal-topbar">
+      <span class="modal-date" id="modalDate"></span>
+      <button class="modal-close" onclick="closePost()">✕ Close</button>
+    </div>
+    <img id="modalHeroImg" class="post-hero-img" src="" alt="" style="display:none;">
+    <div class="post-body-wrap">
+      <h1 id="modalTitle"></h1>
+      <div class="post-body" id="modalBody"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      Maddern's <span>Place</span><br>
+      <small style="font-family:'Raleway',sans-serif; font-size:0.7rem; letter-spacing:0.1em; color:rgba(245,240,232,0.4);">GARDEN & LANDSCAPING</small>
+    </div>
+    <div style="font-size:0.8rem;">© 2025 Maddern's Place Garden & Landscaping. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="blog-admin.html">Admin</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const POSTS_KEY = 'madderns_blog_posts';
+
+  function getPosts() {
+    try { return JSON.parse(localStorage.getItem(POSTS_KEY) || '[]'); }
+    catch { return []; }
+  }
+
+  function fmtDateLong(d) {
+    if (!d) return '';
+    const [y,m,dd] = d.split('-').map(Number);
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return `${dd} ${months[m-1]} ${y}`;
+  }
+
+  function fmtDateShort(d) {
+    if (!d) return '';
+    const [y,m,dd] = d.split('-').map(Number);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return `${dd} ${months[m-1]} ${y}`;
+  }
+
+  function esc(s) {
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function renderBlog() {
+    const posts = getPosts()
+      .filter(p => p.published)
+      .sort((a,b) => (b.date||'').localeCompare(a.date||'') || b.createdAt - a.createdAt);
+
+    const grid = document.getElementById('blogGrid');
+
+    if (posts.length === 0) {
+      grid.innerHTML = `<div class="no-posts">
+        <div class="no-icon">🌱</div>
+        <h3>Coming Soon</h3>
+        <p>We're working on some great garden content. Check back soon for tips, project stories and seasonal advice.</p>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = posts.map(p => {
+      const feat = p.images?.find(i => i.id === p.featuredImageId);
+      const imgHtml = feat
+        ? `<img src="${feat.data}" alt="${esc(p.title)}" loading="lazy">`
+        : '🌿';
+      return `<div class="blog-card" onclick="openPost('${p.id}')">
+        <div class="blog-card-img">${imgHtml}</div>
+        <div class="blog-card-body">
+          <div class="blog-card-date">${fmtDateShort(p.date)}</div>
+          <div class="blog-card-title">${esc(p.title)}</div>
+          <div class="blog-card-excerpt">${esc(p.excerpt || '')}</div>
+          <div class="blog-card-cta">Read more →</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function openPost(id) {
+    const p = getPosts().find(x => x.id === id);
+    if (!p) return;
+
+    const feat = p.images?.find(i => i.id === p.featuredImageId);
+    const hero = document.getElementById('modalHeroImg');
+    if (feat) { hero.src = feat.data; hero.alt = p.title; hero.style.display = 'block'; }
+    else { hero.style.display = 'none'; }
+
+    document.getElementById('modalDate').textContent  = fmtDateLong(p.date);
+    document.getElementById('modalTitle').textContent = p.title;
+    document.getElementById('modalBody').innerHTML    = p.content;
+
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById('postModal').scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePost() {
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('overlay')) closePost();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePost(); });
+
+  renderBlog();
+</script>
+</body>
+</html>
