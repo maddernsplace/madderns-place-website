@@ -685,25 +685,38 @@
   <div class="container">
     <div class="section-label">Our Work</div>
     <h2 class="section-title">Recent <em>Projects</em></h2>
-    <div class="gallery-mosaic">
-      <div class="gallery-item">
+    <div class="gallery-mosaic" id="galleryMosaic">
+      <!-- Placeholder cards shown until projects.json loads -->
+      <div class="gallery-item gi-placeholder">
         <div class="gi-inner gi-1"><span class="gi-label">Garden Transformation</span></div>
       </div>
-      <div class="gallery-item">
+      <div class="gallery-item gi-placeholder">
         <div class="gi-inner gi-2"><span class="gi-label">Cottage Planting</span></div>
       </div>
-      <div class="gallery-item">
+      <div class="gallery-item gi-placeholder">
         <div class="gi-inner gi-3"><span class="gi-label">Stonework & Paths</span></div>
       </div>
-      <div class="gallery-item">
+      <div class="gallery-item gi-placeholder">
         <div class="gi-inner gi-4"><span class="gi-label">Lawn Renewal</span></div>
       </div>
-      <div class="gallery-item">
+      <div class="gallery-item gi-placeholder">
         <div class="gi-inner gi-5"><span class="gi-label">Retaining Walls</span></div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- PROJECT LIGHTBOX -->
+<div id="projLightbox" style="display:none; position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:1.5rem;" onclick="if(event.target===this)closeLightbox()">
+  <div style="background:#fdfcfa; border-radius:8px; max-width:680px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 24px 80px rgba(0,0,0,0.4);">
+    <img id="lbImg" src="" alt="" style="width:100%; max-height:400px; object-fit:cover; display:none; border-radius:8px 8px 0 0;">
+    <div style="padding:2rem;">
+      <h3 id="lbTitle" style="font-family:'Playfair Display',serif; font-size:1.6rem; color:#1a3a1f; margin-bottom:0.8rem;"></h3>
+      <p id="lbDesc" style="font-family:'Raleway',sans-serif; font-size:0.95rem; color:#4a4a4a; line-height:1.75; white-space:pre-line;"></p>
+      <button onclick="closeLightbox()" style="margin-top:1.5rem; padding:0.6rem 1.4rem; background:#2d5a34; color:#f5f0e8; border:none; border-radius:3px; font-family:'Raleway',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;">Close</button>
+    </div>
+  </div>
+</div>
 
 <!-- TESTIMONIALS -->
 <section id="testimonials">
@@ -852,10 +865,71 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+  // ─── Gallery: load from projects.json ───────────────────────────────────────
+  (async function() {
+    function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    const gradients = ['gi-1','gi-2','gi-3','gi-4','gi-5'];
+
+    let projects = [];
+    try {
+      const r = await fetch('projects.json?v=' + Date.now());
+      if (r.ok) {
+        const all = await r.json();
+        projects = all.filter(p => p.visible !== false);
+      }
+    } catch {}
+
+    // Fallback: localStorage
+    if (!projects.length) {
+      try {
+        const local = JSON.parse(localStorage.getItem('madderns_projects') || '[]');
+        projects = local.filter(p => p.visible !== false);
+      } catch {}
+    }
+
+    if (!projects.length) return; // keep placeholder cards
+
+    const mosaic = document.getElementById('galleryMosaic');
+    mosaic.innerHTML = projects.slice(0, 8).map((p, i) => {
+      const src = p.image?.path || p.image?.data || null;
+      const imgStyle = src
+        ? `background-image:url('${src}'); background-size:cover; background-position:center;`
+        : '';
+      const fallbackClass = src ? '' : gradients[i % gradients.length];
+      const dataIdx = i;
+      return `<div class="gallery-item" onclick="openLightbox(${dataIdx})" style="cursor:pointer;">
+        <div class="gi-inner ${fallbackClass}" style="${imgStyle}">
+          <span class="gi-label">${esc(p.title)}</span>
+        </div>
+      </div>`;
+    }).join('');
+
+    window._galleryProjects = projects;
+  })();
+
+  // Lightbox
+  function openLightbox(idx) {
+    const projects = window._galleryProjects || [];
+    const p = projects[idx];
+    if (!p) return;
+    const src = p.image?.path || p.image?.data || null;
+    const img = document.getElementById('lbImg');
+    if (src) { img.src = src; img.style.display = 'block'; }
+    else { img.style.display = 'none'; }
+    document.getElementById('lbTitle').textContent = p.title || '';
+    document.getElementById('lbDesc').textContent = p.description || '';
+    const lb = document.getElementById('projLightbox');
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('projLightbox').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
   // Blog preview
-  (function() {
-    const POSTS_KEY = 'madderns_blog_posts';
-    function getPosts() { try { return JSON.parse(localStorage.getItem(POSTS_KEY) || '[]'); } catch { return []; } }
+  (async function() {
     function fmtDate(d) {
       if (!d) return '';
       const [y,m,dd] = d.split('-').map(Number);
@@ -863,7 +937,16 @@
     }
     function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-    const posts = getPosts()
+    let posts = [];
+    try {
+      const r = await fetch('posts.json?v=' + Date.now());
+      if (r.ok) posts = await r.json();
+    } catch {}
+    if (!posts.length) {
+      try { posts = JSON.parse(localStorage.getItem('madderns_blog_posts') || '[]'); } catch {}
+    }
+
+    const filtered = posts
       .filter(p => p.published)
       .sort((a,b) => (b.date||'').localeCompare(a.date||'') || b.createdAt - a.createdAt)
       .slice(0, 3);
@@ -871,11 +954,12 @@
     const section = document.getElementById('blog-preview');
     const grid = document.getElementById('blogPreviewGrid');
 
-    if (posts.length === 0) { section.style.display = 'none'; return; }
+    if (!filtered.length) { section.style.display = 'none'; return; }
 
-    grid.innerHTML = posts.map(p => {
+    grid.innerHTML = filtered.map(p => {
       const feat = p.images?.find(i => i.id === p.featuredImageId);
-      const imgHtml = feat ? `<img src="${feat.data}" alt="${esc(p.title)}" loading="lazy">` : '🌿';
+      const imgSrc = feat?.data || feat?.path || null;
+      const imgHtml = imgSrc ? `<img src="${imgSrc}" alt="${esc(p.title)}" loading="lazy">` : '🌿';
       return `<a class="bp-card fade-in" href="blog.html">
         <div class="bp-img">${imgHtml}</div>
         <div class="bp-body">
@@ -887,7 +971,6 @@
       </a>`;
     }).join('');
 
-    // Re-observe new fade-in elements
     grid.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
   })();
 
