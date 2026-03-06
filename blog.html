@@ -226,7 +226,14 @@
 <script>
   const POSTS_KEY = 'madderns_blog_posts';
 
-  function getPosts() {
+  // Try posts.json (published, visible to all visitors) first.
+  // Fall back to localStorage (local drafts) if on localhost or file not found.
+  async function getPosts() {
+    try {
+      const r = await fetch('posts.json?v=' + Date.now());
+      if (r.ok) return await r.json();
+    } catch {}
+    // Fallback: localStorage (local dev or if posts.json not yet created)
     try { return JSON.parse(localStorage.getItem(POSTS_KEY) || '[]'); }
     catch { return []; }
   }
@@ -249,8 +256,8 @@
     return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  function renderBlog() {
-    const posts = getPosts()
+  async function renderBlog() {
+    const posts = (await getPosts())
       .filter(p => p.published)
       .sort((a,b) => (b.date||'').localeCompare(a.date||'') || b.createdAt - a.createdAt);
 
@@ -265,10 +272,14 @@
       return;
     }
 
+    _cachedPosts = posts;
+
     grid.innerHTML = posts.map(p => {
       const feat = p.images?.find(i => i.id === p.featuredImageId);
-      const imgHtml = feat
-        ? `<img src="${feat.data}" alt="${esc(p.title)}" loading="lazy">`
+      // Image src can be a data URL (local) or a path (published via GitHub)
+      const imgSrc = feat?.data || feat?.path || null;
+      const imgHtml = imgSrc
+        ? `<img src="${imgSrc}" alt="${esc(p.title)}" loading="lazy">`
         : '🌿';
       return `<div class="blog-card" onclick="openPost('${p.id}')">
         <div class="blog-card-img">${imgHtml}</div>
@@ -282,13 +293,16 @@
     }).join('');
   }
 
+  let _cachedPosts = [];
+
   function openPost(id) {
-    const p = getPosts().find(x => x.id === id);
+    const p = _cachedPosts.find(x => x.id === id);
     if (!p) return;
 
     const feat = p.images?.find(i => i.id === p.featuredImageId);
     const hero = document.getElementById('modalHeroImg');
-    if (feat) { hero.src = feat.data; hero.alt = p.title; hero.style.display = 'block'; }
+    const heroSrc = feat?.data || feat?.path || null;
+    if (heroSrc) { hero.src = heroSrc; hero.alt = p.title; hero.style.display = 'block'; }
     else { hero.style.display = 'none'; }
 
     document.getElementById('modalDate').textContent  = fmtDateLong(p.date);

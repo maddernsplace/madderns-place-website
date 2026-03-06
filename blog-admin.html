@@ -23,10 +23,8 @@
   }
   .login-box {
     background: var(--white); padding: 3rem; border-radius: 8px;
-    width: 380px; text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   }
-  .login-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
   .login-box h1 { font-family: 'Playfair Display', serif; color: var(--green-deep); margin-bottom: 0.4rem; font-size: 1.8rem; }
   .login-box p { color: var(--text-mid); font-size: 0.88rem; margin-bottom: 2rem; }
   .login-input {
@@ -44,7 +42,7 @@
   .login-btn:hover { background: var(--green-mid); }
   .login-error { color: #c0392b; font-size: 0.83rem; margin-top: 0.6rem; display: none; }
 
-  /* ─── APP ─── */
+  /* ─── APP SHELL ─── */
   .admin-app { display: none; }
   .admin-header {
     background: var(--green-deep); padding: 1rem 2rem;
@@ -55,8 +53,8 @@
   .admin-logo { font-family: 'Playfair Display', serif; color: var(--brown-light); font-size: 1.1rem; }
   .admin-logo span { color: var(--green-pale); font-style: italic; }
   .admin-logo small { font-family: 'Raleway', sans-serif; font-size: 0.68rem; letter-spacing: 0.12em; color: rgba(245,240,232,0.4); margin-left: 0.6rem; font-style: normal; }
-  .admin-nav { display: flex; gap: 1rem; align-items: center; }
-  .admin-nav a { color: rgba(245,240,232,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.06em; transition: color 0.2s; }
+  .admin-nav { display: flex; gap: 0.8rem; align-items: center; }
+  .admin-nav a { color: rgba(245,240,232,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.06em; transition: color 0.2s; padding: 0.4rem 0.6rem; }
   .admin-nav a:hover { color: var(--brown-light); }
   .admin-nav button {
     background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
@@ -73,7 +71,8 @@
     padding: 0.7rem 1.5rem; border: none; border-radius: 3px;
     font-family: 'Raleway', sans-serif; font-size: 0.8rem;
     font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-    cursor: pointer; transition: all 0.2s; display: inline-block; text-decoration: none;
+    cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;
+    text-decoration: none;
   }
   .btn-primary { background: var(--green-mid); color: var(--cream); }
   .btn-primary:hover { background: var(--green-deep); }
@@ -82,11 +81,41 @@
   .btn-danger { background: #c0392b; color: white; }
   .btn-danger:hover { background: #a93226; }
   .btn-sm { padding: 0.4rem 0.85rem; font-size: 0.73rem; }
+  .btn-publish {
+    background: #1a5c8a; color: white;
+    border: none; border-radius: 3px; padding: 0.6rem 1.3rem;
+    font-family: 'Raleway', sans-serif; font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 0.5rem; transition: background 0.2s;
+  }
+  .btn-publish:hover { background: #155073; }
+  .btn-publish:disabled { background: #5a8aaa; cursor: default; opacity: 0.7; }
 
   /* ─── DASHBOARD ─── */
-  .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+  .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
   .page-header h2 { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--green-deep); }
+  .page-header-actions { display: flex; gap: 0.7rem; align-items: center; }
 
+  /* Publish status banner */
+  .publish-banner {
+    background: #fff8e6; border: 1px solid #f5c842; border-radius: 4px;
+    padding: 0.8rem 1.2rem; margin-bottom: 1.5rem;
+    display: none; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .publish-banner.show { display: flex; }
+  .publish-banner-text { font-size: 0.85rem; color: #7a5c00; }
+  .publish-banner-text strong { color: #5a4200; }
+
+  /* GitHub settings not configured warning */
+  .gh-warning {
+    background: #fef3f3; border: 1px solid #f5b7b1; border-radius: 4px;
+    padding: 0.8rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: #7a1a1a;
+    display: none;
+  }
+  .gh-warning.show { display: block; }
+  .gh-warning a { color: #7a1a1a; font-weight: 600; }
+
+  /* Posts list */
   .posts-list { display: flex; flex-direction: column; gap: 1rem; }
   .post-row {
     background: var(--white); border-radius: 6px; padding: 1.2rem 1.5rem;
@@ -103,7 +132,7 @@
   }
   .post-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .post-row-info h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--green-deep); margin-bottom: 0.25rem; }
-  .post-row-meta { font-size: 0.76rem; color: var(--text-mid); display: flex; gap: 1rem; align-items: center; }
+  .post-row-meta { font-size: 0.76rem; color: var(--text-mid); display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
   .badge { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 20px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
   .badge-pub { background: #d4edda; color: #155724; }
   .badge-draft { background: #fff3cd; color: #856404; }
@@ -120,13 +149,10 @@
   .editor-col { display: flex; flex-direction: column; gap: 1.5rem; }
 
   .card { background: var(--white); border-radius: 6px; padding: 1.8rem; border: 1px solid rgba(26,58,31,0.07); }
-  .card-title {
-    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--green-light); margin-bottom: 1.2rem;
-  }
+  .card-title { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-light); margin-bottom: 1.2rem; }
 
   label { display: block; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 0.4rem; }
-  input[type="text"], input[type="date"], textarea, select {
+  input[type="text"], input[type="date"], input[type="password"], textarea, select {
     width: 100%; padding: 0.72rem 0.9rem; border: 1px solid rgba(26,58,31,0.2); border-radius: 4px;
     font-family: 'Raleway', sans-serif; font-size: 0.9rem; background: var(--cream); color: var(--text-dark);
     outline: none; transition: border-color 0.3s;
@@ -134,6 +160,7 @@
   input:focus, textarea:focus, select:focus { border-color: var(--green-mid); }
   .form-group { margin-bottom: 1.2rem; }
   .form-group:last-child { margin-bottom: 0; }
+  .form-hint { font-size: 0.72rem; color: var(--text-mid); margin-top: 0.35rem; line-height: 1.5; }
 
   /* Content editor */
   .editor-toolbar {
@@ -195,7 +222,7 @@
     letter-spacing: 0.06em; text-transform: uppercase; padding: 0.12rem 0.35rem; border-radius: 2px;
   }
 
-  /* Publish toggle */
+  /* Toggle */
   .toggle-row { display: flex; justify-content: space-between; align-items: center; }
   .toggle-row span { font-size: 0.88rem; color: var(--text-dark); }
   .toggle { position: relative; width: 44px; height: 23px; flex-shrink: 0; }
@@ -205,12 +232,27 @@
   .toggle input:checked + .slider { background: var(--green-mid); }
   .toggle input:checked + .slider:before { transform: translateX(21px); }
 
-  /* Storage indicator */
-  .storage-info { margin-top: 0.8rem; font-size: 0.72rem; color: var(--text-mid); }
-  .storage-bar { height: 3px; background: rgba(26,58,31,0.12); border-radius: 2px; margin-top: 0.4rem; overflow: hidden; }
-  .storage-fill { height: 100%; border-radius: 2px; transition: width 0.3s; background: var(--green-mid); }
-  .storage-fill.warn { background: #e67e22; }
-  .storage-fill.full { background: #c0392b; }
+  /* ─── PUBLISH MODAL ─── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
+    display: none; align-items: center; justify-content: center; padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .publish-modal {
+    background: var(--white); border-radius: 8px; width: 100%; max-width: 500px;
+    padding: 2.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  }
+  .publish-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--green-deep); margin-bottom: 0.5rem; }
+  .publish-modal p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.6; margin-bottom: 1.5rem; }
+  .publish-progress { margin: 1.5rem 0; }
+  .progress-bar { height: 6px; background: rgba(26,58,31,0.12); border-radius: 3px; overflow: hidden; margin-bottom: 0.6rem; }
+  .progress-fill { height: 100%; background: var(--green-mid); border-radius: 3px; transition: width 0.4s; }
+  .progress-status { font-size: 0.8rem; color: var(--text-mid); }
+  .publish-done { display: none; text-align: center; padding: 1rem 0; }
+  .publish-done .done-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .publish-done p { color: var(--green-mid); font-weight: 600; }
+  .publish-error { display: none; padding: 0.8rem 1rem; background: #fde8e6; border-radius: 4px; font-size: 0.85rem; color: #7a1a1a; margin-top: 1rem; }
+  .modal-actions { display: flex; gap: 0.8rem; margin-top: 1.5rem; justify-content: flex-end; }
 
   /* Toast */
   .toast {
@@ -223,14 +265,21 @@
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast.err { background: #c0392b; }
 
-  /* Settings */
-  #settingsView { display: none; }
-  .settings-card { max-width: 500px; }
+  /* GitHub token setup info box */
+  .info-box {
+    background: #f0f7ff; border: 1px solid #b3d4f5; border-radius: 4px;
+    padding: 1rem 1.2rem; font-size: 0.82rem; color: #1a3a5c; line-height: 1.6; margin-bottom: 1.2rem;
+  }
+  .info-box strong { color: #0f2540; }
+  .info-box ol { margin: 0.4rem 0 0 1.2rem; }
+  .info-box li { margin-bottom: 0.2rem; }
+  .info-box code { background: #d8ecff; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
 
   @media (max-width: 820px) {
     .editor-layout { grid-template-columns: 1fr; }
     .post-row { grid-template-columns: 64px 1fr; }
     .post-row-actions { grid-column: 1 / -1; }
+    .page-header { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -239,7 +288,7 @@
 <!-- ─── LOGIN ─── -->
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
-    <div class="login-icon">🌿</div>
+    <div style="font-size:2.5rem; margin-bottom:0.8rem;">🌿</div>
     <h1>Blog Admin</h1>
     <p>Maddern's Place Garden & Landscaping</p>
     <input type="password" class="login-input" id="loginPw" placeholder="Enter password"
@@ -263,27 +312,38 @@
 
   <div class="admin-body">
 
-    <!-- DASHBOARD -->
+    <!-- ─── DASHBOARD ─── -->
     <div id="dashView">
+      <div class="gh-warning" id="ghWarning">
+        ⚠️ GitHub is not configured — posts will only be visible on your device.
+        <a href="#" onclick="showView('settings'); return false;">Set up GitHub publishing →</a>
+      </div>
+      <div class="publish-banner" id="publishBanner">
+        <span class="publish-banner-text"><strong>Unpublished changes</strong> — your latest edits haven't been pushed to GitHub yet.</span>
+        <button class="btn-publish" onclick="openPublishModal()">🚀 Publish to GitHub</button>
+      </div>
       <div class="page-header">
         <h2>Blog Posts</h2>
-        <button class="btn btn-primary" onclick="openNewPost()">+ New Post</button>
+        <div class="page-header-actions">
+          <button class="btn-publish" onclick="openPublishModal()" id="headerPublishBtn">🚀 Publish to GitHub</button>
+          <button class="btn btn-primary" onclick="openNewPost()">+ New Post</button>
+        </div>
       </div>
       <div id="postsList"></div>
     </div>
 
-    <!-- EDITOR -->
+    <!-- ─── EDITOR ─── -->
     <div id="editorView">
       <div class="page-header">
         <h2 id="editorHeading">New Post</h2>
-        <div style="display:flex; gap:0.7rem;">
+        <div class="page-header-actions">
           <button class="btn btn-secondary" onclick="showView('dash')">← Back</button>
-          <button class="btn btn-primary" onclick="savePost()">Save Post</button>
+          <button class="btn btn-primary" onclick="savePost()">Save Draft</button>
+          <button class="btn-publish" onclick="savePost(true)">🚀 Save & Publish</button>
         </div>
       </div>
 
       <div class="editor-layout">
-        <!-- Main column -->
         <div class="editor-col">
           <div class="card">
             <div class="form-group">
@@ -291,7 +351,7 @@
               <input type="text" id="postTitle" placeholder="e.g. Top 5 Spring Garden Tips">
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label>Short Excerpt <span style="text-transform:none; font-weight:400; letter-spacing:0;">(shown on blog listings & home page)</span></label>
+              <label>Short Excerpt <span style="text-transform:none; font-weight:400; letter-spacing:0;">(shown on blog cards & home page)</span></label>
               <textarea id="postExcerpt" style="min-height:75px; resize:vertical;" placeholder="A brief summary that appears on the blog card..."></textarea>
             </div>
           </div>
@@ -299,9 +359,9 @@
           <div class="card">
             <div class="card-title">Post Content</div>
             <div class="editor-toolbar">
-              <button class="toolbar-btn" onclick="fmt('bold')" title="Bold"><b>B</b></button>
-              <button class="toolbar-btn" onclick="fmt('italic')" title="Italic"><i>I</i></button>
-              <button class="toolbar-btn" onclick="fmt('underline')" title="Underline"><u>U</u></button>
+              <button class="toolbar-btn" onclick="fmt('bold')"><b>B</b></button>
+              <button class="toolbar-btn" onclick="fmt('italic')"><i>I</i></button>
+              <button class="toolbar-btn" onclick="fmt('underline')"><u>U</u></button>
               <div class="toolbar-sep"></div>
               <button class="toolbar-btn" onclick="fmtBlock('h2')">H2</button>
               <button class="toolbar-btn" onclick="fmtBlock('h3')">H3</button>
@@ -318,7 +378,6 @@
           </div>
         </div>
 
-        <!-- Sidebar -->
         <div class="editor-col">
           <div class="card">
             <div class="card-title">Post Details</div>
@@ -345,15 +404,12 @@
             </div>
             <input type="file" id="imgFileInput" accept="image/*" multiple onchange="handleFiles(this.files)">
             <div class="images-grid" id="imagesGrid"></div>
-            <div id="storageInfo" class="storage-info" style="display:none;">
-              <div id="storageLabel"></div>
-              <div class="storage-bar"><div class="storage-fill" id="storageFill"></div></div>
-            </div>
           </div>
 
           <div class="card">
             <div class="card-title">Actions</div>
-            <button class="btn btn-primary" style="width:100%; margin-bottom:0.6rem;" onclick="savePost()">Save Post</button>
+            <button class="btn btn-primary" style="width:100%; margin-bottom:0.6rem;" onclick="savePost()">Save Draft</button>
+            <button class="btn-publish" style="width:100%; justify-content:center; margin-bottom:0.6rem;" onclick="savePost(true)">🚀 Save & Publish to GitHub</button>
             <button class="btn btn-secondary" style="width:100%;" onclick="showView('dash')">Cancel</button>
             <div id="deleteWrap" style="margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(26,58,31,0.1); display:none;">
               <button class="btn btn-danger btn-sm" style="width:100%;" onclick="deletePost()">Delete This Post</button>
@@ -363,50 +419,275 @@
       </div>
     </div>
 
-    <!-- SETTINGS -->
-    <div id="settingsView">
+    <!-- ─── SETTINGS ─── -->
+    <div id="settingsView" style="display:none;">
       <div class="page-header">
         <h2>Settings</h2>
         <button class="btn btn-secondary" onclick="showView('dash')">← Back</button>
       </div>
-      <div class="card settings-card">
-        <div class="card-title">Change Admin Password</div>
-        <div class="form-group">
-          <label>Current Password</label>
-          <input type="password" id="currentPw" placeholder="Enter current password">
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; max-width:900px;">
+        <!-- GitHub Publishing -->
+        <div class="card" style="grid-column:1/-1;">
+          <div class="card-title">GitHub Publishing</div>
+          <div class="info-box">
+            <strong>How to get your GitHub Token:</strong>
+            <ol>
+              <li>Go to <strong>github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong></li>
+              <li>Click <strong>Generate new token</strong></li>
+              <li>Set expiry (1 year recommended), select your repository</li>
+              <li>Under <strong>Repository permissions</strong>, set <code>Contents</code> to <strong>Read and write</strong></li>
+              <li>Generate and paste the token below</li>
+            </ol>
+          </div>
+          <div class="form-group">
+            <label>GitHub Personal Access Token</label>
+            <input type="password" id="ghToken" placeholder="github_pat_...">
+            <div class="form-hint">Stored locally on your device only. Never shared.</div>
+          </div>
+          <div class="form-group">
+            <label>Repository</label>
+            <input type="text" id="ghRepo" placeholder="owner/repo-name">
+            <div class="form-hint">e.g. maddernsplace/madderns-place-website</div>
+          </div>
+          <div class="form-group" style="margin-bottom:1.2rem;">
+            <label>Branch</label>
+            <input type="text" id="ghBranch" placeholder="main">
+          </div>
+          <div style="display:flex; gap:0.8rem; align-items:center;">
+            <button class="btn btn-primary" onclick="saveGitHubSettings()">Save GitHub Settings</button>
+            <button class="btn btn-secondary" onclick="testGitHubConnection()">Test Connection</button>
+            <span id="ghTestResult" style="font-size:0.82rem;"></span>
+          </div>
         </div>
-        <div class="form-group">
-          <label>New Password</label>
-          <input type="password" id="newPw" placeholder="Enter new password">
+
+        <!-- Password -->
+        <div class="card">
+          <div class="card-title">Change Password</div>
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="currentPw" placeholder="Current password">
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="newPw" placeholder="New password">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPw" placeholder="Confirm new password">
+          </div>
+          <button class="btn btn-primary" style="margin-top:1.2rem;" onclick="changePassword()">Update Password</button>
         </div>
-        <div class="form-group" style="margin-bottom:0;">
-          <label>Confirm New Password</label>
-          <input type="password" id="confirmPw" placeholder="Confirm new password">
-        </div>
-        <button class="btn btn-primary" style="margin-top:1.2rem;" onclick="changePassword()">Update Password</button>
       </div>
     </div>
 
   </div>
 </div>
 
+<!-- ─── PUBLISH MODAL ─── -->
+<div class="modal-overlay" id="publishModal">
+  <div class="publish-modal">
+    <h3 id="publishModalTitle">Publish to GitHub</h3>
+    <p id="publishModalDesc">This will commit your posts and images to your GitHub repository. They'll be live for all visitors within seconds.</p>
+    <div class="publish-progress" id="publishProgress" style="display:none;">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-status" id="progressStatus">Starting...</div>
+    </div>
+    <div class="publish-done" id="publishDone">
+      <div class="done-icon">✅</div>
+      <p>Published successfully! Posts are now live.</p>
+    </div>
+    <div class="publish-error" id="publishError"></div>
+    <div class="modal-actions" id="modalActions">
+      <button class="btn btn-secondary" onclick="closePublishModal()">Cancel</button>
+      <button class="btn-publish" id="confirmPublishBtn" onclick="runPublish()">🚀 Publish Now</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-  // ─── CONFIG ──────────────────────────────────────────────────────────────────
+  // ─── CONSTANTS ───────────────────────────────────────────────────────────────
   const POSTS_KEY   = 'madderns_blog_posts';
   const PASS_KEY    = 'madderns_admin_pass';
+  const DIRTY_KEY   = 'madderns_has_unpublished';
   const DEFAULT_PASS = 'madderns2024';
 
-  // ─── DATA HELPERS ────────────────────────────────────────────────────────────
+  // ─── DATA ────────────────────────────────────────────────────────────────────
   function getPosts() {
     try { return JSON.parse(localStorage.getItem(POSTS_KEY) || '[]'); }
     catch { return []; }
   }
   function savePosts(posts) { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); }
   function getPass() { return localStorage.getItem(PASS_KEY) || DEFAULT_PASS; }
-  function uid() { return 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
+  function uid()  { return 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
   function iuid() { return 'i_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
+  function today() { return new Date().toISOString().slice(0,10); }
+
+  // ─── GITHUB SETTINGS ─────────────────────────────────────────────────────────
+  function getGH() {
+    return {
+      token:  localStorage.getItem('mp_gh_token')  || '',
+      repo:   localStorage.getItem('mp_gh_repo')   || 'maddernsplace/madderns-place-website',
+      branch: localStorage.getItem('mp_gh_branch') || 'main'
+    };
+  }
+  function ghConfigured() { const g = getGH(); return !!(g.token && g.repo); }
+
+  function saveGitHubSettings() {
+    localStorage.setItem('mp_gh_token',  document.getElementById('ghToken').value.trim());
+    localStorage.setItem('mp_gh_repo',   document.getElementById('ghRepo').value.trim());
+    localStorage.setItem('mp_gh_branch', document.getElementById('ghBranch').value.trim() || 'main');
+    toast('GitHub settings saved!');
+    updateDashboardBanners();
+  }
+
+  async function testGitHubConnection() {
+    const r = document.getElementById('ghTestResult');
+    r.textContent = 'Testing...'; r.style.color = '';
+    const { token, repo } = getGH();
+    if (!token || !repo) { r.textContent = '✕ Fill in token and repo first.'; r.style.color = '#c0392b'; return; }
+    try {
+      const res = await ghRequest('GET', `/repos/${repo}`, token);
+      r.textContent = `✓ Connected to ${res.full_name}`;
+      r.style.color = '#2d5a34';
+    } catch(e) {
+      r.textContent = '✕ ' + e.message;
+      r.style.color = '#c0392b';
+    }
+  }
+
+  // ─── GITHUB API ───────────────────────────────────────────────────────────────
+  async function ghRequest(method, path, token, body) {
+    const opts = {
+      method,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      }
+    };
+    if (body) opts.body = JSON.stringify(body);
+    const r = await fetch(`https://api.github.com${path}`, opts);
+    const json = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(json.message || `GitHub error ${r.status}`);
+    return json;
+  }
+
+  async function getFileSHA(repo, branch, path, token) {
+    try {
+      const d = await ghRequest('GET', `/repos/${repo}/contents/${encodeURIComponent(path)}?ref=${branch}`, token);
+      return d.sha;
+    } catch { return null; }
+  }
+
+  async function commitFile(repo, branch, filePath, content, message, token) {
+    const sha = await getFileSHA(repo, branch, filePath, token);
+    const body = { message, content, branch };
+    if (sha) body.sha = sha;
+    return ghRequest('PUT', `/repos/${repo}/contents/${encodeURIComponent(filePath)}`, token, body);
+  }
+
+  function b64Text(str) { return btoa(unescape(encodeURIComponent(str))); }
+  function b64FromDataUrl(dataUrl) { return dataUrl.split(',')[1]; }
+
+  // ─── PUBLISH ─────────────────────────────────────────────────────────────────
+  let publishing = false;
+
+  function openPublishModal() {
+    if (!ghConfigured()) {
+      toast('Set up GitHub settings first.', true);
+      showView('settings');
+      return;
+    }
+    document.getElementById('publishModalTitle').textContent = 'Publish to GitHub';
+    document.getElementById('publishModalDesc').style.display = '';
+    document.getElementById('publishProgress').style.display = 'none';
+    document.getElementById('publishDone').style.display = 'none';
+    document.getElementById('publishError').style.display = 'none';
+    document.getElementById('modalActions').style.display = 'flex';
+    document.getElementById('confirmPublishBtn').style.display = '';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('publishModal').classList.add('open');
+  }
+
+  function closePublishModal() {
+    if (publishing) return;
+    document.getElementById('publishModal').classList.remove('open');
+  }
+
+  function setProgress(pct, status) {
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressStatus').textContent = status;
+  }
+
+  async function runPublish() {
+    if (publishing) return;
+    publishing = true;
+    document.getElementById('confirmPublishBtn').disabled = true;
+    document.getElementById('publishModalDesc').style.display = 'none';
+    document.getElementById('publishProgress').style.display = 'block';
+    document.getElementById('publishError').style.display = 'none';
+
+    const { token, repo, branch } = getGH();
+
+    try {
+      const posts = getPosts();
+      const totalImages = posts.reduce((n, p) => n + (p.images||[]).filter(i => !i.path && i.data).length, 0);
+      let imgsDone = 0;
+
+      // Upload new images (those without a path yet)
+      for (const post of posts) {
+        for (const img of (post.images || [])) {
+          if (!img.path && img.data) {
+            const ext = (img.name.match(/\.\w+$/) || ['.jpg'])[0].toLowerCase().replace(/jpeg/, 'jpg');
+            const filename = `blog-images/${post.id}-${img.id}${ext}`;
+            setProgress(
+              Math.round((imgsDone / Math.max(totalImages, 1)) * 70),
+              `Uploading image ${imgsDone + 1} of ${totalImages}: ${img.name}`
+            );
+            await commitFile(repo, branch, filename, b64FromDataUrl(img.data), `Add blog image: ${img.name}`, token);
+            img.path = filename;
+            imgsDone++;
+          }
+        }
+      }
+
+      // Build publishable JSON — paths only, no base64 blobs
+      const publishable = posts.map(p => ({
+        ...p,
+        images: (p.images || []).map(({ id, name, path }) => ({ id, name, path: path || '' }))
+      }));
+
+      setProgress(80, 'Updating posts.json...');
+      await commitFile(
+        repo, branch, 'posts.json',
+        b64Text(JSON.stringify(publishable, null, 2)),
+        `Update blog posts (${posts.filter(p => p.published).length} published)`,
+        token
+      );
+
+      // Save updated posts (with paths recorded) back to localStorage
+      savePosts(posts);
+      localStorage.removeItem(DIRTY_KEY);
+
+      setProgress(100, 'Done!');
+      document.getElementById('publishProgress').style.display = 'none';
+      document.getElementById('publishDone').style.display = 'block';
+      document.getElementById('modalActions').innerHTML =
+        `<button class="btn btn-primary" onclick="closePublishModal(); renderDashboard();">Done</button>`;
+
+    } catch(e) {
+      const errEl = document.getElementById('publishError');
+      errEl.textContent = 'Error: ' + e.message;
+      errEl.style.display = 'block';
+      document.getElementById('confirmPublishBtn').disabled = false;
+      document.getElementById('publishProgress').style.display = 'none';
+    } finally {
+      publishing = false;
+    }
+  }
 
   // ─── AUTH ────────────────────────────────────────────────────────────────────
   let authed = sessionStorage.getItem('mp_auth') === '1';
@@ -423,24 +704,20 @@
       document.getElementById('loginPw').value = '';
     }
   }
-
   function doLogout() { sessionStorage.removeItem('mp_auth'); location.reload(); }
 
   function changePassword() {
     const cur = document.getElementById('currentPw').value;
     const nw  = document.getElementById('newPw').value.trim();
     const con = document.getElementById('confirmPw').value;
-    if (cur !== getPass()) { toast('Current password is incorrect.', true); return; }
-    if (!nw) { toast('New password cannot be empty.', true); return; }
-    if (nw !== con) { toast('Passwords do not match.', true); return; }
+    if (cur !== getPass())  { toast('Current password is incorrect.', true); return; }
+    if (!nw)                { toast('New password cannot be empty.', true); return; }
+    if (nw !== con)         { toast('Passwords do not match.', true); return; }
     localStorage.setItem(PASS_KEY, nw);
-    document.getElementById('currentPw').value = '';
-    document.getElementById('newPw').value = '';
-    document.getElementById('confirmPw').value = '';
-    toast('Password updated successfully!');
+    ['currentPw','newPw','confirmPw'].forEach(id => document.getElementById(id).value = '');
+    toast('Password updated!');
   }
 
-  // Boot
   if (authed) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminApp').style.display = 'block';
@@ -454,17 +731,26 @@
     });
     document.getElementById(name + 'View').style.display = 'block';
     if (name === 'dash') renderDashboard();
+    if (name === 'settings') loadSettingsForm();
+  }
+
+  function loadSettingsForm() {
+    const g = getGH();
+    document.getElementById('ghToken').value  = g.token;
+    document.getElementById('ghRepo').value   = g.repo;
+    document.getElementById('ghBranch').value = g.branch;
   }
 
   // ─── DASHBOARD ───────────────────────────────────────────────────────────────
   function renderDashboard() {
+    updateDashboardBanners();
     const posts = getPosts().sort((a,b) => b.createdAt - a.createdAt);
     const el = document.getElementById('postsList');
-    if (posts.length === 0) {
+    if (!posts.length) {
       el.innerHTML = `<div class="empty-state">
         <div class="empty-icon">✍️</div>
         <h3>No posts yet</h3>
-        <p>Create your first blog post to share garden tips,<br>project updates, or seasonal advice.</p>
+        <p>Create your first blog post to share garden tips, project stories, and seasonal advice.</p>
         <button class="btn btn-primary" onclick="openNewPost()">+ Create First Post</button>
       </div>`;
       return;
@@ -472,9 +758,18 @@
     el.innerHTML = `<div class="posts-list">${posts.map(postRow).join('')}</div>`;
   }
 
+  function updateDashboardBanners() {
+    const configured = ghConfigured();
+    const dirty = localStorage.getItem(DIRTY_KEY) === '1';
+    document.getElementById('ghWarning').classList.toggle('show', !configured);
+    document.getElementById('publishBanner').classList.toggle('show', configured && dirty);
+    const hpb = document.getElementById('headerPublishBtn');
+    if (hpb) hpb.style.display = configured ? '' : 'none';
+  }
+
   function postRow(p) {
-    const feat = p.images?.find(i => i.id === p.featuredImageId);
-    const thumb = feat ? `<img src="${feat.data}" alt="">` : '🌿';
+    const feat = getFeaturedImg(p);
+    const thumb = feat ? `<img src="${feat}" alt="">` : '🌿';
     const badge = p.published
       ? `<span class="badge badge-pub">Published</span>`
       : `<span class="badge badge-draft">Draft</span>`;
@@ -490,21 +785,25 @@
     </div>`;
   }
 
+  // Return displayable src for featured image (data url or path)
+  function getFeaturedImg(p) {
+    const img = (p.images||[]).find(i => i.id === p.featuredImageId);
+    if (!img) return null;
+    return img.data || img.path || null;
+  }
+
   // ─── EDITOR STATE ────────────────────────────────────────────────────────────
   let editingPost = null;
   let editImages  = [];
   let featuredId  = null;
 
-  function openNewPost() {
-    editingPost = null; editImages = []; featuredId = null;
-    loadEditor();
-  }
+  function openNewPost() { editingPost = null; editImages = []; featuredId = null; loadEditor(); }
 
   function openEdit(id) {
     const p = getPosts().find(x => x.id === id);
     if (!p) return;
     editingPost = p;
-    editImages  = [...(p.images || [])];
+    editImages  = (p.images || []).map(i => ({...i}));
     featuredId  = p.featuredImageId || null;
     loadEditor();
   }
@@ -518,12 +817,11 @@
     document.getElementById('postPublished').checked  = editingPost ? editingPost.published : true;
     document.getElementById('deleteWrap').style.display = editingPost ? 'block' : 'none';
     renderImages();
-    updateStorage();
     showView('editor');
   }
 
   // ─── SAVE / DELETE ───────────────────────────────────────────────────────────
-  function savePost() {
+  function savePost(andPublish = false) {
     const title = document.getElementById('postTitle').value.trim();
     if (!title) { toast('Please enter a post title.', true); return; }
 
@@ -548,14 +846,17 @@
 
     try {
       savePosts(posts);
-      toast(editingPost ? 'Post updated!' : 'Post created!');
-      showView('dash');
-    } catch(e) {
-      if (e.name === 'QuotaExceededError') {
-        toast('Storage full — try removing some images.', true);
+      localStorage.setItem(DIRTY_KEY, '1');
+      if (andPublish) {
+        showView('dash');
+        openPublishModal();
       } else {
-        toast('Error saving. Please try again.', true);
+        toast(editingPost ? 'Draft saved!' : 'Post created!');
+        showView('dash');
       }
+    } catch(e) {
+      if (e.name === 'QuotaExceededError') toast('Storage full — remove some images.', true);
+      else toast('Error saving. Try again.', true);
     }
   }
 
@@ -563,6 +864,7 @@
     if (!editingPost) return;
     if (!confirm(`Delete "${editingPost.title}"? This cannot be undone.`)) return;
     savePosts(getPosts().filter(p => p.id !== editingPost.id));
+    localStorage.setItem(DIRTY_KEY, '1');
     toast('Post deleted.');
     showView('dash');
   }
@@ -576,9 +878,8 @@
         shrink(e.target.result, 1200, 0.82, data => {
           const id = iuid();
           editImages.push({ id, data, name: file.name });
-          if (!featuredId) featuredId = id; // auto-feature first upload
+          if (!featuredId) featuredId = id;
           renderImages();
-          updateStorage();
         });
       };
       reader.readAsDataURL(file);
@@ -604,15 +905,16 @@
     if (!editImages.length) { grid.innerHTML = ''; return; }
     grid.innerHTML = editImages.map(img => {
       const isFeat = img.id === featuredId;
-      return `<div class="img-thumb ${isFeat ? 'featured' : ''}" id="t_${img.id}">
-        ${isFeat ? '<div class="featured-label">Featured</div>' : ''}
-        <img src="${img.data}" alt="${esc(img.name)}">
+      const src    = img.data || img.path || '';
+      return `<div class="img-thumb ${isFeat ? 'featured' : ''}">
+        ${isFeat ? '<div class="featured-label">Cover</div>' : ''}
+        <img src="${src}" alt="${esc(img.name)}">
         <div class="img-thumb-actions">
           <button class="img-btn ${isFeat ? 'active' : ''}" onclick="setFeatured('${img.id}')"
-                  title="Show this image on the home page and blog listing">
+                  title="Use as cover image on blog cards and home page">
             ${isFeat ? '★ Cover' : '☆ Cover'}
           </button>
-          <button class="img-btn" onclick="insertImg('${img.id}')" title="Insert into post">↳ Insert</button>
+          <button class="img-btn" onclick="insertImg('${img.id}')" title="Insert into post body">↳ Insert</button>
           <button class="img-btn del" onclick="removeImg('${img.id}')">✕</button>
         </div>
       </div>`;
@@ -624,36 +926,23 @@
   function removeImg(id) {
     editImages = editImages.filter(i => i.id !== id);
     if (featuredId === id) featuredId = editImages[0]?.id || null;
-    renderImages(); updateStorage();
+    renderImages();
   }
 
   function insertImg(id) {
     const img = editImages.find(i => i.id === id);
     if (!img) return;
+    const src = img.data || img.path || '';
     document.getElementById('contentEditor').focus();
     document.execCommand('insertHTML', false,
-      `<img src="${img.data}" alt="${esc(img.name)}" style="max-width:100%;">`);
+      `<img src="${src}" alt="${esc(img.name)}" style="max-width:100%;">`);
   }
 
-  // Drag & drop
+  // Drag & drop on the drop zone
   const dz = document.getElementById('dropZone');
   dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
   dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
   dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
-
-  function updateStorage() {
-    const el = document.getElementById('storageInfo');
-    if (!editImages.length) { el.style.display = 'none'; return; }
-    el.style.display = 'block';
-    const used = new Blob([JSON.stringify(editImages)]).size;
-    const max  = 4 * 1024 * 1024;
-    const pct  = Math.min(100, (used / max) * 100);
-    document.getElementById('storageLabel').textContent =
-      `Images: ${(used/1024).toFixed(0)}KB of ~4MB limit`;
-    const fill = document.getElementById('storageFill');
-    fill.style.width = pct + '%';
-    fill.className = 'storage-fill' + (pct > 80 ? ' full' : pct > 55 ? ' warn' : '');
-  }
 
   // ─── TOOLBAR ─────────────────────────────────────────────────────────────────
   function fmt(cmd) { document.getElementById('contentEditor').focus(); document.execCommand(cmd, false, null); }
@@ -670,12 +959,16 @@
     const [y,m,dd] = d.split('-').map(Number);
     return `${dd} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m-1]} ${y}`;
   }
-  function today() { return new Date().toISOString().slice(0,10); }
   function toast(msg, err=false) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.className = 'toast' + (err ? ' err' : '') + ' show';
     setTimeout(() => t.className = 'toast', 3000);
   }
+
+  // Close publish modal on overlay click
+  document.getElementById('publishModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('publishModal')) closePublishModal();
+  });
 </script>
 </body>
 </html>
