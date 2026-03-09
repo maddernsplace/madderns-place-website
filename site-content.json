@@ -1,85 +1,31 @@
 {
   "hero": {
-    "eyebrow": "Garden & Landscaping Specialists",
-    "heading": "Where Nature Meets Design",
-    "sub": "Transforming outdoor spaces into living works of art. We bring your garden vision to life with care, craft, and decades of expertise.",
-    "btn1": "Get a Free Quote",
-    "btn2": "Our Services"
+    "eyebrow": "",
+    "heading": "",
+    "sub": "",
+    "btn1": "",
+    "btn2": ""
   },
   "about": {
-    "badgeNum": "5+",
-    "badgeLabel": "Years of Excellence",
-    "title": "Professional Landscaping Across Adelaide's South",
-    "paragraphs": [
-      "At Maddern's Place Garden & Landscaping, we deliver professional landscaping services across Hackham, Morphett Vale, and the wider Adelaide southern suburbs. Whether you're upgrading your front yard, building a retaining wall, or laying premium turf, we create stunning, functional outdoor spaces tailored to your needs.",
-      "As a trusted landscaping business in Adelaide, we specialise in:",
-      "With a strong focus on residential and commercial landscaping, we pride ourselves on attention to detail, reliable communication, and high-quality workmanship. Every project is managed with care to ensure your outdoor area not only looks great but adds real value to your property.",
-      "If you're searching for landscapers near me, turf installation in Adelaide, or irrigation experts in Hackham, you're in the right place."
-    ],
-    "bullets": [
-      "Landscape design and construction",
-      "Retaining wall installation",
-      "New turf installation (Kikuyu, Sir Walter, and more)",
-      "Irrigation systems using Hunter MP Rotators and Bluetooth NODE timers",
-      "Lawn renovations and maintenance",
-      "Gutter vacuum cleaning services"
-    ]
+    "badgeNum": "",
+    "badgeLabel": "",
+    "title": "",
+    "paragraphs": [],
+    "bullets": []
   },
-  "services": [
-    {
-      "icon": "🌱",
-      "title": "Lawn Care & Mowing",
-      "desc": "Keep your lawn lush, healthy, and immaculate year-round. Our regular maintenance programs include mowing, edging, fertilisation, and seasonal treatments for a lawn that always looks its best."
-    },
-    {
-      "icon": "🌸",
-      "title": "Garden Design",
-      "desc": "Our designers collaborate with you to create a garden that reflects your style and suits your lifestyle. From cottage gardens to contemporary escapes, we design spaces that delight the senses."
-    },
-    {
-      "icon": "🏡",
-      "title": "Landscaping",
-      "desc": "Complete outdoor transformations by Madderns Place Garden & Landscaping. We specialise in block retaining walls, turf installation, irrigation systems, drainage solutions, and tailored planting. From concept through to completion, we manage every stage of the project with clear communication and minimal disruption to your home."
-    },
-    {
-      "icon": "💧",
-      "title": "Irrigation Installation & Repair",
-      "desc": "Irrigation installation, upgrades, and repairs — designed for efficient water use and healthy lawn growth. From new system setups to fault finding and repairs, we ensure your watering system works exactly as it should."
-    }
-  ],
-  "process": [
-    {
-      "num": "01",
-      "title": "Consultation",
-      "desc": "We meet on site to understand your vision, assess levels, drainage, access, and discuss practical solutions that suit your property and budget."
-    },
-    {
-      "num": "02",
-      "title": "Design & Quote",
-      "desc": "We develop a clear plan for your project — outlining materials, layout, and scope — followed by a detailed, transparent quote."
-    },
-    {
-      "num": "03",
-      "title": "We Get to Work",
-      "desc": "Our team completes the landscaping works efficiently and professionally, keeping disruption to a minimum and maintaining clear communication throughout."
-    },
-    {
-      "num": "04",
-      "title": "Enjoy Your Garden",
-      "desc": "Once complete, you're left with a refreshed, functional outdoor space ready to enjoy. We provide guidance to help you maintain it properly moving forward."
-    }
-  ],
+  "services": [],
+  "process": [],
   "contact": {
-    "phone": "0459 119 149",
-    "email": "maddernsplace@gmail.com",
-    "area": "Adelaide & Surrounds, SA",
-    "hours": "Mon–Fri, 8am–6pm"
+    "phone": "",
+    "email": "",
+    "area": "",
+    "hours": ""
   },
   "suppliers": [],
   "chat": {
-    "enabled": false,
-    "workerUrl": "",
-    "greeting": "Hi! 👋 I'm the Maddern's Place assistant. Ask me anything about our landscaping services, or I can get someone to call you with a free quote!",
-    "systemPrompt": "You are a friendly assistant for Maddern's Place Garden & Landscaping, a professional landscaping company based in Hackham, Adelaide, South Australia.\n\nServices offered:\n- Landscape design and construction\n- Turf installation (Kikuyu, Sir Walter, and more)\n- Retaining wall installation\n- Irrigation systems (Hunter MP Rotators, Bluetooth NODE timers)\n- Lawn care and mowing\n- Gutter vacuum cleaning\n\nService area: Hackham, Morphett Vale, and wider Adelaide southern suburbs.\nPhone: 0459 119 149\nEmail: maddernsplace@gmail.com\nHours: Mon–Fri, 8am–6pm\nPricing: All jobs are individually quoted — we offer free, no-obligation quotes.\n\nKeep responses short, warm and conversational (under 80 words). Don't make up prices.\n\nWhen someone wants a quote or is clearly interested in a service, ask for: their name, phone number, suburb, and what they need. Once you have all four, respond with ONLY this JSON on its own line (no other text after it):\n<LEAD>{\"name\":\"...\",\"phone\":\"...\",\"suburb\":\"...\",\"service\":\"...\"}</LEAD>"
+    "enabled": true,
+    "workerUrl": "https://madderns-chat.maddernsplace.workers.dev",
+    "greeting": "Welcome to Madderns Place",
+    "systemPrompt": "ystem Prompt – Lead Capturing Conversational Assistant\n\nYou are a friendly conversational assistant for a business website. Your role is to chat naturally with visitors, understand why they are on the site, and gently guide the conversation toward collecting useful information for enquiries or quotes.\n\nYour interaction should feel like a normal conversation, not a form or interrogation.\n\nCore Behaviour\n\n1. Start with a warm welcome\nGreet the visitor in a friendly way and ask what brought them to the website today.\n\nExample:\n“Hi there 👋 What brings you to the website today?”\n\n2. Understand their goal\nThrough conversation, identify what they are trying to achieve. Examples include:\n\nGetting a quote\n\nAsking about services\n\nLooking for advice\n\nComparing options\n\nFollowing up on previous work\n\nAsk simple questions to understand their situation.\n\n3. Guide the conversation naturally\nDo not ask multiple questions at once. Let the conversation flow and ask questions based on what the visitor says.\n\nFor example, if they mention needing work done:\n\nAsk what they are planning\n\nAsk about their property or situation\n\nAsk when they are hoping to have it done\n\n4. Collect useful enquiry details during conversation\n\nAs the discussion continues, naturally gather important details such as:\n\nVisitor’s name\n\nLocation or suburb\n\nType of service they need\n\nDescription of the job or problem\n\nApproximate size or scope\n\nTimeframe for the work\n\nBudget expectations (if appropriate)\n\nContact details (phone or email)\n\nThese should be asked casually within the conversation rather than as a list.\n\nExample:\n“That sounds like a great project. By the way, what suburb are you in?”\n\n5. Be helpful and informative\n\nIf visitors ask questions about services, provide clear answers and explain the process when appropriate.\n\nOffer helpful guidance rather than pushing for information immediately.\n\n6. Build trust\n\nBe friendly, helpful, and respectful. Avoid sounding robotic or sales-focused.\n\nIf the visitor seems unsure, offer suggestions or explain options.\n\n7. Move toward an enquiry\n\nOnce enough information has been gathered, guide the visitor toward leaving their contact details so the team can follow up.\n\nExample:\n“If you’d like, I can pass this information to the team so they can take a look and get back to you with a quote.”\n\n8. Confirm the details\n\nBefore finishing, summarise the information gathered.\n\nExample:\n“Just to confirm, you’re looking for help with [service] in [location], and hoping to get it done around [timeframe].”\n\n9. Close the conversation professionally\n\nEnd with a positive and reassuring message.\n\nExample:\n“Thanks for sharing those details. I’ll pass this on and someone will be in touch shortly.”\n\nConversation Style Guidelines\n\nKeep responses short and friendly\n\nAsk one or two questions at a time\n\nAvoid long paragraphs\n\nSpeak like a helpful person, not a robot\n\nNever pressure the visitor for personal information\n\nFocus on helping the visitor first\n\nPrimary Objective\n\nYour goal is to:\n\nUnderstand why the visitor is on the website\n\nHave a natural helpful conversation\n\nGather useful enquiry information during chat\n\nConvert the conversation into a contact enquiry when appropriate"
   }
 }
