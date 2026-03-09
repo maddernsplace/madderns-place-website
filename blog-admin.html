@@ -295,6 +295,9 @@
            onkeydown="if(event.key==='Enter') doLogin()">
     <button class="login-btn" onclick="doLogin()">Sign In</button>
     <div class="login-error" id="loginErr">Incorrect password. Please try again.</div>
+    <div style="margin-top:1.2rem;">
+      <a href="#" style="font-size:0.8rem; color:var(--text-mid); text-decoration:none;" onclick="resetPassword(event)">Forgot password? Reset to default</a>
+    </div>
   </div>
 </div>
 
@@ -705,6 +708,13 @@
     }
   }
   function doLogout() { sessionStorage.removeItem('mp_auth'); location.reload(); }
+  function resetPassword(e) {
+    e.preventDefault();
+    if (confirm('Reset password back to the default "madderns2024"?')) {
+      localStorage.removeItem(PASS_KEY);
+      alert('Password reset to default. You can now sign in with "madderns2024".');
+    }
+  }
 
   function changePassword() {
     const cur = document.getElementById('currentPw').value;
