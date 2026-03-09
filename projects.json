@@ -63,5 +63,18 @@
       "path": "project-images/proj_1773028067072_n2h.jpg"
     },
     "updatedAt": 1773028067071
+  },
+  {
+    "id": "proj_1773028173443_zpi",
+    "createdAt": 1773028173443,
+    "title": "Morphett Vale Refresh",
+    "description": "Front yard transformation completed by upgrading an old, tired landscape with fresh turf and decorative stone for a clean, modern look.\n\nThe existing yard was refreshed with new lawn installation, creating a lush green space that contrasts beautifully with the surrounding garden. Decorative stone was added to the garden beds to provide a low-maintenance finish while highlighting the feature plants and trees.\n\nThis upgrade has given the property a tidy, modern appearance while reducing ongoing maintenance, improving both usability and street appeal.",
+    "blogLink": "",
+    "visible": true,
+    "image": {
+      "name": "mophettvale2.JPEG",
+      "path": "project-images/proj_1773028173443_zpi.jpg"
+    },
+    "updatedAt": 1773028180823
   }
 ]
