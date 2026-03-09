@@ -822,29 +822,32 @@
         </div>
       </div>
       <form class="contact-form" onsubmit="handleSubmit(event)">
+        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+        <input type="hidden" name="subject" value="New Quote Request — Maddern's Place">
+        <input type="checkbox" name="botcheck" style="display:none;">
         <div class="form-row">
           <div class="form-group">
             <label>First Name</label>
-            <input type="text" placeholder="John">
+            <input type="text" name="first_name" placeholder="John" required>
           </div>
           <div class="form-group">
             <label>Last Name</label>
-            <input type="text" placeholder="Smith">
+            <input type="text" name="last_name" placeholder="Smith">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>Phone</label>
-            <input type="tel" placeholder="04XX XXX XXX">
+            <input type="tel" name="phone" placeholder="04XX XXX XXX">
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" placeholder="john@email.com">
+            <input type="email" name="email" placeholder="john@email.com">
           </div>
         </div>
         <div class="form-group">
           <label>Service Required</label>
-          <select>
+          <select name="service">
             <option value="">Select a service...</option>
             <option>Lawn Care & Mowing</option>
             <option>Garden Design</option>
@@ -854,7 +857,7 @@
         </div>
         <div class="form-group">
           <label>Tell us about your project</label>
-          <textarea placeholder="Describe your garden, what you're hoping to achieve, approximate size, timeline..."></textarea>
+          <textarea name="message" placeholder="Describe your garden, what you're hoping to achieve, approximate size, timeline..."></textarea>
         </div>
         <button type="submit" class="btn-submit">Send My Request →</button>
       </form>
@@ -1058,16 +1061,44 @@
   })();
 
   // Form submission
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('.btn-submit');
-    btn.textContent = '✓ Message Sent!';
-    btn.style.background = '#2d5a34';
-    setTimeout(() => {
-      btn.textContent = 'Send My Request →';
-      btn.style.background = '';
-      e.target.reset();
-    }, 3000);
+    const form = e.target;
+    const btn  = form.querySelector('.btn-submit');
+    const orig = btn.textContent;
+
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const res  = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form)))
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        btn.textContent = '✓ Message Sent!';
+        btn.style.background = '#2d5a34';
+        form.reset();
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 4000);
+      } else {
+        throw new Error(data.message || 'Submission failed');
+      }
+    } catch (err) {
+      btn.textContent = '✕ Failed — try again';
+      btn.style.background = '#c0392b';
+      btn.disabled = false;
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.background = '';
+      }, 4000);
+    }
   }
 </script>
 </body>
