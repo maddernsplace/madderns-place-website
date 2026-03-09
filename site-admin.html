@@ -151,6 +151,7 @@
       <div class="nav-item" onclick="showPanel('process')">How It Works</div>
       <div class="nav-item" onclick="showPanel('contact')">Contact Info</div>
       <div class="nav-item" onclick="showPanel('suppliers')">Suppliers</div>
+      <div class="nav-item" onclick="showPanel('chat')">AI Chatbot</div>
       <div class="nav-group">Other</div>
       <a class="nav-item" href="blog-admin.html">Blog Posts</a>
       <a class="nav-item" href="projects-admin.html">Projects</a>
@@ -295,6 +296,46 @@
         </div>
       </div>
 
+      <!-- CHAT -->
+      <div class="section-panel" id="panel-chat">
+        <div class="panel-title">AI Chatbot</div>
+        <div class="panel-desc">A floating chat widget powered by Claude AI. Answers visitor questions and emails you their contact details when they want a quote.</div>
+
+        <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:6px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:0.85rem;line-height:1.7;color:#1a3a1f;">
+          <strong>Setup required before enabling:</strong><br>
+          1. Deploy the <code>chat-worker.js</code> file to <a href="https://dash.cloudflare.com" target="_blank" style="color:var(--green-mid)">Cloudflare Workers</a> (free)<br>
+          2. Add your <code>ANTHROPIC_API_KEY</code> as an encrypted environment variable in the Worker<br>
+          3. Paste your Worker URL below and enable the chatbot
+        </div>
+
+        <div class="field">
+          <label>Enable chatbot</label>
+          <select id="chatEnabled" oninput="markDirty()">
+            <option value="false">Disabled — chatbot hidden from site</option>
+            <option value="true">Enabled — chatbot visible on site</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Cloudflare Worker URL</label>
+          <input type="url" id="chatWorkerUrl" placeholder="https://madderns-chat.yourname.workers.dev" oninput="markDirty()">
+          <div class="hint">The URL of your deployed Cloudflare Worker. See the setup instructions above.</div>
+        </div>
+        <div class="field">
+          <label>Greeting message</label>
+          <input type="text" id="chatGreeting" oninput="markDirty()">
+          <div class="hint">The first message visitors see when they open the chat.</div>
+        </div>
+        <div class="field">
+          <label>System prompt (AI instructions)</label>
+          <textarea id="chatSystemPrompt" rows="12" oninput="markDirty()"></textarea>
+          <div class="hint">These are the instructions that tell Claude how to behave. Edit with care — the lead capture trigger (<code>&lt;LEAD&gt;...&lt;/LEAD&gt;</code>) at the bottom is required for email notifications to work.</div>
+        </div>
+        <div class="action-bar">
+          <button class="btn-save" onclick="saveAll()">Save Changes</button>
+          <span class="save-msg" id="chatSaveMsg">Saved!</span>
+        </div>
+      </div>
+
     </div><!-- /main -->
   </div><!-- /layout -->
 </div><!-- /adminApp -->
@@ -402,6 +443,12 @@
     document.getElementById('contactHours').value = c.hours || '';
 
     renderSuppliers(sc.suppliers || []);
+
+    const ch = sc.chat || {};
+    document.getElementById('chatEnabled').value      = ch.enabled ? 'true' : 'false';
+    document.getElementById('chatWorkerUrl').value    = ch.workerUrl    || '';
+    document.getElementById('chatGreeting').value     = ch.greeting     || '';
+    document.getElementById('chatSystemPrompt').value = ch.systemPrompt || '';
   }
 
   // ── BULLETS ──────────────────────────────────────────────────────────────
@@ -609,7 +656,13 @@
         area:  document.getElementById('contactArea').value,
         hours: document.getElementById('contactHours').value
       },
-      suppliers: getSuppliers()
+      suppliers: getSuppliers(),
+      chat: {
+        enabled:      document.getElementById('chatEnabled').value === 'true',
+        workerUrl:    document.getElementById('chatWorkerUrl').value.trim(),
+        greeting:     document.getElementById('chatGreeting').value.trim(),
+        systemPrompt: document.getElementById('chatSystemPrompt').value.trim()
+      }
     };
   }
 
