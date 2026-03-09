@@ -37,5 +37,18 @@
       "path": "project-images/proj_1773027941530_h0d.jpg"
     },
     "updatedAt": 1773027941529
+  },
+  {
+    "id": "proj_1773027986687_s6y",
+    "createdAt": 1773027986687,
+    "title": "Gutter / Roof Clean",
+    "description": "Professional gutter cleaning using a high-powered vacuum system to safely remove leaves, debris, and built-up organic matter.\n\nThis method allows us to clear gutters efficiently from the roof line, ensuring all debris is removed without making a mess around the property. The vacuum system helps prevent blockages that can cause overflow, water damage, and drainage issues.\n\nRegular gutter maintenance keeps rainwater flowing freely through the system, protecting the roof, gutters, and foundations of the home. The result is clean, clear gutters and improved water flow, helping extend the life of the drainage system.",
+    "blogLink": "",
+    "visible": true,
+    "image": {
+      "name": "Gutterroofclean.JPEG",
+      "path": "project-images/proj_1773027986687_s6y.jpg"
+    },
+    "updatedAt": 1773027986686
   }
 ]
