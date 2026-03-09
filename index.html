@@ -376,6 +376,30 @@
   .testimonial-author span { color: var(--text-mid); font-size: 0.8rem; display: block; }
   .stars { color: #c4a832; font-size: 0.85rem; margin-bottom: 0.5rem; }
 
+  /* ─── SUPPLIERS ─── */
+  #suppliers { background: var(--cream); padding: 4rem 0; }
+  #suppliers .section-label { text-align: center; }
+  #suppliers .section-title { text-align: center; margin-bottom: 3rem; }
+  .suppliers-grid {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+    gap: 2rem 3rem;
+  }
+  .supplier-logo {
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem 1.5rem; background: var(--white);
+    border: 1px solid rgba(26,58,31,0.1); border-radius: 4px;
+    min-width: 120px; min-height: 70px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .supplier-logo:hover { box-shadow: 0 4px 16px rgba(26,58,31,0.08); border-color: rgba(26,58,31,0.22); }
+  .supplier-logo img { max-height: 48px; max-width: 140px; object-fit: contain; filter: grayscale(1); opacity: 0.65; transition: filter 0.2s, opacity 0.2s; }
+  .supplier-logo:hover img { filter: grayscale(0); opacity: 1; }
+  /* placeholder shown while no logos added */
+  .suppliers-placeholder {
+    text-align: center; color: var(--text-mid); font-size: 0.9rem;
+    opacity: 0.6; padding: 2rem; border: 2px dashed rgba(26,58,31,0.15); border-radius: 4px;
+  }
+
   /* ─── CONTACT ─── */
   #contact {
     background: linear-gradient(135deg, var(--green-deep) 0%, #1e2e1a 100%);
@@ -799,6 +823,24 @@
     <h2 class="section-title">From the <em>Blog</em></h2>
     <div class="blog-preview-grid" id="blogPreviewGrid"></div>
     <div class="blog-preview-cta"><a href="blog.html">View All Posts →</a></div>
+  </div>
+</section>
+
+<!-- SUPPLIERS -->
+<section id="suppliers">
+  <div class="container">
+    <div class="section-label">Trusted Partners</div>
+    <h2 class="section-title">Our <em>Suppliers</em></h2>
+    <div class="suppliers-grid" id="suppliersGrid">
+      <!-- Add supplier logos here. Example:
+      <div class="supplier-logo">
+        <img src="images/suppliers/supplier-name.png" alt="Supplier Name">
+      </div>
+      -->
+      <div class="suppliers-placeholder" id="suppliersPlaceholder">
+        Supplier logos coming soon.
+      </div>
+    </div>
   </div>
 </section>
 
