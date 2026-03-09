@@ -1322,6 +1322,7 @@
   let chatConfig = { enabled: false, workerUrl: '', greeting: '', systemPrompt: '' };
   let chatOpen = false;
   let sending = false;
+  let conversationNotified = false;
 
   // Load chat config from site-content.json / localStorage
   async function initChat() {
@@ -1354,6 +1355,12 @@
     input.value = '';
     addMsg('user', text);
     chatHistory.push({ role: 'user', content: text });
+
+    // Notify owner on first message
+    if (!conversationNotified) {
+      conversationNotified = true;
+      notifyConversation(text);
+    }
 
     sending = true;
     const typingEl = addMsg('typing', 'Typing…');
@@ -1428,6 +1435,20 @@
     document.getElementById('chatInput').disabled = true;
     document.getElementById('chatSendBtn').disabled = true;
     document.getElementById('chatInput').placeholder = 'Chat ended — we\'ll be in touch!';
+  }
+
+  async function notifyConversation(firstMessage) {
+    const now = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Adelaide' });
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: '40fdb995-bd3a-439d-929e-6c499d01f284',
+        subject: `New Chat Started — Maddern's Place`,
+        from_name: 'Maddern\'s Place Chat',
+        message: `Someone has started a chat on your website.\n\nTime: ${now}\nFirst message: "${firstMessage}"\n\nCheck back later to see if they left their details.`
+      })
+    }).catch(() => {});
   }
 
   async function submitLead(lead) {
