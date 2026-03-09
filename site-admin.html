@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Content Admin — Maddern's Place</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:#1a3a1f; --green-mid:#2d5a34; --green-light:#4a8c55;
+    --green-pale:#a8c5a0; --brown-light:#c4a882; --cream:#f5f0e8;
+    --white:#fdfcfa; --text-dark:#1e1e1e; --text-mid:#4a4a4a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Raleway',sans-serif;background:#eceae3;color:var(--text-dark);min-height:100vh;}
+
+  /* ── LOGIN ── */
+  #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--green-deep),#213820);}
+  .login-box{background:var(--white);padding:3rem;border-radius:8px;width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+  .login-logo{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--green-deep);margin-bottom:0.3rem;}
+  .login-logo span{color:var(--green-light);font-style:italic;}
+  .login-sub{font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-mid);margin-bottom:2rem;}
+  .login-box label{display:block;text-align:left;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);margin-bottom:0.4rem;}
+  .login-box input{width:100%;padding:0.75rem 1rem;border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.9rem;margin-bottom:1.4rem;}
+  .login-box input:focus{outline:none;border-color:var(--green-mid);}
+  .btn-login{width:100%;padding:0.9rem;background:var(--green-mid);color:var(--cream);border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-login:hover{background:var(--green-deep);}
+  .login-err{color:#c0392b;font-size:0.82rem;margin-top:0.8rem;display:none;}
+
+  /* ── LAYOUT ── */
+  #adminApp{display:none;}
+  header{background:var(--green-deep);color:var(--cream);padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+  .header-logo{font-family:'Playfair Display',serif;font-size:1.2rem;}
+  .header-logo span{color:var(--green-pale);font-style:italic;}
+  .header-right{display:flex;gap:1rem;align-items:center;}
+  .btn-sm{padding:0.45rem 1rem;border:1px solid rgba(255,255,255,0.35);border-radius:3px;background:transparent;color:var(--cream);font-family:'Raleway',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-sm:hover{background:rgba(255,255,255,0.12);}
+  .btn-sm.green{background:var(--green-mid);border-color:var(--green-mid);}
+  .btn-sm.green:hover{background:var(--green-light);border-color:var(--green-light);}
+
+  .layout{display:flex;min-height:calc(100vh - 58px);}
+
+  /* sidebar */
+  .sidebar{width:220px;background:var(--white);border-right:1px solid rgba(0,0,0,0.08);flex-shrink:0;padding:1.5rem 0;}
+  .nav-item{display:block;padding:0.7rem 1.5rem;font-size:0.85rem;font-weight:600;letter-spacing:0.05em;color:var(--text-mid);cursor:pointer;border-left:3px solid transparent;transition:all 0.15s;text-decoration:none;}
+  .nav-item:hover{color:var(--green-deep);background:rgba(26,58,31,0.05);}
+  .nav-item.active{color:var(--green-deep);border-left-color:var(--green-mid);background:rgba(26,58,31,0.06);}
+  .nav-group{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-mid);padding:1.2rem 1.5rem 0.4rem;opacity:0.6;}
+
+  /* main */
+  .main{flex:1;padding:2rem;max-width:800px;}
+
+  /* sections */
+  .section-panel{display:none;}
+  .section-panel.active{display:block;}
+  .panel-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--green-deep);margin-bottom:0.4rem;}
+  .panel-desc{font-size:0.85rem;color:var(--text-mid);margin-bottom:2rem;}
+
+  /* form elements */
+  .field{margin-bottom:1.4rem;}
+  .field label{display:block;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);margin-bottom:0.4rem;}
+  .field input,.field textarea,.field select{width:100%;padding:0.7rem 0.9rem;border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.9rem;color:var(--text-dark);background:var(--white);}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--green-mid);}
+  .field textarea{resize:vertical;min-height:90px;line-height:1.5;}
+  .hint{font-size:0.77rem;color:var(--text-mid);margin-top:0.3rem;}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+
+  /* cards (services/process) */
+  .card-list{display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem;}
+  .edit-card{background:var(--white);border:1px solid rgba(0,0,0,0.09);border-radius:6px;padding:1.2rem 1.4rem;}
+  .edit-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .edit-card-header strong{font-size:0.85rem;color:var(--green-deep);}
+  .btn-del{background:none;border:none;color:#c0392b;font-size:0.8rem;cursor:pointer;font-family:'Raleway',sans-serif;font-weight:600;letter-spacing:0.05em;}
+  .btn-del:hover{text-decoration:underline;}
+
+  /* bullets list */
+  .bullet-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.8rem;}
+  .bullet-row{display:flex;gap:0.5rem;align-items:center;}
+  .bullet-row input{flex:1;}
+  .btn-icon{background:none;border:none;cursor:pointer;color:#c0392b;font-size:1.1rem;line-height:1;}
+  .btn-add{margin-top:0.5rem;padding:0.5rem 1rem;background:none;border:1px solid rgba(26,58,31,0.25);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.82rem;font-weight:600;color:var(--green-mid);cursor:pointer;}
+  .btn-add:hover{background:rgba(26,58,31,0.05);}
+
+  /* action bar */
+  .action-bar{display:flex;gap:1rem;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.09);}
+  .btn-save{padding:0.7rem 1.8rem;background:var(--green-mid);color:var(--cream);border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-save:hover{background:var(--green-deep);}
+  .btn-publish{padding:0.7rem 1.8rem;background:var(--green-deep);color:var(--cream);border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-publish:hover{background:#0e2211;}
+  .save-msg{font-size:0.83rem;color:var(--green-mid);display:none;}
+
+  /* dirty banner */
+  .dirty-banner{background:#fffbe6;border:1px solid #f0d060;border-radius:4px;padding:0.6rem 1rem;font-size:0.83rem;color:#7a6010;margin-bottom:1.5rem;display:none;}
+
+  /* toast */
+  #toast{position:fixed;bottom:2rem;right:2rem;background:var(--green-deep);color:var(--cream);padding:0.8rem 1.4rem;border-radius:4px;font-size:0.85rem;font-weight:600;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999;}
+  #toast.show{opacity:1;}
+
+  /* publish modal */
+  .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;}
+  .modal-backdrop.open{display:flex;}
+  .modal{background:var(--white);border-radius:8px;padding:2.5rem;width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+  .modal h3{font-family:'Playfair Display',serif;color:var(--green-deep);margin-bottom:1.2rem;}
+  .modal p{font-size:0.88rem;color:var(--text-mid);line-height:1.6;margin-bottom:1rem;}
+  .modal label{display:block;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);margin-bottom:0.4rem;margin-top:0.8rem;}
+  .modal input{width:100%;padding:0.65rem 0.9rem;border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.9rem;margin-bottom:0.5rem;}
+  .modal input:focus{outline:none;border-color:var(--green-mid);}
+  .modal-btns{display:flex;gap:0.8rem;justify-content:flex-end;margin-top:1rem;}
+  .btn-cancel{padding:0.6rem 1.2rem;background:none;border:1px solid rgba(0,0,0,0.15);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.82rem;cursor:pointer;}
+  .progress-bar{height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden;margin:1rem 0;}
+  .progress-fill{height:100%;background:var(--green-mid);border-radius:3px;transition:width 0.3s;}
+  .progress-status{font-size:0.82rem;color:var(--text-mid);}
+  .pub-error{color:#c0392b;font-size:0.83rem;margin-top:0.5rem;display:none;}
+  .pub-done{color:var(--green-mid);font-size:0.88rem;font-weight:600;display:none;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Maddern's <span>Place</span></div>
+    <div class="login-sub">Site Content Admin</div>
+    <label for="loginPw">Password</label>
+    <input type="password" id="loginPw" placeholder="Enter password"
+           onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <div class="login-err" id="loginErr">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="adminApp">
+  <header>
+    <div class="header-logo">Maddern's <span>Place</span> — Site Content</div>
+    <div class="header-right">
+      <a href="admin/" class="btn-sm">← Admin Hub</a>
+      <button class="btn-sm green" onclick="openPublishModal()">Publish to GitHub</button>
+      <button class="btn-sm" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="nav-group">Sections</div>
+      <div class="nav-item active" onclick="showPanel('hero')">Hero Banner</div>
+      <div class="nav-item" onclick="showPanel('about')">About</div>
+      <div class="nav-item" onclick="showPanel('services')">Services</div>
+      <div class="nav-item" onclick="showPanel('process')">How It Works</div>
+      <div class="nav-item" onclick="showPanel('contact')">Contact Info</div>
+      <div class="nav-item" onclick="showPanel('suppliers')">Suppliers</div>
+      <div class="nav-group">Other</div>
+      <a class="nav-item" href="blog-admin.html">Blog Posts</a>
+      <a class="nav-item" href="projects-admin.html">Projects</a>
+      <a class="nav-item" href="reviews-admin.html">Reviews</a>
+    </nav>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="dirty-banner" id="dirtyBanner">
+        You have unsaved changes. Click <strong>Save Changes</strong> to apply them to the site preview, then <strong>Publish to GitHub</strong> to go live.
+      </div>
+
+      <!-- HERO -->
+      <div class="section-panel active" id="panel-hero">
+        <div class="panel-title">Hero Banner</div>
+        <div class="panel-desc">The large banner at the top of your homepage.</div>
+        <div class="field">
+          <label>Eyebrow Text (small text above heading)</label>
+          <input type="text" id="heroEyebrow">
+        </div>
+        <div class="field">
+          <label>Main Heading</label>
+          <input type="text" id="heroHeading">
+        </div>
+        <div class="field">
+          <label>Subtitle</label>
+          <textarea id="heroSub" rows="3"></textarea>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label>Button 1 Label</label>
+            <input type="text" id="heroBtn1">
+          </div>
+          <div class="field">
+            <label>Button 2 Label</label>
+            <input type="text" id="heroBtn2">
+          </div>
+        </div>
+        <div class="action-bar">
+          <button class="btn-save" onclick="saveAll()">Save Changes</button>
+          <span class="save-msg" id="heroSaveMsg">Saved!</span>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="section-panel" id="panel-about">
+        <div class="panel-title">About Section</div>
+        <div class="panel-desc">The About Us section on the homepage.</div>
+        <div class="row-2">
+          <div class="field">
+            <label>Badge Number (e.g. 5+)</label>
+            <input type="text" id="aboutBadgeNum">
+          </div>
+          <div class="field">
+            <label>Badge Label (e.g. Years of Excellence)</label>
+            <input type="text" id="aboutBadgeLabel">
+          </div>
+        </div>
+        <div class="field">
+          <label>Section Title</label>
+          <input type="text" id="aboutTitle">
+        </div>
+        <div class="field">
+          <label>Paragraphs (one per line)</label>
+          <textarea id="aboutParagraphs" rows="8"></textarea>
+          <div class="hint">Each paragraph on its own line. The bullet list will appear after the second paragraph.</div>
+        </div>
+        <div class="field">
+          <label>Bullet Points</label>
+          <div class="bullet-list" id="aboutBullets"></div>
+          <button class="btn-add" onclick="addBullet()">+ Add bullet point</button>
+        </div>
+        <div class="action-bar">
+          <button class="btn-save" onclick="saveAll()">Save Changes</button>
+          <span class="save-msg" id="aboutSaveMsg">Saved!</span>
+        </div>
+      </div>
+
+      <!-- SERVICES -->
+      <div class="section-panel" id="panel-services">
+        <div class="panel-title">Services</div>
+        <div class="panel-desc">The services listed on your homepage.</div>
+        <div class="card-list" id="servicesList"></div>
+        <button class="btn-add" onclick="addService()">+ Add service</button>
+        <div class="action-bar">
+          <button class="btn-save" onclick="saveAll()">Save Changes</button>
+          <span class="save-msg" id="servicesSaveMsg">Saved!</span>
+        </div>
+      </div>
+
+      <!-- PROCESS -->
+      <div class="section-panel" id="panel-process">
+        <div class="panel-title">How It Works</div>
+        <div class="panel-desc">The process steps shown on your homepage.</div>
+        <div class="card-list" id="processList"></div>
+        <button class="btn-add" onclick="addStep()">+ Add step</button>
+        <div class="action-bar">
+          <button class="btn-save" onclick="saveAll()">Save Changes</button>
+          <span class="save-msg" id="processSaveMsg">Saved!</span>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="section-panel" id="panel-contact">
+        <div class="panel-title">Contact Info</div>
+        <div class="panel-desc">The contact details shown in the Get in Touch section.</div>
+        <div class="row-2">
+          <div class="field">
+            <label>Phone Number</label>
+            <input type="text" id="contactPhone">
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="contactEmail">
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label>Service Area</label>
+            <input type="text" id="contactArea">
+          </div>
+          <div class="field">
+            <label>Business Hours</label>
+            <input type="text" id="contactHours">
+          </div>
+        </div>
+        <div class="action-bar">
+          <button class="btn-save" onclick="saveAll()">Save Changes</button>
+          <span class="save-msg" id="contactSaveMsg">Saved!</span>
+        </div>
+      </div>
+
+      <!-- SUPPLIERS -->
+      <div class="section-panel" id="panel-suppliers">
+        <div class="panel-title">Suppliers</div>
+        <div class="panel-desc">Trusted suppliers shown on your homepage. You can add their name and optionally a logo image URL.</div>
+        <div class="card-list" id="suppliersList"></div>
+        <button class="btn-add" onclick="addSupplier()">+ Add supplier</button>
+        <div class="action-bar">
+          <button class="btn-save" onclick="saveAll()">Save Changes</button>
+          <span class="save-msg" id="suppliersSaveMsg">Saved!</span>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /layout -->
+</div><!-- /adminApp -->
+
+<div id="toast"></div>
+
+<!-- PUBLISH MODAL -->
+<div class="modal-backdrop" id="publishModal">
+  <div class="modal">
+    <h3>Publish to GitHub</h3>
+    <div id="pubSetup">
+      <p>Enter your GitHub Personal Access Token and repository to publish your changes live. The token is saved in your browser only.</p>
+      <label>Personal Access Token</label>
+      <input type="password" id="ghToken" placeholder="github_pat_...">
+      <label>Repository</label>
+      <input type="text" id="ghRepo" placeholder="owner/repo-name">
+      <label>Branch</label>
+      <input type="text" id="ghBranch" placeholder="main">
+    </div>
+    <div class="progress-bar" id="pubProgressBar" style="display:none;">
+      <div class="progress-fill" id="pubProgressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-status" id="pubStatus"></div>
+    <div class="pub-error" id="pubError"></div>
+    <div class="pub-done" id="pubDone">Published successfully! Your site will update in a moment.</div>
+    <div class="modal-btns" id="pubBtns">
+      <button class="btn-cancel" onclick="closePublishModal()">Cancel</button>
+      <button class="btn-save" onclick="runPublish()">Publish</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PASS_KEY = 'madderns_admin_pass';
+  const DEFAULT_PW = 'madderns2024';
+  const SC_KEY = 'mp_site_content';
+
+  function getPass() { return localStorage.getItem(PASS_KEY) || DEFAULT_PW; }
+
+  // ── AUTH ─────────────────────────────────────────────────────────────────
+  if (sessionStorage.getItem('mp_auth') === '1') showApp();
+
+  function doLogin() {
+    const pw = document.getElementById('loginPw').value;
+    if (pw === getPass()) {
+      sessionStorage.setItem('mp_auth', '1');
+      showApp();
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem('mp_auth');
+    location.reload();
+  }
+
+  function showApp() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    loadContent();
+  }
+
+  // ── CONTENT ──────────────────────────────────────────────────────────────
+  let sc = {};
+
+  async function loadContent() {
+    const stored = localStorage.getItem(SC_KEY);
+    if (stored) {
+      try { sc = JSON.parse(stored); } catch(e) {}
+    }
+    if (!sc || !sc.hero) {
+      try {
+        const r = await fetch('site-content.json');
+        sc = await r.json();
+      } catch(e) {
+        sc = { hero:{}, about:{paragraphs:[],bullets:[]}, services:[], process:[], contact:{}, suppliers:[] };
+      }
+    }
+    populateForms();
+  }
+
+  function populateForms() {
+    const h = sc.hero || {};
+    document.getElementById('heroEyebrow').value = h.eyebrow || '';
+    document.getElementById('heroHeading').value = h.heading || '';
+    document.getElementById('heroSub').value      = h.sub     || '';
+    document.getElementById('heroBtn1').value     = h.btn1    || '';
+    document.getElementById('heroBtn2').value     = h.btn2    || '';
+
+    const a = sc.about || {};
+    document.getElementById('aboutBadgeNum').value   = a.badgeNum   || '';
+    document.getElementById('aboutBadgeLabel').value = a.badgeLabel || '';
+    document.getElementById('aboutTitle').value      = a.title      || '';
+    document.getElementById('aboutParagraphs').value = (a.paragraphs || []).join('\n');
+    renderBullets(a.bullets || []);
+
+    renderServices(sc.services || []);
+    renderProcess(sc.process  || []);
+
+    const c = sc.contact || {};
+    document.getElementById('contactPhone').value = c.phone || '';
+    document.getElementById('contactEmail').value = c.email || '';
+    document.getElementById('contactArea').value  = c.area  || '';
+    document.getElementById('contactHours').value = c.hours || '';
+
+    renderSuppliers(sc.suppliers || []);
+  }
+
+  // ── BULLETS ──────────────────────────────────────────────────────────────
+  function renderBullets(bullets) {
+    const container = document.getElementById('aboutBullets');
+    container.innerHTML = bullets.map((b, i) => `
+      <div class="bullet-row">
+        <input type="text" value="${esc(b)}" oninput="markDirty()">
+        <button class="btn-icon" onclick="removeBullet(${i})" title="Remove">✕</button>
+      </div>`).join('');
+  }
+
+  function addBullet() {
+    const bullets = getBullets();
+    bullets.push('');
+    renderBullets(bullets);
+    markDirty();
+    document.getElementById('aboutBullets').lastElementChild.querySelector('input').focus();
+  }
+
+  function removeBullet(i) {
+    const bullets = getBullets();
+    bullets.splice(i, 1);
+    renderBullets(bullets);
+    markDirty();
+  }
+
+  function getBullets() {
+    return [...document.getElementById('aboutBullets').querySelectorAll('input')]
+      .map(el => el.value.trim()).filter(v => v);
+  }
+
+  // ── SERVICES ─────────────────────────────────────────────────────────────
+  function renderServices(services) {
+    document.getElementById('servicesList').innerHTML = services.map((s, i) => `
+      <div class="edit-card">
+        <div class="edit-card-header">
+          <strong>Service ${i + 1}</strong>
+          <button class="btn-del" onclick="removeService(${i})">Remove</button>
+        </div>
+        <div class="row-2">
+          <div class="field" style="margin-bottom:0.8rem">
+            <label>Icon (emoji)</label>
+            <input type="text" value="${esc(s.icon)}" oninput="markDirty()" data-svc="${i}" data-field="icon">
+          </div>
+          <div class="field" style="margin-bottom:0.8rem">
+            <label>Title</label>
+            <input type="text" value="${esc(s.title)}" oninput="markDirty()" data-svc="${i}" data-field="title">
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Description</label>
+          <textarea rows="3" oninput="markDirty()" data-svc="${i}" data-field="desc">${esc(s.desc)}</textarea>
+        </div>
+      </div>`).join('');
+  }
+
+  function addService() {
+    const services = getServices();
+    services.push({ icon: '🌿', title: 'New Service', desc: '' });
+    renderServices(services);
+    markDirty();
+  }
+
+  function removeService(i) {
+    const services = getServices();
+    services.splice(i, 1);
+    renderServices(services);
+    markDirty();
+  }
+
+  function getServices() {
+    const list = document.getElementById('servicesList');
+    return [...list.querySelectorAll('.edit-card')].map((card, i) => ({
+      icon:  card.querySelector('[data-field="icon"]').value,
+      title: card.querySelector('[data-field="title"]').value,
+      desc:  card.querySelector('[data-field="desc"]').value
+    }));
+  }
+
+  // ── PROCESS ──────────────────────────────────────────────────────────────
+  function renderProcess(steps) {
+    document.getElementById('processList').innerHTML = steps.map((s, i) => `
+      <div class="edit-card">
+        <div class="edit-card-header">
+          <strong>Step ${i + 1}</strong>
+          <button class="btn-del" onclick="removeStep(${i})">Remove</button>
+        </div>
+        <div class="row-2">
+          <div class="field" style="margin-bottom:0.8rem">
+            <label>Step Number (e.g. 01)</label>
+            <input type="text" value="${esc(s.num)}" oninput="markDirty()" data-step="${i}" data-field="num">
+          </div>
+          <div class="field" style="margin-bottom:0.8rem">
+            <label>Title</label>
+            <input type="text" value="${esc(s.title)}" oninput="markDirty()" data-step="${i}" data-field="title">
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Description</label>
+          <textarea rows="3" oninput="markDirty()" data-step="${i}" data-field="desc">${esc(s.desc)}</textarea>
+        </div>
+      </div>`).join('');
+  }
+
+  function addStep() {
+    const steps = getSteps();
+    const n = steps.length + 1;
+    steps.push({ num: String(n).padStart(2, '0'), title: 'New Step', desc: '' });
+    renderProcess(steps);
+    markDirty();
+  }
+
+  function removeStep(i) {
+    const steps = getSteps();
+    steps.splice(i, 1);
+    renderProcess(steps);
+    markDirty();
+  }
+
+  function getSteps() {
+    const list = document.getElementById('processList');
+    return [...list.querySelectorAll('.edit-card')].map(card => ({
+      num:   card.querySelector('[data-field="num"]').value,
+      title: card.querySelector('[data-field="title"]').value,
+      desc:  card.querySelector('[data-field="desc"]').value
+    }));
+  }
+
+  // ── SUPPLIERS ────────────────────────────────────────────────────────────
+  function renderSuppliers(suppliers) {
+    document.getElementById('suppliersList').innerHTML = suppliers.length === 0
+      ? '<p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:0.5rem;">No suppliers added yet.</p>'
+      : suppliers.map((s, i) => `
+        <div class="edit-card">
+          <div class="edit-card-header">
+            <strong>${esc(s.name) || 'Supplier ' + (i+1)}</strong>
+            <button class="btn-del" onclick="removeSupplier(${i})">Remove</button>
+          </div>
+          <div class="row-2">
+            <div class="field" style="margin-bottom:0">
+              <label>Name</label>
+              <input type="text" value="${esc(s.name)}" oninput="markDirty()" data-sup="${i}" data-field="name">
+            </div>
+            <div class="field" style="margin-bottom:0">
+              <label>Logo URL (optional)</label>
+              <input type="url" value="${esc(s.logo||'')}" oninput="markDirty()" data-sup="${i}" data-field="logo" placeholder="https://...">
+            </div>
+          </div>
+        </div>`).join('');
+  }
+
+  function addSupplier() {
+    const suppliers = getSuppliers();
+    suppliers.push({ name: '', logo: '' });
+    renderSuppliers(suppliers);
+    markDirty();
+  }
+
+  function removeSupplier(i) {
+    const suppliers = getSuppliers();
+    suppliers.splice(i, 1);
+    renderSuppliers(suppliers);
+    markDirty();
+  }
+
+  function getSuppliers() {
+    const list = document.getElementById('suppliersList');
+    return [...list.querySelectorAll('.edit-card')].map(card => ({
+      name: card.querySelector('[data-field="name"]').value,
+      logo: card.querySelector('[data-field="logo"]').value
+    })).filter(s => s.name);
+  }
+
+  // ── SAVE ─────────────────────────────────────────────────────────────────
+  let dirty = false;
+
+  function markDirty() {
+    dirty = true;
+    document.getElementById('dirtyBanner').style.display = 'block';
+  }
+
+  function collectAll() {
+    return {
+      hero: {
+        eyebrow: document.getElementById('heroEyebrow').value,
+        heading: document.getElementById('heroHeading').value,
+        sub:     document.getElementById('heroSub').value,
+        btn1:    document.getElementById('heroBtn1').value,
+        btn2:    document.getElementById('heroBtn2').value
+      },
+      about: {
+        badgeNum:   document.getElementById('aboutBadgeNum').value,
+        badgeLabel: document.getElementById('aboutBadgeLabel').value,
+        title:      document.getElementById('aboutTitle').value,
+        paragraphs: document.getElementById('aboutParagraphs').value
+          .split('\n').map(l => l.trim()).filter(Boolean),
+        bullets: getBullets()
+      },
+      services:  getServices(),
+      process:   getSteps(),
+      contact: {
+        phone: document.getElementById('contactPhone').value,
+        email: document.getElementById('contactEmail').value,
+        area:  document.getElementById('contactArea').value,
+        hours: document.getElementById('contactHours').value
+      },
+      suppliers: getSuppliers()
+    };
+  }
+
+  function saveAll() {
+    sc = collectAll();
+    localStorage.setItem(SC_KEY, JSON.stringify(sc));
+    dirty = false;
+    document.getElementById('dirtyBanner').style.display = 'none';
+    toast('Changes saved! Open your site to see the preview.');
+  }
+
+  // ── PANEL NAV ─────────────────────────────────────────────────────────────
+  function showPanel(name) {
+    document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  // ── TOAST ─────────────────────────────────────────────────────────────────
+  function toast(msg, isErr) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = isErr ? '#c0392b' : 'var(--green-deep)';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ── GITHUB PUBLISH ────────────────────────────────────────────────────────
+  function getGH() {
+    return {
+      token:  localStorage.getItem('mp_gh_token')  || '',
+      repo:   localStorage.getItem('mp_gh_repo')   || 'maddernsplace/madderns-place-website',
+      branch: localStorage.getItem('mp_gh_branch') || 'main'
+    };
+  }
+
+  function openPublishModal() {
+    const g = getGH();
+    document.getElementById('ghToken').value  = g.token;
+    document.getElementById('ghRepo').value   = g.repo;
+    document.getElementById('ghBranch').value = g.branch;
+    document.getElementById('pubSetup').style.display = '';
+    document.getElementById('pubProgressBar').style.display = 'none';
+    document.getElementById('pubStatus').textContent = '';
+    document.getElementById('pubError').style.display = 'none';
+    document.getElementById('pubDone').style.display = 'none';
+    document.getElementById('pubBtns').style.display = 'flex';
+    document.getElementById('publishModal').classList.add('open');
+  }
+
+  function closePublishModal() {
+    document.getElementById('publishModal').classList.remove('open');
+  }
+
+  async function ghRequest(method, path, token, body) {
+    const opts = {
+      method,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      }
+    };
+    if (body) opts.body = JSON.stringify(body);
+    const r = await fetch(`https://api.github.com${path}`, opts);
+    const json = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(json.message || `GitHub error ${r.status}`);
+    return json;
+  }
+
+  async function getFileSHA(repo, branch, path, token) {
+    try {
+      const d = await ghRequest('GET', `/repos/${repo}/contents/${encodeURIComponent(path)}?ref=${branch}`, token);
+      return d.sha;
+    } catch { return null; }
+  }
+
+  async function commitFile(repo, branch, filePath, content, message, token) {
+    const sha = await getFileSHA(repo, branch, filePath, token);
+    const body = { message, content, branch };
+    if (sha) body.sha = sha;
+    return ghRequest('PUT', `/repos/${repo}/contents/${encodeURIComponent(filePath)}`, token, body);
+  }
+
+  function b64(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+  let publishing = false;
+
+  async function runPublish() {
+    if (publishing) return;
+
+    // Save first
+    saveAll();
+
+    const token  = document.getElementById('ghToken').value.trim();
+    const repo   = document.getElementById('ghRepo').value.trim();
+    const branch = document.getElementById('ghBranch').value.trim() || 'main';
+
+    if (!token || !repo) {
+      document.getElementById('pubError').textContent = 'Please fill in your GitHub token and repository.';
+      document.getElementById('pubError').style.display = 'block';
+      return;
+    }
+
+    localStorage.setItem('mp_gh_token',  token);
+    localStorage.setItem('mp_gh_repo',   repo);
+    localStorage.setItem('mp_gh_branch', branch);
+
+    publishing = true;
+    document.getElementById('pubSetup').style.display = 'none';
+    document.getElementById('pubProgressBar').style.display = 'block';
+    document.getElementById('pubBtns').style.display = 'none';
+    document.getElementById('pubError').style.display = 'none';
+
+    const setProgress = (pct, msg) => {
+      document.getElementById('pubProgressFill').style.width = pct + '%';
+      document.getElementById('pubStatus').textContent = msg;
+    };
+
+    try {
+      setProgress(40, 'Updating site-content.json...');
+      await commitFile(
+        repo, branch, 'site-content.json',
+        b64(JSON.stringify(sc, null, 2)),
+        'Update site content via admin',
+        token
+      );
+      setProgress(100, 'Done!');
+      document.getElementById('pubDone').style.display = 'block';
+      document.getElementById('pubBtns').innerHTML =
+        `<button class="btn-save" onclick="closePublishModal()">Done</button>`;
+      document.getElementById('pubBtns').style.display = 'flex';
+    } catch(e) {
+      document.getElementById('pubError').textContent = 'Error: ' + e.message;
+      document.getElementById('pubError').style.display = 'block';
+      document.getElementById('pubSetup').style.display = '';
+      document.getElementById('pubBtns').style.display = 'flex';
+      document.getElementById('pubProgressBar').style.display = 'none';
+    } finally {
+      publishing = false;
+    }
+  }
+</script>
+</body>
+</html>
