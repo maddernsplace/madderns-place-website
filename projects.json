@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "id": "proj_1773027139777_ju7",
+    "createdAt": 1773027139777,
+    "title": "Front Yard Build",
+    "description": "Fresh front yard transformation completed with TifTuf hybrid Bermuda turf and a fully installed irrigation system for long-term lawn health and easy maintenance.\n\nThis modern suburban home now features a lush, drought-tolerant TifTuf lawn, professionally levelled and neatly edged to complement the clean lines of the driveway and pathways. A new irrigation setup ensures the turf receives consistent watering, helping it stay green and resilient through South Australia’s hot summers.\n\nThe result is a low-maintenance, water-efficient landscape that enhances the street appeal of the property while providing a durable lawn built to thrive in local conditions.",
+    "blogLink": "",
+    "visible": true,
+    "image": {
+      "name": "Portnoarlunga1.JPEG",
+      "path": "project-images/proj_1773027139777_ju7.jpg"
+    },
+    "updatedAt": 1773027670912
+  }
+]
