@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "rev_001_jose",
+    "name": "Jose Menendez",
+    "service": "",
+    "rating": 5,
+    "text": "Had our lawn installed by Chris.... and his communication was the best as i was working the whole time... he kept sending updates and well priced, kept the work area tidy, and cleaned up after them selfs.. also went out of his way to sort out our water pressure to get the irrigation working properly.... will 💯 % use them again.. our dogs love the new running space 🐕🐕",
+    "date": "",
+    "visible": true
+  },
+  {
+    "id": "rev_002_tim",
+    "name": "Tim Lorence",
+    "service": "",
+    "rating": 5,
+    "text": "Chris of Maddern's Place gave a full and thorough quote on what we wanted and then after agreeing to the price, the installation was installed very promptly and then was very helpful to explain how the new irrigation system worked and what parts of the garden was being watered. Would definitely recommend.",
+    "date": "",
+    "visible": true
+  },
+  {
+    "id": "rev_003_kerry",
+    "name": "Kerry Stringer",
+    "service": "",
+    "rating": 5,
+    "text": "Chris Maddens Landscape team has been Fantastic in helping me maintain my whole garden. Their upbeat attitude, helpful advice, and willingness to go the extra mile have kept my garden growing strong. They're always willing to work with me to ensure the job is done to my satisfaction. Five stars and highly recommended!",
+    "date": "",
+    "visible": true
+  },
+  {
+    "id": "rev_004_caroline",
+    "name": "Caroline Kirk",
+    "service": "",
+    "rating": 5,
+    "text": "We couldn't be happier with the work our gardener does — he truly goes above and beyond! He takes care of everything with care and professionalism, and the garden has never looked better. He's also a fantastic communicator, always keeping us in the loop and making helpful suggestions. It's such a relief to know the garden is in great hands. Highly recommend! Thank you so much for making our garden look amazing!",
+    "date": "",
+    "visible": true
+  },
+  {
+    "id": "rev_005_ian",
+    "name": "Ian Griggs",
+    "service": "",
+    "rating": 5,
+    "text": "Very happy with service, Chris and his team go above and beyond. They have a great work ethic and hi standard, polite, and friendly. Thankyou",
+    "date": "",
+    "visible": true
+  },
+  {
+    "id": "rev_006_sean",
+    "name": "Sean Manning",
+    "service": "",
+    "rating": 5,
+    "text": "Absolutely perfect experience. Clear and prompt communication, excellent and appropriate advice. Fair price and good quality work. But getting texted drone photos of the finished work was the icing on the cake! I'm really impressed and will use Chris again without hesitation.",
+    "date": "",
+    "visible": true
+  },
+  {
+    "id": "rev_007_tania",
+    "name": "Tania Jordan",
+    "service": "",
+    "rating": 5,
+    "text": "I'm happy with Chris' friendly manner and professional service. He had good ideas and helped me decide what to do. He was on time and let me know when he was on his way. His work is excellent. I would highly recommend him.",
+    "date": "",
+    "visible": true
+  },
+  {
+    "id": "rev_008_megan",
+    "name": "Megan Simpson",
+    "service": "",
+    "rating": 5,
+    "text": "I have engaged Chris twice now for work at my house, very professional and has done a great job both times, will definitely use for any work I have in the future",
+    "date": "",
+    "visible": true
+  }
+]
