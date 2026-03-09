@@ -323,6 +323,10 @@
       radial-gradient(ellipse at 30% 50%, rgba(138,106,62,0.4) 0%, transparent 50%),
       linear-gradient(135deg, #6b4c2e 0%, #8a6a3e 100%);
   }
+  .gallery-mosaic { transition: opacity 0.4s ease; }
+  .gallery-cta { text-align: center; margin-top: 2rem; }
+  .gallery-cta a { display: inline-block; padding: 0.85rem 2rem; border: 1px solid var(--green-mid); border-radius: 2px; color: var(--green-mid); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.3s; }
+  .gallery-cta a:hover { background: var(--green-mid); color: var(--cream); }
 
   /* ─── TESTIMONIALS ─── */
   #testimonials { background: var(--white); }
@@ -703,6 +707,7 @@
         <div class="gi-inner gi-5"><span class="gi-label">Retaining Walls</span></div>
       </div>
     </div>
+    <div class="gallery-cta" id="galleryCta" style="display:none"><a href="projects.html">View All Projects →</a></div>
   </div>
 </section>
 
@@ -892,22 +897,44 @@
 
     if (!projects.length) return; // keep placeholder cards
 
-    const mosaic = document.getElementById('galleryMosaic');
-    mosaic.innerHTML = projects.slice(0, 8).map((p, i) => {
-      const src = p.image?.path || p.image?.data || null;
-      const imgStyle = src
-        ? `background-image:url('${src}'); background-size:cover; background-position:center;`
-        : '';
-      const fallbackClass = src ? '' : gradients[i % gradients.length];
-      const dataIdx = i;
-      return `<div class="gallery-item" onclick="openLightbox(${dataIdx})" style="cursor:pointer;">
-        <div class="gi-inner ${fallbackClass}" style="${imgStyle}">
-          <span class="gi-label">${esc(p.title)}</span>
-        </div>
-      </div>`;
-    }).join('');
-
     window._galleryProjects = projects;
+
+    const mosaic = document.getElementById('galleryMosaic');
+    const cta = document.getElementById('galleryCta');
+    cta.style.display = 'block';
+
+    function renderSlice(offset) {
+      const slice = [];
+      for (let i = 0; i < 8; i++) slice.push(projects[(offset + i) % projects.length]);
+      mosaic.innerHTML = slice.map((p, i) => {
+        const src = p.image?.path || p.image?.data || null;
+        const imgStyle = src
+          ? `background-image:url('${src}'); background-size:cover; background-position:center;`
+          : '';
+        const fallbackClass = src ? '' : gradients[i % gradients.length];
+        const realIdx = projects.indexOf(p);
+        return `<div class="gallery-item" onclick="openLightbox(${realIdx})" style="cursor:pointer;">
+          <div class="gi-inner ${fallbackClass}" style="${imgStyle}">
+            <span class="gi-label">${esc(p.title)}</span>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    let offset = 0;
+    renderSlice(offset);
+
+    // Rotate only when there are more than 8 projects
+    if (projects.length > 8) {
+      setInterval(() => {
+        mosaic.style.opacity = '0';
+        setTimeout(() => {
+          offset = (offset + 1) % projects.length;
+          renderSlice(offset);
+          mosaic.style.opacity = '1';
+        }, 400);
+      }, 4000);
+    }
   })();
 
   // Lightbox

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Projects — Maddern's Place Garden & Landscaping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a1f; --green-mid: #2d5a34; --green-light: #4a8c55;
+    --green-pale: #a8c5a0; --brown-dark: #3d2b1a; --brown-mid: #6b4c2e;
+    --brown-light: #c4a882; --cream: #f5f0e8; --white: #fdfcfa;
+    --text-dark: #1e1e1e; --text-mid: #4a4a4a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Raleway', sans-serif; background: var(--white); color: var(--text-dark); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(26,58,31,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(168,197,160,0.2);
+  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--brown-light); letter-spacing: 0.04em; text-decoration: none; }
+  .logo span { color: var(--green-pale); font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: var(--cream); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--brown-light); }
+  .nav-cta { background: var(--brown-mid); color: var(--cream) !important; padding: 0.5rem 1.4rem !important; border-radius: 2px; }
+  .nav-cta:hover { background: var(--brown-light) !important; color: var(--brown-dark) !important; }
+
+  /* ─── PAGE HERO ─── */
+  .page-hero {
+    padding: 11rem 4rem 5rem;
+    background: linear-gradient(155deg, var(--green-deep) 0%, #1c3020 60%, #213820 100%);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(168,197,160,0.08) 0%, transparent 60%);
+  }
+  .page-hero .label {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--green-pale); display: inline-flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;
+  }
+  .page-hero .label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--green-pale); }
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem); color: var(--cream); line-height: 1.1;
+    margin-bottom: 1.2rem; position: relative;
+  }
+  .page-hero h1 em { color: var(--green-pale); font-style: italic; }
+  .page-hero p { color: rgba(245,240,232,0.7); font-size: 1rem; max-width: 480px; margin: 0 auto; line-height: 1.7; position: relative; }
+
+  /* ─── PROJECTS SECTION ─── */
+  .projects-section { padding: 5rem 4rem; background: var(--cream); }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+  }
+
+  .project-card {
+    background: var(--white); border-radius: 6px; overflow: hidden;
+    border: 1px solid rgba(26,58,31,0.08); transition: box-shadow 0.3s, transform 0.3s;
+    cursor: pointer; display: flex; flex-direction: column;
+  }
+  .project-card:hover { box-shadow: 0 10px 40px rgba(26,58,31,0.12); transform: translateY(-5px); }
+
+  .project-card-img {
+    width: 100%; height: 210px; overflow: hidden; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .project-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+  .project-card:hover .project-card-img img { transform: scale(1.04); }
+  .project-card-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; color: rgba(255,255,255,0.25);
+  }
+
+  .project-card-body { padding: 1.6rem; flex: 1; display: flex; flex-direction: column; }
+  .project-card-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--green-deep); margin-bottom: 0.7rem; line-height: 1.3; }
+  .project-card-desc { font-size: 0.88rem; color: var(--text-mid); line-height: 1.75; flex: 1;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .project-card-cta { margin-top: 1.3rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-mid); display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.2s; }
+  .project-card:hover .project-card-cta { gap: 0.8rem; }
+
+  .no-projects {
+    grid-column: 1 / -1; text-align: center; padding: 5rem 2rem; color: var(--text-mid);
+  }
+  .no-projects .no-icon { font-size: 3.5rem; margin-bottom: 1.2rem; }
+  .no-projects h3 { font-family: 'Playfair Display', serif; color: var(--green-deep); font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .no-projects p { line-height: 1.8; max-width: 400px; margin: 0 auto; }
+
+  /* ─── LIGHTBOX ─── */
+  #projLightbox {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 1.5rem;
+  }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--brown-dark); color: rgba(245,240,232,0.6); padding: 3rem 4rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--brown-light); }
+  .footer-logo span { color: var(--green-pale); font-style: italic; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { color: rgba(245,240,232,0.5); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.08em; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--brown-light); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    .page-hero { padding: 9rem 2rem 4rem; }
+    .projects-section { padding: 3rem 2rem; }
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 580px) {
+    .projects-grid { grid-template-columns: 1fr; }
+    footer { padding: 2.5rem 1.5rem; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Maddern's <span>Place</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#gallery" class="active">Gallery</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="label">Our Work</div>
+  <h1>All <em>Projects</em></h1>
+  <p>Browse our full portfolio of garden transformations, landscaping projects and outdoor spaces.</p>
+</div>
+
+<section class="projects-section">
+  <div class="container">
+    <div class="projects-grid" id="projectsGrid"></div>
+  </div>
+</section>
+
+<!-- PROJECT LIGHTBOX -->
+<div id="projLightbox" onclick="if(event.target===this)closeLightbox()">
+  <div style="background:#fdfcfa; border-radius:8px; max-width:680px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 24px 80px rgba(0,0,0,0.4);">
+    <img id="lbImg" src="" alt="" style="width:100%; max-height:400px; object-fit:cover; display:none; border-radius:8px 8px 0 0;">
+    <div style="padding:2rem;">
+      <h3 id="lbTitle" style="font-family:'Playfair Display',serif; font-size:1.6rem; color:#1a3a1f; margin-bottom:0.8rem;"></h3>
+      <p id="lbDesc" style="font-family:'Raleway',sans-serif; font-size:0.95rem; color:#4a4a4a; line-height:1.75; white-space:pre-line;"></p>
+      <div style="display:flex; gap:0.8rem; align-items:center; margin-top:1.5rem; flex-wrap:wrap;">
+        <button onclick="closeLightbox()" style="padding:0.6rem 1.4rem; background:#2d5a34; color:#f5f0e8; border:none; border-radius:3px; font-family:'Raleway',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;">Close</button>
+        <a id="lbBlogLink" href="#" target="_blank" style="display:none; padding:0.6rem 1.4rem; background:#1a5c8a; color:#f5f0e8; border-radius:3px; font-family:'Raleway',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; text-decoration:none;">View Blog Post →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      Maddern's <span>Place</span><br>
+      <small style="font-family:'Raleway',sans-serif; font-size:0.7rem; letter-spacing:0.1em; color:rgba(245,240,232,0.4);">GARDEN & LANDSCAPING</small>
+    </div>
+    <div style="font-size:0.8rem;">© 2025 Maddern's Place Garden & Landscaping. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="blog.html">Blog</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  let _projects = [];
+
+  async function loadProjects() {
+    try {
+      const r = await fetch('projects.json?v=' + Date.now());
+      if (r.ok) {
+        const all = await r.json();
+        _projects = all.filter(p => p.visible !== false);
+      }
+    } catch {}
+    if (!_projects.length) {
+      try {
+        _projects = JSON.parse(localStorage.getItem('madderns_projects') || '[]')
+          .filter(p => p.visible !== false);
+      } catch {}
+    }
+  }
+
+  const gradients = ['gi-1','gi-2','gi-3','gi-4','gi-5'];
+  const gradientBgs = [
+    'background: radial-gradient(ellipse at 30% 60%, rgba(74,140,85,0.6) 0%, transparent 55%), linear-gradient(160deg, #1a3a1f 0%, #2d5a34 50%, #4a7a40 100%);',
+    'background: radial-gradient(ellipse at 60% 40%, rgba(168,197,160,0.3) 0%, transparent 50%), linear-gradient(135deg, #4a6741 0%, #2d5a34 100%);',
+    'background: radial-gradient(ellipse at 40% 70%, rgba(196,168,130,0.4) 0%, transparent 55%), linear-gradient(160deg, #3d2b1a 0%, #6b4c2e 60%, #8a6a3e 100%);',
+    'background: radial-gradient(ellipse at 50% 50%, rgba(90,122,82,0.5) 0%, transparent 60%), linear-gradient(135deg, #3d6645 0%, #5a7a52 100%);',
+    'background: radial-gradient(ellipse at 30% 50%, rgba(138,106,62,0.4) 0%, transparent 50%), linear-gradient(135deg, #6b4c2e 0%, #8a6a3e 100%);'
+  ];
+
+  async function renderProjects() {
+    await loadProjects();
+    const grid = document.getElementById('projectsGrid');
+
+    if (!_projects.length) {
+      grid.innerHTML = `<div class="no-projects">
+        <div class="no-icon">🌿</div>
+        <h3>Projects Coming Soon</h3>
+        <p>We're putting the finishing touches on our portfolio. Check back soon to see our latest work.</p>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = _projects.map((p, i) => {
+      const src = p.image?.path || p.image?.data || null;
+      const imgHtml = src
+        ? `<img src="${src}" alt="${esc(p.title)}" loading="lazy">`
+        : `<div class="project-card-img-placeholder" style="${gradientBgs[i % gradientBgs.length]}">🌱</div>`;
+      const descPreview = (p.description || '').replace(/\n/g, ' ').trim();
+      return `<div class="project-card" onclick="openLightbox(${i})">
+        <div class="project-card-img">${imgHtml}</div>
+        <div class="project-card-body">
+          <div class="project-card-title">${esc(p.title)}</div>
+          ${descPreview ? `<div class="project-card-desc">${esc(descPreview)}</div>` : ''}
+          <span class="project-card-cta">View Project →</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function openLightbox(idx) {
+    const p = _projects[idx];
+    if (!p) return;
+    const src = p.image?.path || p.image?.data || null;
+    const img = document.getElementById('lbImg');
+    if (src) { img.src = src; img.style.display = 'block'; }
+    else { img.style.display = 'none'; }
+    document.getElementById('lbTitle').textContent = p.title || '';
+    document.getElementById('lbDesc').textContent = p.description || '';
+    const blogLink = document.getElementById('lbBlogLink');
+    if (p.blogLink) { blogLink.href = p.blogLink; blogLink.style.display = 'inline-block'; }
+    else { blogLink.style.display = 'none'; }
+    const lb = document.getElementById('projLightbox');
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('projLightbox').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  renderProjects();
+</script>
+</body>
+</html>
