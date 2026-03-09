@@ -1214,7 +1214,7 @@
   if (sc.services && sc.services.length) {
     const grid = document.getElementById('siteServicesGrid');
     grid.innerHTML = sc.services.map(s => `
-      <div class="service-card fade-in">
+      <div class="service-card fade-in visible">
         <span class="service-icon">${s.icon}</span>
         <div class="service-card-body">
           <h3>${s.title}</h3>
@@ -1227,7 +1227,7 @@
   if (sc.process && sc.process.length) {
     const steps = document.getElementById('siteProcessSteps');
     steps.innerHTML = sc.process.map(s => `
-      <div class="step fade-in">
+      <div class="step fade-in visible">
         <div class="step-num">${s.num}</div>
         <h4>${s.title}</h4>
         <p>${s.desc}</p>
