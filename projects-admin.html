@@ -214,11 +214,16 @@
               <label>Project Title</label>
               <input type="text" id="projTitle" placeholder="e.g. Backyard Garden Transformation">
             </div>
-            <div class="form-group" style="margin-bottom:0;">
+            <div class="form-group">
               <label>Description</label>
               <textarea id="projDesc" style="min-height:140px; resize:vertical;"
                 placeholder="Describe the project — what was done, materials used, the client's goals, seasonal timing, etc."></textarea>
               <div class="form-hint">Shown in a popup when visitors click the gallery card. Be as detailed as you like.</div>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Blog Post Link <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light);">(optional)</span></label>
+              <input type="text" id="projBlogLink" placeholder="e.g. blog.html#post-id or https://...">
+              <div class="form-hint">When visitors click this project, a "View Blog Post" button will appear. Leave blank for now — add it once you've published the blog post.</div>
             </div>
           </div>
         </div>
@@ -296,6 +301,24 @@
             <button class="btn btn-secondary" onclick="testGH()">Test Connection</button>
             <span id="ghTestResult" style="font-size:0.82rem;"></span>
           </div>
+        </div>
+
+        <!-- Password -->
+        <div class="card">
+          <div class="card-title">Change Password</div>
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="currentPw" placeholder="Current password">
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="newPw" placeholder="New password">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPw" placeholder="Confirm new password">
+          </div>
+          <button class="btn btn-primary" style="margin-top:1.2rem;" onclick="changePassword()">Update Password</button>
         </div>
       </div>
     </div>
@@ -531,11 +554,14 @@
     const vis = p.visible === false
       ? `<span style="font-size:0.72rem; color:#856404; background:#fff3cd; padding:0.15rem 0.5rem; border-radius:10px; font-weight:600;">Hidden</span>`
       : '';
+    const blogBadge = p.blogLink
+      ? `<span style="font-size:0.72rem; color:#155073; background:#d8ecff; padding:0.15rem 0.5rem; border-radius:10px; font-weight:600;">Blog linked</span>`
+      : '';
     return `<div class="project-card">
       ${imgHtml}
       <div class="project-card-body">
-        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.35rem;">
-          <div class="project-card-title">${esc(p.title || 'Untitled')}</div>${vis}
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.35rem; flex-wrap:wrap;">
+          <div class="project-card-title">${esc(p.title || 'Untitled')}</div>${vis}${blogBadge}
         </div>
         <div class="project-card-desc">${esc(p.description || '')}</div>
         <div class="project-card-actions">
@@ -561,8 +587,9 @@
 
   function loadEditor() {
     document.getElementById('editorHeading').textContent = editingProj ? 'Edit Project' : 'New Project';
-    document.getElementById('projTitle').value = editingProj?.title || '';
-    document.getElementById('projDesc').value  = editingProj?.description || '';
+    document.getElementById('projTitle').value    = editingProj?.title || '';
+    document.getElementById('projDesc').value     = editingProj?.description || '';
+    document.getElementById('projBlogLink').value = editingProj?.blogLink || '';
     document.getElementById('projVisible').checked = editingProj ? editingProj.visible !== false : true;
     document.getElementById('deleteWrap').style.display = editingProj ? 'block' : 'none';
     updateImgPreview();
@@ -622,6 +649,7 @@
     const data = {
       title,
       description: document.getElementById('projDesc').value.trim(),
+      blogLink: document.getElementById('projBlogLink').value.trim(),
       visible: document.getElementById('projVisible').checked,
       image: editImg,
       updatedAt: Date.now()
@@ -656,6 +684,18 @@
   }
 
   // ─── UTILS ───────────────────────────────────────────────────────────────────
+  function changePassword() {
+    const cur = document.getElementById('currentPw').value;
+    const nw  = document.getElementById('newPw').value;
+    const con = document.getElementById('confirmPw').value;
+    if (cur !== getPass())  { toast('Current password is incorrect.', true); return; }
+    if (!nw)                { toast('New password cannot be empty.', true); return; }
+    if (nw !== con)         { toast('Passwords do not match.', true); return; }
+    localStorage.setItem(PASS_KEY, nw);
+    ['currentPw','newPw','confirmPw'].forEach(id => document.getElementById(id).value = '');
+    toast('Password updated!');
+  }
+
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function toast(msg, err=false) {
     const t = document.getElementById('toast');
