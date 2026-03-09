@@ -707,12 +707,27 @@
   // ─── AUTH ────────────────────────────────────────────────────────────────────
   let authed = sessionStorage.getItem('mp_auth') === '1';
 
-  function doLogin() {
+  // Seed posts from posts.json if localStorage is empty
+  async function seedPostsIfNeeded() {
+    const stored = localStorage.getItem(POSTS_KEY);
+    if (!stored || stored === '[]') {
+      try {
+        const r = await fetch('posts.json?t=' + Date.now());
+        const remote = await r.json();
+        if (Array.isArray(remote) && remote.length > 0) {
+          localStorage.setItem(POSTS_KEY, JSON.stringify(remote));
+        }
+      } catch(e) {}
+    }
+  }
+
+  async function doLogin() {
     if (document.getElementById('loginPw').value === getPass()) {
       sessionStorage.setItem('mp_auth', '1');
       authed = true;
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminApp').style.display = 'block';
+      await seedPostsIfNeeded();
       showView('dash');
     } else {
       document.getElementById('loginErr').style.display = 'block';
@@ -743,7 +758,7 @@
   if (authed) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminApp').style.display = 'block';
-    showView('dash');
+    seedPostsIfNeeded().then(() => showView('dash'));
   }
 
   // ─── VIEWS ───────────────────────────────────────────────────────────────────
