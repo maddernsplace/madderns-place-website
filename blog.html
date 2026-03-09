@@ -124,6 +124,17 @@
 
   .post-hero-img { width: 100%; max-height: 440px; object-fit: cover; display: block; }
 
+  .post-img-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(26,58,31,0.1); }
+  .post-img-gallery img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: block; }
+  .post-img-gallery img:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
+  .post-img-gallery-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-light); margin-bottom: 0.8rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(26,58,31,0.1); }
+
+  /* Full-screen image viewer */
+  #imgViewer { display: none; position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; cursor: zoom-out; }
+  #imgViewer.open { display: flex; }
+  #imgViewer img { max-width: 92vw; max-height: 92vh; object-fit: contain; border-radius: 4px; box-shadow: 0 0 60px rgba(0,0,0,0.5); }
+  #imgViewerClose { position: absolute; top: 1rem; right: 1.5rem; background: none; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 0.4rem 1rem; border-radius: 3px; cursor: pointer; font-family: 'Raleway', sans-serif; font-size: 0.8rem; }
+
   .post-body-wrap { padding: 3rem; }
   .post-body-wrap h1 {
     font-family: 'Playfair Display', serif;
@@ -203,8 +214,15 @@
     <div class="post-body-wrap">
       <h1 id="modalTitle"></h1>
       <div class="post-body" id="modalBody"></div>
+      <div id="modalImgGallery"></div>
     </div>
   </div>
+</div>
+
+<!-- Full-screen image viewer -->
+<div id="imgViewer" onclick="closeImgViewer()">
+  <button id="imgViewerClose" onclick="closeImgViewer()">✕ Close</button>
+  <img id="imgViewerImg" src="" alt="">
 </div>
 
 <footer>
@@ -309,9 +327,34 @@
     document.getElementById('modalTitle').textContent = p.title;
     document.getElementById('modalBody').innerHTML    = p.content;
 
+    // Show all uploaded images (excluding the featured hero) in a gallery
+    const extras = (p.images || []).filter(i => i.id !== p.featuredImageId);
+    const galleryEl = document.getElementById('modalImgGallery');
+    if (extras.length) {
+      const imgs = extras.map(i => {
+        const src = i.data || i.path || '';
+        return src ? `<img src="${src}" alt="${esc(i.name)}" loading="lazy" onclick="openImgViewer('${src.replace(/'/g,"\\'")}')">` : '';
+      }).filter(Boolean).join('');
+      galleryEl.innerHTML = imgs
+        ? `<div class="post-img-gallery-label">Project Photos</div><div class="post-img-gallery">${imgs}</div>`
+        : '';
+    } else {
+      galleryEl.innerHTML = '';
+    }
+
     document.getElementById('overlay').classList.add('open');
     document.getElementById('postModal').scrollTop = 0;
     document.body.style.overflow = 'hidden';
+  }
+
+  function openImgViewer(src) {
+    document.getElementById('imgViewerImg').src = src;
+    document.getElementById('imgViewer').classList.add('open');
+    event.stopPropagation();
+  }
+  function closeImgViewer() {
+    document.getElementById('imgViewer').classList.remove('open');
+    document.getElementById('imgViewerImg').src = '';
   }
 
   function closePost() {
@@ -323,7 +366,12 @@
     if (e.target === document.getElementById('overlay')) closePost();
   }
 
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePost(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('imgViewer').classList.contains('open')) closeImgViewer();
+      else closePost();
+    }
+  });
 
   renderBlog();
 </script>
