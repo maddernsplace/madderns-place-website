@@ -302,6 +302,24 @@
             <span id="ghTestResult" style="font-size:0.82rem;"></span>
           </div>
         </div>
+
+        <!-- Password -->
+        <div class="card">
+          <div class="card-title">Change Password</div>
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="currentPw" placeholder="Current password">
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="newPw" placeholder="New password">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPw" placeholder="Confirm new password">
+          </div>
+          <button class="btn btn-primary" style="margin-top:1.2rem;" onclick="changePassword()">Update Password</button>
+        </div>
       </div>
     </div>
 
@@ -666,6 +684,18 @@
   }
 
   // ─── UTILS ───────────────────────────────────────────────────────────────────
+  function changePassword() {
+    const cur = document.getElementById('currentPw').value;
+    const nw  = document.getElementById('newPw').value;
+    const con = document.getElementById('confirmPw').value;
+    if (cur !== getPass())  { toast('Current password is incorrect.', true); return; }
+    if (!nw)                { toast('New password cannot be empty.', true); return; }
+    if (nw !== con)         { toast('Passwords do not match.', true); return; }
+    localStorage.setItem(PASS_KEY, nw);
+    ['currentPw','newPw','confirmPw'].forEach(id => document.getElementById(id).value = '');
+    toast('Password updated!');
+  }
+
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function toast(msg, err=false) {
     const t = document.getElementById('toast');
