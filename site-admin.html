@@ -403,17 +403,17 @@
   let sc = {};
 
   async function loadContent() {
-    const stored = localStorage.getItem(SC_KEY);
-    if (stored) {
-      try { sc = JSON.parse(stored); } catch(e) {}
+    // Always load the published file as source of truth
+    try {
+      const r = await fetch('site-content.json?t=' + Date.now());
+      sc = await r.json();
+    } catch(e) {
+      // Offline fallback: use localStorage if file can't be fetched
+      const stored = localStorage.getItem(SC_KEY);
+      if (stored) { try { sc = JSON.parse(stored); } catch(e2) {} }
     }
     if (!sc || !sc.hero) {
-      try {
-        const r = await fetch('site-content.json');
-        sc = await r.json();
-      } catch(e) {
-        sc = { hero:{}, about:{paragraphs:[],bullets:[]}, services:[], process:[], contact:{}, suppliers:[] };
-      }
+      sc = { hero:{}, about:{paragraphs:[],bullets:[]}, services:[], process:[], contact:{}, suppliers:[], chat:{} };
     }
     populateForms();
   }
