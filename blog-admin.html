@@ -519,7 +519,16 @@
 
   // ─── DATA ────────────────────────────────────────────────────────────────────
   function getPosts() {
-    try { return JSON.parse(localStorage.getItem(POSTS_KEY) || '[]'); }
+    try {
+      const posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
+      // Free up space: drop base64 data from any image already uploaded to GitHub
+      let dirty = false;
+      posts.forEach(p => (p.images || []).forEach(img => {
+        if (img.path && img.data) { delete img.data; dirty = true; }
+      }));
+      if (dirty) localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+      return posts;
+    }
     catch { return []; }
   }
   function savePosts(posts) { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); }
@@ -671,7 +680,10 @@
         token
       );
 
-      // Save updated posts (with paths recorded) back to localStorage
+      // Strip base64 data now that all images are on GitHub, then save
+      posts.forEach(p => (p.images || []).forEach(img => {
+        if (img.path && img.data) delete img.data;
+      }));
       savePosts(posts);
       localStorage.removeItem(DIRTY_KEY);
 
@@ -885,7 +897,7 @@
       if (!file.type.startsWith('image/')) return;
       const reader = new FileReader();
       reader.onload = e => {
-        shrink(e.target.result, 1200, 0.82, data => {
+        shrink(e.target.result, 900, 0.72, data => {
           const id = iuid();
           editImages.push({ id, data, name: file.name });
           if (!featuredId) featuredId = id;
