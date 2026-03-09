@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews Admin — Maddern's Place</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:#1a3a1f; --green-mid:#2d5a34; --green-light:#4a8c55;
+    --green-pale:#a8c5a0; --brown-dark:#3d2b1a; --brown-mid:#6b4c2e;
+    --brown-light:#c4a882; --cream:#f5f0e8; --white:#fdfcfa;
+    --text-dark:#1e1e1e; --text-mid:#4a4a4a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Raleway',sans-serif;background:#f0ece4;color:var(--text-dark);min-height:100vh;}
+
+  /* ─── LOGIN ─── */
+  #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--green-deep),#213820);}
+  .login-box{background:var(--white);border-radius:8px;padding:3rem;max-width:380px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,0.25);}
+  .login-logo{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--green-deep);margin-bottom:0.3rem;}
+  .login-logo span{color:var(--green-light);font-style:italic;}
+  .login-sub{font-size:0.8rem;color:var(--text-mid);letter-spacing:0.08em;margin-bottom:2rem;}
+  .login-box label{font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;}
+  .login-box input{width:100%;padding:0.75rem 1rem;border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.9rem;margin-bottom:1.2rem;}
+  .login-box input:focus{outline:none;border-color:var(--green-mid);}
+  .btn-login{width:100%;padding:0.9rem;background:var(--green-mid);color:var(--cream);border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-login:hover{background:var(--green-deep);}
+  .login-err{color:#c0392b;font-size:0.82rem;margin-top:0.5rem;display:none;}
+  .forgot-link{text-align:center;margin-top:1rem;font-size:0.78rem;}
+  .forgot-link a{color:var(--green-light);cursor:pointer;text-decoration:none;}
+
+  /* ─── APP SHELL ─── */
+  #adminApp{display:none;min-height:100vh;}
+  .topbar{background:var(--green-deep);color:var(--cream);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;}
+  .topbar-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--brown-light);}
+  .topbar-logo span{color:var(--green-pale);font-style:italic;}
+  .topbar-actions{display:flex;gap:0.8rem;align-items:center;}
+  .btn{padding:0.5rem 1.2rem;border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+  .btn-primary{background:var(--green-mid);color:var(--cream);}
+  .btn-primary:hover{background:var(--green-light);}
+  .btn-secondary{background:transparent;color:var(--cream);border:1px solid rgba(245,240,232,0.3);}
+  .btn-secondary:hover{background:rgba(245,240,232,0.1);}
+  .btn-publish{background:var(--brown-mid);color:var(--cream);padding:0.5rem 1.4rem;border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-publish:hover{background:var(--brown-light);color:var(--brown-dark);}
+
+  .main{max-width:900px;margin:0 auto;padding:2.5rem 2rem;}
+  .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;}
+  .page-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--green-deep);}
+  .page-subtitle{font-size:0.85rem;color:var(--text-mid);margin-top:0.2rem;}
+
+  /* ─── ADD FORM ─── */
+  .add-form{background:var(--white);border-radius:6px;padding:2rem;margin-bottom:2rem;border:1px solid rgba(26,58,31,0.1);display:none;}
+  .add-form.open{display:block;}
+  .form-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--green-deep);margin-bottom:1.5rem;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+  .form-group{margin-bottom:1rem;}
+  .form-group label{font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;}
+  .form-group input,.form-group select,.form-group textarea{width:100%;padding:0.7rem 0.9rem;border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.9rem;color:var(--text-dark);background:var(--white);}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--green-mid);}
+  .form-group textarea{resize:vertical;min-height:100px;line-height:1.6;}
+  .star-picker{display:flex;gap:0.5rem;margin-top:0.4rem;}
+  .star-picker button{width:40px;height:40px;border:1px solid rgba(26,58,31,0.2);border-radius:3px;background:var(--white);font-size:1.1rem;cursor:pointer;transition:all 0.15s;color:#c4a832;}
+  .star-picker button.active{background:#fffbe6;border-color:#c4a832;}
+  .form-actions{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn-save{padding:0.7rem 1.8rem;background:var(--green-mid);color:var(--cream);border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-save:hover{background:var(--green-deep);}
+  .btn-cancel{padding:0.7rem 1.4rem;background:transparent;color:var(--text-mid);border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.82rem;cursor:pointer;}
+  .btn-cancel:hover{background:var(--cream);}
+
+  /* ─── REVIEW LIST ─── */
+  .review-list{display:flex;flex-direction:column;gap:1rem;}
+  .review-card{background:var(--white);border-radius:6px;padding:1.5rem;border:1px solid rgba(26,58,31,0.08);display:flex;gap:1.2rem;align-items:flex-start;}
+  .review-card.hidden-rev{opacity:0.5;}
+  .review-stars{color:#c4a832;font-size:1rem;white-space:nowrap;}
+  .review-body{flex:1;}
+  .review-name{font-weight:600;color:var(--green-deep);font-size:0.95rem;}
+  .review-service{font-size:0.75rem;color:var(--text-mid);margin-left:0.6rem;letter-spacing:0.05em;}
+  .review-date{font-size:0.72rem;color:var(--text-mid);margin-top:0.15rem;letter-spacing:0.05em;}
+  .review-text{font-size:0.88rem;color:var(--text-mid);line-height:1.7;margin-top:0.6rem;font-style:italic;}
+  .review-actions{display:flex;gap:0.4rem;flex-shrink:0;}
+  .icon-btn{padding:0.35rem 0.7rem;border:1px solid rgba(26,58,31,0.15);border-radius:3px;background:none;cursor:pointer;font-size:0.78rem;color:var(--text-mid);transition:all 0.15s;font-family:'Raleway',sans-serif;}
+  .icon-btn:hover{background:var(--cream);}
+  .icon-btn.del:hover{background:#fde8e6;border-color:#c0392b;color:#c0392b;}
+
+  .empty-state{text-align:center;padding:4rem 2rem;color:var(--text-mid);}
+  .empty-state .icon{font-size:2.5rem;margin-bottom:1rem;}
+  .empty-state h3{font-family:'Playfair Display',serif;color:var(--green-deep);font-size:1.4rem;margin-bottom:0.5rem;}
+
+  /* ─── SETTINGS ─── */
+  .settings-card{background:var(--white);border-radius:6px;padding:2rem;border:1px solid rgba(26,58,31,0.1);}
+  .settings-title{font-weight:600;color:var(--green-deep);font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1.2rem;}
+  .settings-card input{width:100%;padding:0.7rem 0.9rem;border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.88rem;margin-bottom:0.8rem;}
+  .settings-card input:focus{outline:none;border-color:var(--green-mid);}
+  .settings-row{display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;margin-top:0.5rem;}
+  #ghTestResult{font-size:0.82rem;margin-top:0.4rem;}
+
+  /* ─── TABS ─── */
+  .tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;border-bottom:1px solid rgba(26,58,31,0.1);padding-bottom:0;}
+  .tab-btn{padding:0.6rem 1.2rem;border:none;background:none;font-family:'Raleway',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-mid);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+  .tab-btn.active{color:var(--green-mid);border-bottom-color:var(--green-mid);}
+
+  /* ─── PUBLISH MODAL ─── */
+  .modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .publish-modal{background:var(--white);border-radius:8px;padding:2.5rem;max-width:440px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,0.3);}
+  .publish-modal h3{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--green-deep);margin-bottom:1rem;}
+  .publish-modal p{font-size:0.9rem;color:var(--text-mid);line-height:1.7;margin-bottom:1.5rem;}
+  .progress-bar{height:6px;background:#e8e4dc;border-radius:3px;overflow:hidden;margin-bottom:0.8rem;}
+  .progress-fill{height:100%;background:var(--green-mid);border-radius:3px;transition:width 0.3s;}
+  .progress-status{font-size:0.82rem;color:var(--text-mid);}
+  .publish-done{text-align:center;padding:1rem 0;}
+  .publish-done .done-icon{font-size:2.5rem;margin-bottom:0.8rem;}
+  .publish-error{color:#c0392b;font-size:0.85rem;margin-bottom:1rem;display:none;}
+  .modal-actions{display:flex;gap:0.8rem;justify-content:flex-end;margin-top:1.5rem;}
+
+  /* ─── TOAST ─── */
+  .toast{position:fixed;bottom:2rem;right:2rem;background:var(--green-deep);color:var(--cream);padding:0.8rem 1.5rem;border-radius:4px;font-size:0.85rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity 0.3s;z-index:999;}
+  .toast.show{opacity:1;}
+  .toast.err{background:#c0392b;}
+
+  /* ─── UNPUBLISHED BANNER ─── */
+  .unpublished-banner{background:#fffbe6;border:1px solid #c4a832;border-radius:4px;padding:0.8rem 1.2rem;margin-bottom:1.5rem;font-size:0.85rem;color:#7a6000;display:none;}
+  .unpublished-banner.show{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+
+  @media(max-width:600px){
+    .form-row{grid-template-columns:1fr;}
+    .review-card{flex-direction:column;}
+    .review-actions{flex-direction:row;}
+    .main{padding:1.5rem 1rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Maddern's <span>Place</span></div>
+    <div class="login-sub">REVIEWS ADMIN</div>
+    <label for="loginPw">Password</label>
+    <input type="password" id="loginPw" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <div class="login-err" id="loginErr">Incorrect password.</div>
+    <div class="forgot-link"><a onclick="doReset()">Forgot password?</a></div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="adminApp">
+  <div class="topbar">
+    <div class="topbar-logo">Maddern's <span>Place</span> &nbsp;·&nbsp; <span style="font-family:'Raleway',sans-serif;font-size:0.8rem;font-style:normal;opacity:0.7;letter-spacing:0.1em;">REVIEWS</span></div>
+    <div class="topbar-actions">
+      <a href="index.html" class="btn btn-secondary" style="text-decoration:none;">← Site</a>
+      <button class="btn-publish" onclick="openPublishModal()">🚀 Publish</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="tabs">
+      <button class="tab-btn active" id="tabReviews" onclick="showTab('reviews')">Reviews</button>
+      <button class="tab-btn" id="tabSettings" onclick="showTab('settings')">GitHub Settings</button>
+    </div>
+
+    <!-- REVIEWS TAB -->
+    <div id="viewReviews">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Google Reviews</div>
+          <div class="page-subtitle">Copy reviews from Google and add them here. Only 4 &amp; 5 star reviews.</div>
+        </div>
+        <button class="btn btn-primary" onclick="openForm()">+ Add Review</button>
+      </div>
+
+      <div class="unpublished-banner" id="unpublishedBanner">
+        <span>⚠️ You have unpublished changes.</span>
+        <button class="btn-publish" onclick="openPublishModal()" style="padding:0.35rem 1rem;font-size:0.75rem;">Publish Now</button>
+      </div>
+
+      <!-- Add / Edit form -->
+      <div class="add-form" id="addForm">
+        <div class="form-title" id="formTitle">Add Review</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Reviewer Name</label>
+            <input type="text" id="fName" placeholder="e.g. Sarah T.">
+          </div>
+          <div class="form-group">
+            <label>Service (optional)</label>
+            <input type="text" id="fService" placeholder="e.g. Garden Design">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Star Rating</label>
+            <div class="star-picker" id="starPicker">
+              <button type="button" onclick="setRating(4)" id="star4">★★★★</button>
+              <button type="button" onclick="setRating(5)" id="star5">★★★★★</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Review Date</label>
+            <input type="month" id="fDate" placeholder="YYYY-MM">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Review Text</label>
+          <textarea id="fText" placeholder="Paste the review text from Google here..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" onclick="saveReview()">Save Review</button>
+          <button class="btn-cancel" onclick="closeForm()">Cancel</button>
+        </div>
+      </div>
+
+      <div class="review-list" id="reviewList"></div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div id="viewSettings" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">GitHub Settings</div>
+          <div class="page-subtitle">These are shared with the blog and projects admin.</div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <div class="settings-title">GitHub Connection</div>
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">Personal Access Token</label>
+        <input type="password" id="ghToken" placeholder="ghp_...">
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">Repository</label>
+        <input type="text" id="ghRepo" placeholder="username/repo-name">
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">Branch</label>
+        <input type="text" id="ghBranch" placeholder="main">
+        <div class="settings-row">
+          <button class="btn btn-primary" onclick="saveGitHubSettings()">Save Settings</button>
+          <button class="btn btn-secondary" style="color:var(--text-mid);border-color:rgba(26,58,31,0.2);" onclick="testGitHubConnection()">Test Connection</button>
+        </div>
+        <div id="ghTestResult"></div>
+      </div>
+      <div class="settings-card" style="margin-top:1.5rem;">
+        <div class="settings-title">Change Password</div>
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">New Password</label>
+        <input type="password" id="newPass1" placeholder="New password">
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">Confirm Password</label>
+        <input type="password" id="newPass2" placeholder="Confirm new password" style="margin-bottom:1rem;">
+        <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PUBLISH MODAL -->
+<div class="modal-overlay" id="publishModal">
+  <div class="publish-modal">
+    <h3>Publish to GitHub</h3>
+    <p id="publishModalDesc">This will commit your reviews to your GitHub repository. They'll be live for all visitors within seconds.</p>
+    <div class="publish-progress" id="publishProgress" style="display:none;">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-status" id="progressStatus">Starting...</div>
+    </div>
+    <div class="publish-done" id="publishDone" style="display:none;">
+      <div class="done-icon">✅</div>
+      <p>Published successfully! Reviews are now live.</p>
+    </div>
+    <div class="publish-error" id="publishError"></div>
+    <div class="modal-actions" id="modalActions">
+      <button class="btn btn-secondary" style="color:var(--text-mid);border-color:rgba(26,58,31,0.2);" onclick="closePublishModal()">Cancel</button>
+      <button class="btn-publish" id="confirmPublishBtn" onclick="runPublish()">🚀 Publish Now</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ─── CONSTANTS ───────────────────────────────────────────────────────────────
+  const REVIEWS_KEY  = 'madderns_reviews';
+  const PASS_KEY     = 'madderns_admin_pass';
+  const DIRTY_KEY    = 'madderns_reviews_dirty';
+  const DEFAULT_PASS = 'madderns2024';
+
+  // ─── DATA ────────────────────────────────────────────────────────────────────
+  function getReviews() {
+    try { return JSON.parse(localStorage.getItem(REVIEWS_KEY) || '[]'); }
+    catch { return []; }
+  }
+  function saveReviews(r) { localStorage.setItem(REVIEWS_KEY, JSON.stringify(r)); }
+  function getPass() { return localStorage.getItem(PASS_KEY) || DEFAULT_PASS; }
+  function uid() { return 'rev_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
+  function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // ─── AUTH ────────────────────────────────────────────────────────────────────
+  let authed = sessionStorage.getItem('mp_rev_auth') === '1';
+
+  function doLogin() {
+    if (document.getElementById('loginPw').value === getPass()) {
+      sessionStorage.setItem('mp_rev_auth', '1');
+      authed = true;
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminApp').style.display = 'block';
+      loadGHSettings();
+      renderReviews();
+      updateBanner();
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+      document.getElementById('loginPw').value = '';
+    }
+  }
+
+  function doReset() {
+    const np = prompt('Enter new password:');
+    if (!np) return;
+    const nc = prompt('Confirm new password:');
+    if (np !== nc) { alert('Passwords do not match.'); return; }
+    localStorage.setItem(PASS_KEY, np);
+    alert('Password updated. Please log in again.');
+    location.reload();
+  }
+
+  function changePassword() {
+    const p1 = document.getElementById('newPass1').value;
+    const p2 = document.getElementById('newPass2').value;
+    if (!p1) { toast('Enter a new password.', true); return; }
+    if (p1 !== p2) { toast('Passwords do not match.', true); return; }
+    localStorage.setItem(PASS_KEY, p1);
+    document.getElementById('newPass1').value = '';
+    document.getElementById('newPass2').value = '';
+    toast('Password updated!');
+  }
+
+  // ─── TABS ────────────────────────────────────────────────────────────────────
+  function showTab(tab) {
+    document.getElementById('viewReviews').style.display  = tab === 'reviews'  ? 'block' : 'none';
+    document.getElementById('viewSettings').style.display = tab === 'settings' ? 'block' : 'none';
+    document.getElementById('tabReviews').classList.toggle('active',  tab === 'reviews');
+    document.getElementById('tabSettings').classList.toggle('active', tab === 'settings');
+  }
+
+  // ─── FORM ────────────────────────────────────────────────────────────────────
+  let editingId = null;
+  let currentRating = 5;
+
+  function openForm(id) {
+    editingId = id || null;
+    const form = document.getElementById('addForm');
+    form.classList.add('open');
+    document.getElementById('formTitle').textContent = id ? 'Edit Review' : 'Add Review';
+
+    if (id) {
+      const r = getReviews().find(x => x.id === id);
+      if (r) {
+        document.getElementById('fName').value    = r.name || '';
+        document.getElementById('fService').value = r.service || '';
+        document.getElementById('fText').value    = r.text || '';
+        document.getElementById('fDate').value    = r.date || '';
+        setRating(r.rating || 5);
+      }
+    } else {
+      document.getElementById('fName').value    = '';
+      document.getElementById('fService').value = '';
+      document.getElementById('fText').value    = '';
+      document.getElementById('fDate').value    = new Date().toISOString().slice(0,7);
+      setRating(5);
+    }
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function closeForm() {
+    document.getElementById('addForm').classList.remove('open');
+    editingId = null;
+  }
+
+  function setRating(n) {
+    currentRating = n;
+    document.getElementById('star4').classList.toggle('active', n === 4);
+    document.getElementById('star5').classList.toggle('active', n === 5);
+  }
+
+  function saveReview() {
+    const name = document.getElementById('fName').value.trim();
+    const text = document.getElementById('fText').value.trim();
+    if (!name || !text) { toast('Name and review text are required.', true); return; }
+
+    const reviews = getReviews();
+    if (editingId) {
+      const idx = reviews.findIndex(r => r.id === editingId);
+      if (idx !== -1) {
+        reviews[idx] = {
+          ...reviews[idx],
+          name,
+          service: document.getElementById('fService').value.trim(),
+          rating:  currentRating,
+          text,
+          date: document.getElementById('fDate').value,
+        };
+      }
+    } else {
+      reviews.push({
+        id:      uid(),
+        name,
+        service: document.getElementById('fService').value.trim(),
+        rating:  currentRating,
+        text,
+        date:    document.getElementById('fDate').value,
+        visible: true,
+      });
+    }
+
+    saveReviews(reviews);
+    localStorage.setItem(DIRTY_KEY, '1');
+    closeForm();
+    renderReviews();
+    updateBanner();
+    toast(editingId ? 'Review updated.' : 'Review added.');
+  }
+
+  // ─── RENDER ──────────────────────────────────────────────────────────────────
+  function renderReviews() {
+    const reviews = getReviews();
+    const list = document.getElementById('reviewList');
+
+    if (!reviews.length) {
+      list.innerHTML = `<div class="empty-state">
+        <div class="icon">⭐</div>
+        <h3>No reviews yet</h3>
+        <p>Click "+ Add Review" to paste in your first Google review.</p>
+      </div>`;
+      return;
+    }
+
+    list.innerHTML = reviews.map(r => {
+      const stars = '★'.repeat(r.rating || 5);
+      const dateStr = r.date ? new Date(r.date + '-01').toLocaleDateString('en-AU', {month:'long', year:'numeric'}) : '';
+      return `<div class="review-card ${r.visible === false ? 'hidden-rev' : ''}">
+        <div>
+          <div class="review-stars">${stars}</div>
+        </div>
+        <div class="review-body">
+          <div>
+            <span class="review-name">${esc(r.name)}</span>
+            ${r.service ? `<span class="review-service">· ${esc(r.service)}</span>` : ''}
+          </div>
+          ${dateStr ? `<div class="review-date">${dateStr} · via Google</div>` : '<div class="review-date">via Google</div>'}
+          <div class="review-text">${esc(r.text)}</div>
+        </div>
+        <div class="review-actions">
+          <button class="icon-btn" onclick="openForm('${r.id}')">Edit</button>
+          <button class="icon-btn" onclick="toggleVisible('${r.id}')">${r.visible === false ? 'Show' : 'Hide'}</button>
+          <button class="icon-btn del" onclick="deleteReview('${r.id}')">✕</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function toggleVisible(id) {
+    const reviews = getReviews();
+    const r = reviews.find(x => x.id === id);
+    if (r) { r.visible = r.visible === false ? true : false; }
+    saveReviews(reviews);
+    localStorage.setItem(DIRTY_KEY, '1');
+    renderReviews();
+    updateBanner();
+  }
+
+  function deleteReview(id) {
+    if (!confirm('Delete this review?')) return;
+    const reviews = getReviews().filter(r => r.id !== id);
+    saveReviews(reviews);
+    localStorage.setItem(DIRTY_KEY, '1');
+    renderReviews();
+    updateBanner();
+    toast('Review deleted.');
+  }
+
+  // ─── BANNER ──────────────────────────────────────────────────────────────────
+  function updateBanner() {
+    const dirty = localStorage.getItem(DIRTY_KEY) === '1';
+    document.getElementById('unpublishedBanner').classList.toggle('show', dirty);
+  }
+
+  // ─── TOAST ───────────────────────────────────────────────────────────────────
+  let toastTimer;
+  function toast(msg, err) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show' + (err ? ' err' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.className = 'toast', 3000);
+  }
+
+  // ─── GITHUB SETTINGS ─────────────────────────────────────────────────────────
+  function getGH() {
+    return {
+      token:  localStorage.getItem('mp_gh_token')  || '',
+      repo:   localStorage.getItem('mp_gh_repo')   || 'maddernsplace/madderns-place-website',
+      branch: localStorage.getItem('mp_gh_branch') || 'main'
+    };
+  }
+  function ghConfigured() { const g = getGH(); return !!(g.token && g.repo); }
+
+  function loadGHSettings() {
+    const g = getGH();
+    document.getElementById('ghToken').value  = g.token;
+    document.getElementById('ghRepo').value   = g.repo;
+    document.getElementById('ghBranch').value = g.branch;
+  }
+
+  function saveGitHubSettings() {
+    localStorage.setItem('mp_gh_token',  document.getElementById('ghToken').value.trim());
+    localStorage.setItem('mp_gh_repo',   document.getElementById('ghRepo').value.trim());
+    localStorage.setItem('mp_gh_branch', document.getElementById('ghBranch').value.trim() || 'main');
+    toast('GitHub settings saved!');
+  }
+
+  async function testGitHubConnection() {
+    const r = document.getElementById('ghTestResult');
+    r.textContent = 'Testing...'; r.style.color = '';
+    const { token, repo } = getGH();
+    if (!token || !repo) { r.textContent = '✕ Fill in token and repo first.'; r.style.color = '#c0392b'; return; }
+    try {
+      const res = await ghRequest('GET', `/repos/${repo}`, token);
+      r.textContent = `✓ Connected to ${res.full_name}`;
+      r.style.color = '#2d5a34';
+    } catch(e) {
+      r.textContent = '✕ ' + e.message;
+      r.style.color = '#c0392b';
+    }
+  }
+
+  // ─── GITHUB API ───────────────────────────────────────────────────────────────
+  async function ghRequest(method, path, token, body) {
+    const opts = {
+      method,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      }
+    };
+    if (body) opts.body = JSON.stringify(body);
+    const r = await fetch(`https://api.github.com${path}`, opts);
+    const json = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(json.message || `GitHub error ${r.status}`);
+    return json;
+  }
+
+  async function getFileSHA(repo, branch, path, token) {
+    try {
+      const d = await ghRequest('GET', `/repos/${repo}/contents/${encodeURIComponent(path)}?ref=${branch}`, token);
+      return d.sha;
+    } catch { return null; }
+  }
+
+  async function commitFile(repo, branch, filePath, content, message, token) {
+    const sha = await getFileSHA(repo, branch, filePath, token);
+    const body = { message, content, branch };
+    if (sha) body.sha = sha;
+    return ghRequest('PUT', `/repos/${repo}/contents/${encodeURIComponent(filePath)}`, token, body);
+  }
+
+  function b64Text(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+  // ─── PUBLISH ─────────────────────────────────────────────────────────────────
+  let publishing = false;
+
+  function openPublishModal() {
+    if (!ghConfigured()) {
+      toast('Set up GitHub settings first.', true);
+      showTab('settings');
+      return;
+    }
+    document.getElementById('publishModalDesc').style.display = '';
+    document.getElementById('publishProgress').style.display = 'none';
+    document.getElementById('publishDone').style.display = 'none';
+    document.getElementById('publishError').style.display = 'none';
+    document.getElementById('modalActions').style.display = 'flex';
+    document.getElementById('confirmPublishBtn').disabled = false;
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('publishModal').classList.add('open');
+  }
+
+  function closePublishModal() {
+    if (publishing) return;
+    document.getElementById('publishModal').classList.remove('open');
+  }
+
+  async function runPublish() {
+    if (publishing) return;
+    publishing = true;
+    document.getElementById('confirmPublishBtn').disabled = true;
+    document.getElementById('publishModalDesc').style.display = 'none';
+    document.getElementById('publishProgress').style.display = 'block';
+    document.getElementById('publishError').style.display = 'none';
+
+    const { token, repo, branch } = getGH();
+
+    try {
+      document.getElementById('progressFill').style.width = '50%';
+      document.getElementById('progressStatus').textContent = 'Updating reviews.json...';
+
+      const reviews = getReviews();
+      await commitFile(
+        repo, branch, 'reviews.json',
+        b64Text(JSON.stringify(reviews, null, 2)),
+        `Update Google reviews (${reviews.filter(r => r.visible !== false).length} visible)`,
+        token
+      );
+
+      document.getElementById('progressFill').style.width = '100%';
+      localStorage.removeItem(DIRTY_KEY);
+      updateBanner();
+
+      document.getElementById('publishProgress').style.display = 'none';
+      document.getElementById('publishDone').style.display = 'block';
+      document.getElementById('modalActions').innerHTML =
+        `<button class="btn btn-primary" onclick="closePublishModal()">Done</button>`;
+
+    } catch(e) {
+      const errEl = document.getElementById('publishError');
+      errEl.textContent = 'Error: ' + e.message;
+      errEl.style.display = 'block';
+      document.getElementById('confirmPublishBtn').disabled = false;
+      document.getElementById('publishProgress').style.display = 'none';
+    } finally {
+      publishing = false;
+    }
+  }
+
+  // ─── INIT ────────────────────────────────────────────────────────────────────
+  if (authed) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    loadGHSettings();
+    renderReviews();
+    updateBanner();
+  }
+</script>
+</body>
+</html>
