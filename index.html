@@ -1323,6 +1323,8 @@
   let chatOpen = false;
   let sending = false;
   let conversationNotified = false;
+  let transcriptSent = false;
+  let leadCaptured = false;
 
   // Load chat config from site-content.json / localStorage
   async function initChat() {
@@ -1452,6 +1454,9 @@
   }
 
   async function submitLead(lead) {
+    leadCaptured = true;
+    transcriptSent = true;
+    const transcript = formatTranscript();
     await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -1463,10 +1468,44 @@
         phone: lead.phone,
         suburb: lead.suburb,
         service: lead.service,
-        message: `New chat lead:\n\nName: ${lead.name}\nPhone: ${lead.phone}\nSuburb: ${lead.suburb}\nService interested in: ${lead.service}`
+        message: `New chat lead:\n\nName: ${lead.name}\nPhone: ${lead.phone}\nSuburb: ${lead.suburb}\nService interested in: ${lead.service}\n\n──────────────────────\nFULL CONVERSATION TRANSCRIPT\n──────────────────────\n${transcript}`
       })
     });
   }
+
+  function formatTranscript() {
+    const now = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Adelaide' });
+    const lines = chatHistory.map(m => {
+      const label = m.role === 'user' ? 'Visitor' : 'Bot';
+      // Strip any <LEAD>…</LEAD> tags from bot messages
+      const text = m.content.replace(/<LEAD>[\s\S]*?<\/LEAD>/g, '').trim();
+      return text ? `${label}: ${text}` : null;
+    }).filter(Boolean);
+    return `Date: ${now}\n\n${lines.join('\n\n')}`;
+  }
+
+  async function sendTranscriptEmail() {
+    if (transcriptSent || chatHistory.length < 2) return;
+    transcriptSent = true;
+    const transcript = formatTranscript();
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: '40fdb995-bd3a-439d-929e-6c499d01f284',
+        subject: `Chat Transcript (no lead) — Maddern's Place`,
+        from_name: "Maddern's Place Chat",
+        message: `A visitor had a conversation but did not leave their details.\n\n──────────────────────\nFULL CONVERSATION TRANSCRIPT\n──────────────────────\n${transcript}`
+      })
+    }).catch(() => {});
+  }
+
+  // Send transcript when the page is closed/navigated away (if not already sent)
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden' && conversationNotified && !transcriptSent) {
+      sendTranscriptEmail();
+    }
+  });
 
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
