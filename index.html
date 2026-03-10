@@ -1364,6 +1364,9 @@
       notifyConversation(text);
     }
 
+    // Reset inactivity timer on every sent message
+    resetInactivityTimer();
+
     sending = true;
     const typingEl = addMsg('typing', 'Typing…');
 
@@ -1456,6 +1459,7 @@
   async function submitLead(lead) {
     leadCaptured = true;
     transcriptSent = true;
+    clearTimeout(inactivityTimer);
     const transcript = formatTranscript();
     await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
@@ -1500,12 +1504,17 @@
     }).catch(() => {});
   }
 
-  // Send transcript when the page is closed/navigated away (if not already sent)
-  document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'hidden' && conversationNotified && !transcriptSent) {
-      sendTranscriptEmail();
-    }
-  });
+  // Send transcript after 10 minutes of no typing (if conversation started and not already sent)
+  let inactivityTimer = null;
+  const INACTIVITY_MS = 10 * 60 * 1000; // 10 minutes
+
+  function resetInactivityTimer() {
+    if (!conversationNotified || transcriptSent) return;
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(sendTranscriptEmail, INACTIVITY_MS);
+  }
+
+  document.getElementById('chatInput').addEventListener('input', resetInactivityTimer);
 
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
