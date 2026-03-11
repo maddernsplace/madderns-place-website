@@ -1594,11 +1594,20 @@
   if (stored) {
     try { sc = JSON.parse(stored); } catch(e) {}
   }
+  // Always fetch JSON to restore service links that may be missing from localStorage
+  let jsonSc;
+  try {
+    const res = await fetch('site-content.json');
+    jsonSc = await res.json();
+  } catch(e) {}
   if (!sc) {
-    try {
-      const res = await fetch('site-content.json');
-      sc = await res.json();
-    } catch(e) { return; }
+    if (!jsonSc) return;
+    sc = jsonSc;
+  } else if (jsonSc && jsonSc.services && sc.services) {
+    // Merge link from JSON into localStorage services (matched by title)
+    const linkMap = {};
+    jsonSc.services.forEach(s => { if (s.link) linkMap[s.title] = s.link; });
+    sc.services = sc.services.map(s => (!s.link && linkMap[s.title]) ? { ...s, link: linkMap[s.title] } : s);
   }
 
   // Hero
