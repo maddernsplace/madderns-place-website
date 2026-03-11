@@ -35,17 +35,20 @@
     {
       "icon": "🌸",
       "title": "Garden Design",
-      "desc": "Our designers collaborate with you to create a garden that reflects your style and suits your lifestyle. From cottage gardens to contemporary escapes, we design spaces that delight the senses."
+      "desc": "Our designers collaborate with you to create a garden that reflects your style and suits your lifestyle. From cottage gardens to contemporary escapes, we design spaces that delight the senses.",
+      "link": "garden-design.html"
     },
     {
       "icon": "🏡",
       "title": "Landscaping",
-      "desc": "Complete outdoor transformations by Madderns Place Garden & Landscaping. We specialise in block retaining walls, turf installation, irrigation systems, drainage solutions, and tailored planting. From concept through to completion, we manage every stage of the project with clear communication and minimal disruption to your home."
+      "desc": "Complete outdoor transformations by Madderns Place Garden & Landscaping. We specialise in block retaining walls, turf installation, irrigation systems, drainage solutions, and tailored planting. From concept through to completion, we manage every stage of the project with clear communication and minimal disruption to your home.",
+      "link": "landscaping.html"
     },
     {
       "icon": "💧",
       "title": "Irrigation Installation & Repair",
-      "desc": "Irrigation installation, upgrades, and repairs — designed for efficient water use and healthy lawn growth. From new system setups to fault finding and repairs, we ensure your watering system works exactly as it should."
+      "desc": "Irrigation installation, upgrades, and repairs — designed for efficient water use and healthy lawn growth. From new system setups to fault finding and repairs, we ensure your watering system works exactly as it should.",
+      "link": "irrigation.html"
     }
   ],
   "process": [
