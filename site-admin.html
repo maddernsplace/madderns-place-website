@@ -499,9 +499,13 @@
             <input type="text" value="${esc(s.title)}" oninput="markDirty()" data-svc="${i}" data-field="title">
           </div>
         </div>
-        <div class="field" style="margin-bottom:0">
+        <div class="field" style="margin-bottom:0.8rem">
           <label>Description</label>
           <textarea rows="3" oninput="markDirty()" data-svc="${i}" data-field="desc">${esc(s.desc)}</textarea>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Page Link (e.g. mowing.html)</label>
+          <input type="text" value="${esc(s.link||'')}" oninput="markDirty()" data-svc="${i}" data-field="link" placeholder="Leave blank for no link">
         </div>
       </div>`).join('');
   }
@@ -522,11 +526,15 @@
 
   function getServices() {
     const list = document.getElementById('servicesList');
-    return [...list.querySelectorAll('.edit-card')].map((card, i) => ({
-      icon:  card.querySelector('[data-field="icon"]').value,
-      title: card.querySelector('[data-field="title"]').value,
-      desc:  card.querySelector('[data-field="desc"]').value
-    }));
+    return [...list.querySelectorAll('.edit-card')].map((card, i) => {
+      const link = card.querySelector('[data-field="link"]').value.trim();
+      return {
+        icon:  card.querySelector('[data-field="icon"]').value,
+        title: card.querySelector('[data-field="title"]').value,
+        desc:  card.querySelector('[data-field="desc"]').value,
+        ...(link ? { link } : {})
+      };
+    });
   }
 
   // ── PROCESS ──────────────────────────────────────────────────────────────
