@@ -125,6 +125,8 @@
     font-size: 1.3rem;
     color: var(--brown-light);
     letter-spacing: 0.04em;
+    text-decoration: none;
+    cursor: pointer;
   }
   .logo span { color: var(--green-pale); font-style: italic; }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
@@ -358,7 +360,7 @@
     font-size: 1.25rem; color: var(--green-deep); margin-bottom: 0.4rem;
   }
   .service-card p { font-size: 0.92rem; line-height: 1.7; color: var(--text-mid); margin: 0; }
-  a.service-card { text-decoration: none; color: inherit; display: flex; }
+  a.service-card { text-decoration: none; color: inherit; display: flex; cursor: pointer; }
   a.service-card:hover { background: var(--cream); }
   .service-card-link-label {
     display: inline-flex; align-items: center; gap: 0.35rem;
@@ -708,7 +710,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Maddern's <span>Place</span></div>
+  <a href="#home" class="logo">Maddern's <span>Place</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li class="nav-has-dropdown">
