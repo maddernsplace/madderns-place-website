@@ -1603,11 +1603,17 @@
   if (!sc) {
     if (!jsonSc) return;
     sc = jsonSc;
-  } else if (jsonSc && jsonSc.services && sc.services) {
-    // Merge link from JSON into localStorage services (matched by title)
-    const linkMap = {};
-    jsonSc.services.forEach(s => { if (s.link) linkMap[s.title] = s.link; });
-    sc.services = sc.services.map(s => (!s.link && linkMap[s.title]) ? { ...s, link: linkMap[s.title] } : s);
+  } else if (jsonSc) {
+    // Merge service links from JSON into localStorage services (matched by title)
+    if (jsonSc.services && sc.services) {
+      const linkMap = {};
+      jsonSc.services.forEach(s => { if (s.link) linkMap[s.title] = s.link; });
+      sc.services = sc.services.map(s => (!s.link && linkMap[s.title]) ? { ...s, link: linkMap[s.title] } : s);
+    }
+    // Always use JSON suppliers if localStorage has none
+    if (jsonSc.suppliers && jsonSc.suppliers.length && (!sc.suppliers || !sc.suppliers.length)) {
+      sc.suppliers = jsonSc.suppliers;
+    }
   }
 
   // Hero
