@@ -320,6 +320,15 @@
     font-size: 1.25rem; color: var(--green-deep); margin-bottom: 0.4rem;
   }
   .service-card p { font-size: 0.92rem; line-height: 1.7; color: var(--text-mid); margin: 0; }
+  a.service-card { text-decoration: none; color: inherit; display: flex; }
+  a.service-card:hover { background: var(--cream); }
+  .service-card-link-label {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    margin-top: 0.7rem; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green-mid); transition: gap 0.2s;
+  }
+  a.service-card:hover .service-card-link-label { gap: 0.65rem; }
 
   /* ─── HOW IT WORKS ─── */
   #process { background: var(--green-deep); color: var(--cream); }
@@ -752,13 +761,14 @@
     <h2 class="section-title">Our <em>Services</em></h2>
     <p style="color:var(--text-mid); max-width:560px; line-height:1.8; margin-top:0.5rem;">From weekly lawn care to complete garden transformations, we offer a full range of services tailored to your needs and budget.</p>
     <div class="services-grid" id="siteServicesGrid">
-      <div class="service-card fade-in">
+      <a href="mowing.html" class="service-card fade-in">
         <span class="service-icon">🌱</span>
         <div class="service-card-body">
           <h3>Lawn Care & Mowing</h3>
           <p>Keep your lawn lush, healthy, and immaculate year-round. Our regular maintenance programs include mowing, edging, fertilisation, and seasonal treatments for a lawn that always looks its best.</p>
+          <span class="service-card-link-label">Learn more →</span>
         </div>
-      </div>
+      </a>
       <div class="service-card fade-in">
         <span class="service-icon">🌸</span>
         <div class="service-card-body">
@@ -1569,14 +1579,19 @@
   // Services
   if (sc.services && sc.services.length) {
     const grid = document.getElementById('siteServicesGrid');
-    grid.innerHTML = sc.services.map(s => `
-      <div class="service-card fade-in visible">
+    grid.innerHTML = sc.services.map(s => {
+      const tag = s.link ? 'a' : 'div';
+      const href = s.link ? ` href="${s.link}"` : '';
+      const linkLabel = s.link ? `<span class="service-card-link-label">Learn more →</span>` : '';
+      return `<${tag}${href} class="service-card fade-in visible">
         <span class="service-icon">${s.icon}</span>
         <div class="service-card-body">
           <h3>${s.title}</h3>
           <p>${s.desc}</p>
+          ${linkLabel}
         </div>
-      </div>`).join('');
+      </${tag}>`;
+    }).join('');
   }
 
   // Process

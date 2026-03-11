@@ -29,7 +29,8 @@
     {
       "icon": "🌱",
       "title": "Lawn Care & Mowing",
-      "desc": "Keep your lawn lush, healthy, and immaculate year-round. Our regular maintenance programs include mowing, edging, fertilisation, and seasonal treatments for a lawn that always looks its best."
+      "desc": "Keep your lawn lush, healthy, and immaculate year-round. Our regular maintenance programs include mowing, edging, fertilisation, and seasonal treatments for a lawn that always looks its best.",
+      "link": "mowing.html"
     },
     {
       "icon": "🌸",
