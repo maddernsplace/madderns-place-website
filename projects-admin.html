@@ -172,7 +172,7 @@
     <nav class="admin-nav">
       <a href="index.html">← Site</a>
       <a href="blog-admin.html">Blog Admin</a>
-      <a href="#" onclick="showView('settings'); return false;">Settings</a>
+      <a href="#settingsView" onclick="showView('settings'); return false;">Settings</a>
       <button onclick="doLogout()">Logout</button>
     </nav>
   </header>
@@ -183,7 +183,7 @@
     <div id="dashView">
       <div class="gh-warning" id="ghWarning">
         ⚠️ GitHub is not configured — projects will only be visible on your device.
-        <a href="#" onclick="showView('settings'); return false;">Set up GitHub publishing →</a>
+        <a href="#settingsView" onclick="showView('settings'); return false;">Set up GitHub publishing →</a>
       </div>
       <div class="publish-banner" id="publishBanner">
         <span class="publish-banner-text"><strong>Unpublished changes</strong> — your latest edits haven't been pushed to GitHub yet.</span>
