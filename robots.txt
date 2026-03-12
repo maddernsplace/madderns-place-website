@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /blog-admin.html
+Disallow: /projects-admin.html
+Disallow: /reviews-admin.html
+Disallow: /site-admin.html
 
 Sitemap: https://maddernsplace.com/sitemap.xml
