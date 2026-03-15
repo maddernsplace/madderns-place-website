@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop | Maddern's Place Garden & Landscaping</title>
+<meta name="description" content="Shop garden products, lawn care supplies and digital guides from Maddern's Place — Adelaide's trusted landscaping specialists.">
+<meta name="keywords" content="garden products Adelaide, lawn care products, garden guides Adelaide, landscaping supplies Adelaide south">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Maddern's Place Garden & Landscaping">
+<link rel="canonical" href="https://maddernsplace.com/shop.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://maddernsplace.com/shop.html">
+<meta property="og:title" content="Shop | Maddern's Place Garden & Landscaping">
+<meta property="og:description" content="Shop garden products, lawn care supplies and digital guides from Maddern's Place.">
+<meta property="og:image" content="https://maddernsplace.com/Home Design.jpeg">
+<meta property="og:site_name" content="Maddern's Place Garden & Landscaping">
+<meta property="og:locale" content="en_AU">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shop — Maddern's Place Adelaide">
+<meta name="twitter:description" content="Shop garden products, lawn care supplies and digital guides from Maddern's Place.">
+<meta name="twitter:image" content="https://maddernsplace.com/Home Design.jpeg">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "@id": "https://maddernsplace.com/shop.html",
+  "name": "Maddern's Place Shop",
+  "url": "https://maddernsplace.com/shop.html",
+  "description": "Garden products, lawn care supplies and digital guides from Maddern's Place Garden & Landscaping.",
+  "about": {
+    "@type": "LandscapeService",
+    "@id": "https://maddernsplace.com/#business",
+    "name": "Maddern's Place Garden & Landscaping",
+    "url": "https://maddernsplace.com"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a1f; --green-mid: #2d5a34; --green-light: #4a8c55;
+    --green-pale: #a8c5a0; --brown-dark: #3d2b1a; --brown-mid: #6b4c2e;
+    --brown-light: #c4a882; --cream: #f5f0e8; --white: #fdfcfa;
+    --text-dark: #1e1e1e; --text-mid: #4a4a4a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Raleway', sans-serif; background: var(--white); color: var(--text-dark); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(26,58,31,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(168,197,160,0.2);
+  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--brown-light); letter-spacing: 0.04em; text-decoration: none; }
+  .logo span { color: var(--green-pale); font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: var(--cream); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--brown-light); }
+  .nav-cta { background: var(--brown-mid); color: var(--cream) !important; padding: 0.5rem 1.4rem !important; border-radius: 2px; }
+  .nav-cta:hover { background: var(--brown-light) !important; color: var(--brown-dark) !important; }
+
+  /* ─── PAGE HERO ─── */
+  .page-hero {
+    padding: 11rem 4rem 5rem;
+    background: linear-gradient(155deg, var(--green-deep) 0%, #1c3020 60%, #213820 100%);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(168,197,160,0.08) 0%, transparent 60%);
+  }
+  .page-hero .label {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--green-pale); display: inline-flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;
+  }
+  .page-hero .label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--green-pale); }
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem); color: var(--cream); line-height: 1.1;
+    margin-bottom: 1.2rem; position: relative;
+  }
+  .page-hero h1 em { color: var(--green-pale); font-style: italic; }
+  .page-hero p { color: rgba(245,240,232,0.7); font-size: 1rem; max-width: 520px; margin: 0 auto; line-height: 1.7; position: relative; }
+
+  /* ─── SHOP SECTION ─── */
+  .shop-section { padding: 5rem 4rem; background: var(--cream); }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* ─── FILTER BAR ─── */
+  .filter-bar {
+    display: flex; gap: 0.8rem; margin-bottom: 3rem; flex-wrap: wrap; align-items: center;
+  }
+  .filter-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mid); margin-right: 0.4rem; }
+  .filter-btn {
+    padding: 0.45rem 1.2rem; border-radius: 20px; font-family: 'Raleway', sans-serif;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer; border: 1.5px solid rgba(26,58,31,0.2); background: transparent;
+    color: var(--text-mid); transition: all 0.25s;
+  }
+  .filter-btn:hover { border-color: var(--green-mid); color: var(--green-mid); }
+  .filter-btn.active { background: var(--green-mid); border-color: var(--green-mid); color: var(--cream); }
+
+  /* ─── PRODUCT GRID ─── */
+  .shop-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+  }
+
+  /* ─── PRODUCT CARD ─── */
+  .product-card {
+    background: var(--white); border-radius: 6px; overflow: hidden;
+    border: 1px solid rgba(26,58,31,0.08); transition: box-shadow 0.3s, transform 0.3s;
+    display: flex; flex-direction: column;
+  }
+  .product-card:hover { box-shadow: 0 10px 40px rgba(26,58,31,0.12); transform: translateY(-4px); }
+
+  .product-card-img {
+    width: 100%; height: 200px; overflow: hidden; flex-shrink: 0; position: relative;
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .product-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+  .product-card:hover .product-card-img img { transform: scale(1.04); }
+  .product-card-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; color: rgba(255,255,255,0.3);
+  }
+
+  .product-badge {
+    position: absolute; top: 0.8rem; left: 0.8rem;
+    background: var(--brown-mid); color: var(--cream);
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.25rem 0.7rem; border-radius: 2px;
+  }
+  .product-badge.digital { background: #1a5c8a; }
+
+  .product-card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+  .product-type-tag {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--green-light); margin-bottom: 0.5rem;
+  }
+  .product-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--green-deep); margin-bottom: 0.7rem; line-height: 1.3; }
+  .product-desc { font-size: 0.88rem; color: var(--text-mid); line-height: 1.75; flex: 1;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .product-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 1.4rem; gap: 0.8rem; }
+  .product-price { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--green-deep); font-weight: 700; }
+  .product-price small { font-family: 'Raleway', sans-serif; font-size: 0.72rem; color: var(--text-mid); font-weight: 400; letter-spacing: 0.05em; margin-left: 0.2rem; }
+
+  .buy-btn {
+    display: inline-block; padding: 0.6rem 1.4rem;
+    background: var(--green-mid); color: var(--cream);
+    text-decoration: none; border-radius: 3px;
+    font-family: 'Raleway', sans-serif; font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: background 0.25s, color 0.25s; white-space: nowrap;
+  }
+  .buy-btn:hover { background: var(--green-deep); }
+  .buy-btn.placeholder { background: rgba(45,90,52,0.25); color: var(--green-mid); cursor: default; pointer-events: none; }
+
+  /* ─── STRIPE NOTICE ─── */
+  .stripe-notice {
+    margin-top: 3.5rem; padding: 1.4rem 2rem;
+    background: var(--white); border-radius: 6px;
+    border: 1px solid rgba(26,58,31,0.1);
+    display: flex; align-items: center; gap: 1.2rem;
+    font-size: 0.85rem; color: var(--text-mid); line-height: 1.6;
+  }
+  .stripe-notice .lock-icon { font-size: 1.5rem; flex-shrink: 0; }
+
+  /* ─── EMPTY STATE ─── */
+  .no-products {
+    grid-column: 1 / -1; text-align: center; padding: 5rem 2rem; color: var(--text-mid);
+  }
+  .no-products .no-icon { font-size: 3.5rem; margin-bottom: 1.2rem; }
+  .no-products h3 { font-family: 'Playfair Display', serif; color: var(--green-deep); font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .no-products p { line-height: 1.8; max-width: 400px; margin: 0 auto; }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--brown-dark); color: rgba(245,240,232,0.6); padding: 3rem 4rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--brown-light); }
+  .footer-logo span { color: var(--green-pale); font-style: italic; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { color: rgba(245,240,232,0.5); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.08em; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--brown-light); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    .page-hero { padding: 9rem 2rem 4rem; }
+    .shop-section { padding: 3rem 2rem; }
+    .shop-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 580px) {
+    .shop-grid { grid-template-columns: 1fr; }
+    footer { padding: 2.5rem 1.5rem; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Maddern's <span>Place</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="projects.html">Gallery</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="shop.html" class="active">Shop</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="label">Products &amp; Guides</div>
+  <h1>Our <em>Shop</em></h1>
+  <p>Garden supplies, lawn care products, and digital guides to help you create the outdoor space you love.</p>
+</div>
+
+<section class="shop-section">
+  <div class="container">
+
+    <div class="filter-bar" id="filterBar">
+      <span class="filter-label">Filter:</span>
+      <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All Products</button>
+      <button class="filter-btn" data-filter="physical" onclick="setFilter('physical')">Physical</button>
+      <button class="filter-btn" data-filter="digital" onclick="setFilter('digital')">Digital Downloads</button>
+    </div>
+
+    <div class="shop-grid" id="shopGrid"></div>
+
+    <div class="stripe-notice">
+      <span class="lock-icon">🔒</span>
+      <span>Payments are processed securely through <strong>Stripe</strong>. Your card details are never stored on this site. For digital products, your download link will be emailed to you immediately after purchase.</span>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      Maddern's <span>Place</span><br>
+      <small style="font-family:'Raleway',sans-serif; font-size:0.7rem; letter-spacing:0.1em; color:rgba(245,240,232,0.4);">GARDEN & LANDSCAPING</small>
+    </div>
+    <div style="font-size:0.8rem;">© 2025 Maddern's Place Garden & Landscaping. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="shop.html">Shop</a>
+      <a href="blog.html">Blog</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  const placeholderIcons = { physical: '🌿', digital: '📄' };
+  const placeholderBgs = [
+    'background: radial-gradient(ellipse at 30% 60%, rgba(74,140,85,0.6) 0%, transparent 55%), linear-gradient(160deg, #1a3a1f 0%, #2d5a34 50%, #4a7a40 100%);',
+    'background: radial-gradient(ellipse at 60% 40%, rgba(168,197,160,0.3) 0%, transparent 50%), linear-gradient(135deg, #4a6741 0%, #2d5a34 100%);',
+    'background: radial-gradient(ellipse at 40% 70%, rgba(196,168,130,0.4) 0%, transparent 55%), linear-gradient(160deg, #3d2b1a 0%, #6b4c2e 60%, #8a6a3e 100%);',
+    'background: radial-gradient(ellipse at 50% 50%, rgba(90,122,82,0.5) 0%, transparent 60%), linear-gradient(135deg, #3d6645 0%, #5a7a52 100%);',
+  ];
+
+  let _products = [];
+  let _activeFilter = 'all';
+
+  async function loadProducts() {
+    try {
+      const r = await fetch('shop.json?v=' + Date.now());
+      if (r.ok) {
+        const all = await r.json();
+        _products = all.filter(p => p.visible !== false);
+      }
+    } catch {}
+    if (!_products.length) {
+      try {
+        _products = JSON.parse(localStorage.getItem('madderns_shop') || '[]')
+          .filter(p => p.visible !== false);
+      } catch {}
+    }
+  }
+
+  function setFilter(filter) {
+    _activeFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.filter === filter);
+    });
+    renderGrid();
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById('shopGrid');
+    const visible = _products.filter(p => _activeFilter === 'all' || p.type === _activeFilter);
+
+    if (!visible.length) {
+      grid.innerHTML = `<div class="no-products">
+        <div class="no-icon">🌱</div>
+        <h3>Coming Soon</h3>
+        <p>We're adding products to the shop. Check back soon!</p>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = visible.map((p, i) => {
+      const price = typeof p.price === 'number' ? p.price.toFixed(2) : p.price;
+      const isPlaceholderLink = !p.stripeLink || p.stripeLink.includes('your-link-here');
+      const buyBtn = isPlaceholderLink
+        ? `<span class="buy-btn placeholder">Coming Soon</span>`
+        : `<a href="${esc(p.stripeLink)}" class="buy-btn" target="_blank" rel="noopener noreferrer">Buy Now →</a>`;
+
+      const imgHtml = p.image
+        ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">`
+        : `<div class="product-card-img-placeholder" style="${placeholderBgs[i % placeholderBgs.length]}">${placeholderIcons[p.type] || '🛒'}</div>`;
+
+      const badgeHtml = p.badge
+        ? `<div class="product-badge${p.type === 'digital' ? ' digital' : ''}">${esc(p.badge)}</div>` : '';
+
+      return `<div class="product-card">
+        <div class="product-card-img">
+          ${imgHtml}
+          ${badgeHtml}
+        </div>
+        <div class="product-card-body">
+          <div class="product-type-tag">${p.type === 'digital' ? 'Digital Download' : 'Physical Product'}</div>
+          <div class="product-title">${esc(p.name)}</div>
+          <div class="product-desc">${esc(p.description)}</div>
+          <div class="product-footer">
+            <div class="product-price">$${esc(String(price))} <small>${esc(p.currency || 'AUD')}</small></div>
+            ${buyBtn}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  async function init() {
+    await loadProducts();
+    renderGrid();
+  }
+
+  init();
+</script>
+</body>
+</html>
