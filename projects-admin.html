@@ -376,6 +376,17 @@
   function getPass() { return localStorage.getItem(PASS_KEY) || DEFAULT_PASS; }
   function uid() { return 'proj_' + Date.now() + '_' + Math.random().toString(36).slice(2,5); }
 
+  // Seed localStorage from projects.json if local storage is empty
+  async function bootstrapProjects() {
+    if (getProjects().length > 0) return;
+    try {
+      const r = await fetch('projects.json?v=' + Date.now());
+      if (!r.ok) return;
+      const data = await r.json();
+      if (Array.isArray(data) && data.length > 0) saveProjects(data);
+    } catch {}
+  }
+
   // ─── GITHUB ──────────────────────────────────────────────────────────────────
   function getGH() {
     return {
@@ -508,7 +519,7 @@
       sessionStorage.setItem('mp_auth', '1'); authed = true;
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminApp').style.display = 'block';
-      showView('dash');
+      bootstrapProjects().then(() => showView('dash'));
     } else {
       document.getElementById('loginErr').style.display = 'block';
       document.getElementById('loginPw').value = '';
@@ -526,7 +537,7 @@
   if (authed) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminApp').style.display = 'block';
-    showView('dash');
+    bootstrapProjects().then(() => showView('dash'));
   }
 
   // ─── VIEWS ───────────────────────────────────────────────────────────────────
