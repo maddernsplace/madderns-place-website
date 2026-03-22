@@ -1,17 +1,5 @@
 [
   {
-    "id": "prod-001",
-    "name": "Lawn Care Starter Pack",
-    "type": "physical",
-    "price": 49.99,
-    "currency": "AUD",
-    "description": "Everything you need to get your lawn looking its best. Includes premium lawn seed mix, slow-release fertiliser, and a lawn care guide.",
-    "image": "",
-    "stripeLink": "https://buy.stripe.com/your-link-here",
-    "badge": "Best Seller",
-    "visible": true
-  },
-  {
     "id": "prod-002",
     "name": "Garden Design Guide (Digital)",
     "type": "digital",
@@ -21,18 +9,6 @@
     "image": "",
     "stripeLink": "https://buy.stripe.com/your-link-here",
     "badge": "Digital Download",
-    "visible": true
-  },
-  {
-    "id": "prod-003",
-    "name": "Premium Mulch Bag (30L)",
-    "type": "physical",
-    "price": 24.99,
-    "currency": "AUD",
-    "description": "High-quality garden mulch to retain moisture, suppress weeds, and improve soil health. Suitable for all garden beds and ideal for Adelaide's hot summers.",
-    "image": "",
-    "stripeLink": "https://buy.stripe.com/your-link-here",
-    "badge": "",
     "visible": true
   },
   {
