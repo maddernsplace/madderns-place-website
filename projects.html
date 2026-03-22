@@ -153,13 +153,83 @@
   .footer-links a { color: rgba(245,240,232,0.5); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.08em; transition: color 0.3s; }
   .footer-links a:hover { color: var(--brown-light); }
 
+  /* ─── BEFORE / AFTER SECTION ─── */
+  .ba-section { padding: 5rem 4rem; background: var(--green-deep); }
+  .ba-section-header { text-align: center; margin-bottom: 3rem; }
+  .ba-section-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--green-pale); display: inline-flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;
+  }
+  .ba-section-label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--green-pale); }
+  .ba-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); color: var(--cream); margin-bottom: 0.8rem; }
+  .ba-section h2 em { color: var(--green-pale); font-style: italic; }
+  .ba-section-sub { color: rgba(245,240,232,0.55); font-size: 0.92rem; max-width: 460px; margin: 0 auto; line-height: 1.75; }
+
+  .ba-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; }
+
+  .ba-card { background: var(--white); border-radius: 8px; overflow: hidden; }
+  .ba-card-label {
+    padding: 1.1rem 1.4rem 0.8rem;
+    font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--green-deep);
+  }
+
+  /* Slider wrapper */
+  .ba-wrap {
+    position: relative; overflow: hidden;
+    cursor: col-resize; user-select: none;
+    touch-action: pan-y;
+  }
+
+  /* Before & After image layers */
+  .ba-before-bg, .ba-after-bg {
+    width: 100%; height: 260px;
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+    display: block;
+  }
+  .ba-after-bg {
+    position: absolute; top: 0; left: 0;
+    clip-path: inset(0 50% 0 0);
+    transition: none;
+  }
+
+  /* BEFORE / AFTER text labels */
+  .ba-lbl {
+    position: absolute; bottom: 12px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: #fff; background: rgba(0,0,0,0.42); padding: 0.22rem 0.55rem; border-radius: 2px;
+    pointer-events: none;
+  }
+  .ba-lbl-b { left: 12px; }
+  .ba-lbl-a { right: 12px; }
+
+  /* Divider line */
+  .ba-line {
+    position: absolute; top: 0; left: 50%;
+    width: 2px; height: 100%;
+    background: #fff; transform: translateX(-50%);
+    pointer-events: none; box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  }
+
+  /* Drag handle circle */
+  .ba-circle {
+    position: absolute; top: 50%; left: 50%;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #fff; transform: translate(-50%, -50%);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.32);
+    pointer-events: none;
+  }
+  .ba-circle svg { width: 20px; height: 20px; stroke: var(--green-mid); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
   /* ─── RESPONSIVE ─── */
   @media (max-width: 900px) {
     nav { padding: 1rem 2rem; }
     .nav-links { display: none; }
     .page-hero { padding: 9rem 2rem 4rem; }
+    .ba-section { padding: 3.5rem 2rem; }
     .projects-section { padding: 3rem 2rem; }
     .projects-grid { grid-template-columns: 1fr 1fr; }
+    .ba-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 580px) {
     .projects-grid { grid-template-columns: 1fr; }
@@ -187,6 +257,17 @@
   <h1>All <em>Projects</em></h1>
   <p>Browse our full portfolio of garden transformations, landscaping projects and outdoor spaces.</p>
 </div>
+
+<section class="ba-section" id="baSection" style="display:none;">
+  <div class="container">
+    <div class="ba-section-header">
+      <div class="ba-section-label">The Difference</div>
+      <h2>Before <em>&amp; After</em></h2>
+      <p class="ba-section-sub">Drag the slider to reveal the transformation — see exactly what we can do for your outdoor space.</p>
+    </div>
+    <div class="ba-grid" id="baGrid"></div>
+  </div>
+</section>
 
 <section class="projects-section">
   <div class="container">
@@ -310,6 +391,85 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
   renderProjects();
+
+  // ─── BEFORE / AFTER SLIDERS ───
+  const BA_PLACEHOLDERS = [
+    'linear-gradient(135deg,#1a3a1f 0%,#2d5a34 60%,#4a8c55 100%)',
+    'linear-gradient(135deg,#3d2b1a 0%,#6b4c2e 60%,#c4a882 100%)',
+    'linear-gradient(135deg,#4a6741 0%,#2d5a34 100%)',
+    'linear-gradient(135deg,#3d6645 0%,#5a7a52 100%)',
+  ];
+
+  async function loadBeforeAfter() {
+    let items = [];
+    try {
+      const r = await fetch('beforeafter.json?v=' + Date.now());
+      if (r.ok) items = (await r.json()).filter(x => x.visible !== false);
+    } catch {}
+
+    const section = document.getElementById('baSection');
+    const grid = document.getElementById('baGrid');
+
+    // Only show section if at least one item has both images set
+    const withImages = items.filter(x => x.before && x.after);
+    if (!withImages.length) { section.style.display = 'none'; return; }
+
+    section.style.display = '';
+    grid.innerHTML = withImages.map((item, i) => {
+      const bBg = item.before
+        ? `url('${item.before}')`
+        : BA_PLACEHOLDERS[i * 2 % BA_PLACEHOLDERS.length];
+      const aBg = item.after
+        ? `url('${item.after}')`
+        : BA_PLACEHOLDERS[(i * 2 + 1) % BA_PLACEHOLDERS.length];
+      return `
+        <div class="ba-card">
+          ${item.title ? `<div class="ba-card-label">${esc(item.title)}</div>` : ''}
+          <div class="ba-wrap" data-pct="50">
+            <div class="ba-before-bg" style="background:${bBg};background-size:cover;background-position:center;"></div>
+            <div class="ba-after-bg"  style="background:${aBg};background-size:cover;background-position:center;"></div>
+            <div class="ba-lbl ba-lbl-b">Before</div>
+            <div class="ba-lbl ba-lbl-a">After</div>
+            <div class="ba-line"></div>
+            <div class="ba-circle">
+              <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="translate(0,0)"/></svg>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    // Init each slider
+    grid.querySelectorAll('.ba-wrap').forEach(initSlider);
+  }
+
+  function initSlider(wrap) {
+    let active = false;
+
+    function applyPct(pct) {
+      pct = Math.min(Math.max(pct, 1), 99);
+      wrap.querySelector('.ba-after-bg').style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+      wrap.querySelector('.ba-line').style.left   = pct + '%';
+      wrap.querySelector('.ba-circle').style.left = pct + '%';
+    }
+
+    function pctFrom(clientX) {
+      const r = wrap.getBoundingClientRect();
+      return (clientX - r.left) / r.width * 100;
+    }
+
+    applyPct(50);
+
+    wrap.addEventListener('mousedown',  e => { active = true; applyPct(pctFrom(e.clientX)); e.preventDefault(); });
+    wrap.addEventListener('touchstart', e => { active = true; applyPct(pctFrom(e.touches[0].clientX)); }, { passive: true });
+
+    document.addEventListener('mousemove',  e => { if (active) applyPct(pctFrom(e.clientX)); });
+    document.addEventListener('touchmove',  e => { if (active) applyPct(pctFrom(e.touches[0].clientX)); }, { passive: true });
+
+    document.addEventListener('mouseup',  () => { active = false; });
+    document.addEventListener('touchend', () => { active = false; });
+  }
+
+  loadBeforeAfter();
 </script>
 </body>
 </html>
