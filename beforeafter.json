@@ -1,16 +1,16 @@
 [
   {
     "id": "ba-001",
-    "title": "Front Yard Transformation",
-    "before": "",
-    "after": "",
+    "title": "Side Block Wall",
+    "before": "before-after-images/IMG_7401.JPEG",
+    "after": "before-after-images/IMG_7581.JPEG",
     "visible": true
   },
   {
     "id": "ba-002",
-    "title": "Garden Bed Renovation",
-    "before": "",
-    "after": "",
+    "title": "Front Wall",
+    "before": "before-after-images/IMG_7403.JPEG",
+    "after": "before-after-images/IMG_7592.JPEG",
     "visible": true
   }
 ]
