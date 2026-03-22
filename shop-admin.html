@@ -427,9 +427,9 @@
     showToast('Password updated.');
   }
 
-  // Check session on load
+  // Check session on load — accept either shop session or main admin hub session
   window.addEventListener('load', () => {
-    if (sessionStorage.getItem(SESSION_KEY)) {
+    if (sessionStorage.getItem(SESSION_KEY) || sessionStorage.getItem('mp_auth') === '1') {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminApp').style.display = 'block';
       initApp();
