@@ -26,6 +26,26 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://maddernsplace.com/landscaping-morphett-vale.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://maddernsplace.com/landscaping-hackham.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://maddernsplace.com/landscaping-christies-beach.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://maddernsplace.com/landscaping-noarlunga.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://maddernsplace.com/projects.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
