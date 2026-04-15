@@ -5,6 +5,8 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Core Service Pages -->
   <url>
     <loc>https://maddernsplace.com/landscaping.html</loc>
     <changefreq>monthly</changefreq>
@@ -25,6 +27,47 @@
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- SEO Service + Location Pages (Priority 1) -->
+  <url>
+    <loc>https://maddernsplace.com/landscaping-adelaide.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://maddernsplace.com/retaining-walls-adelaide.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://maddernsplace.com/irrigation-adelaide.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://maddernsplace.com/gutter-cleaning-adelaide.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Suburb-Specific SEO Pages (Priority 2) -->
+  <url>
+    <loc>https://maddernsplace.com/landscaping-hackham.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maddernsplace.com/gutter-cleaning-morphett-vale.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maddernsplace.com/irrigation-hallett-cove.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Content Pages -->
   <url>
     <loc>https://maddernsplace.com/projects.html</loc>
     <changefreq>weekly</changefreq>
