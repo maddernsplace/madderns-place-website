@@ -156,7 +156,9 @@
   .overview-visual::after {
     content: ''; position: absolute; inset: 0;
     background: radial-gradient(ellipse at 30% 70%, rgba(168,197,160,0.2) 0%, transparent 55%);
+    z-index: 1;
   }
+  .overview-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 0; }
 
   /* ─── WHAT'S INCLUDED ─── */
   .included-section { background: var(--cream); }
@@ -302,7 +304,7 @@
         <p>Unlike manual raking methods, our vacuum cleaning system removes all fine debris, soil, and seed material — not just the large leaves. This leaves your gutters completely clear and flowing freely, with no mess left behind on your roof or in your garden.</p>
         <p>We service homes across Hackham, Morphett Vale, Hallett Cove, Reynella, Christies Beach, and the surrounding southern Adelaide suburbs. Whether you're a homeowner needing an annual clean or a property manager maintaining multiple properties, we deliver a reliable, professional service every time.</p>
       </div>
-      <div class="overview-visual fade-in">🏠</div>
+      <div class="overview-visual fade-in"><img src="LocationImages/Rear1.jpeg" alt="Professional gutter cleaning service Adelaide southern suburbs" loading="lazy"></div>
     </div>
   </div>
 </section>

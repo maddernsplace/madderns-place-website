@@ -96,7 +96,8 @@
   .overview-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5rem; align-items: center; margin-top: 3rem; }
   .overview-text p { font-size: 1rem; line-height: 1.85; color: var(--text-mid); margin-bottom: 1.2rem; }
   .overview-visual { background: linear-gradient(155deg, var(--green-deep) 0%, #2d5a34 60%, #4a7a40 100%); border-radius: 6px; height: 380px; display: flex; align-items: center; justify-content: center; font-size: 6rem; position: relative; overflow: hidden; }
-  .overview-visual::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 70%, rgba(168,197,160,0.2) 0%, transparent 55%); }
+  .overview-visual::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 70%, rgba(168,197,160,0.2) 0%, transparent 55%); z-index: 1; }
+  .overview-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 0; }
   .included-section { background: var(--cream); }
   .included-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
   .included-card { background: var(--white); border-radius: 6px; padding: 2rem; border: 1px solid rgba(26,58,31,0.08); transition: box-shadow 0.3s, transform 0.3s; }
@@ -173,7 +174,7 @@
         <p>Hackham and Hackham West contain a wide range of property types — from compact residential blocks close to the centre through to larger lots with more challenging terrain, drainage requirements, and soil profiles. We've worked across this whole area and have built outdoor spaces that not only look great on day one, but hold up year after year through Adelaide's climate cycles.</p>
         <p>Whether you're a new homeowner wanting to landscape a blank block, a long-term resident needing a garden renovation, or an investor improving a rental property — we deliver complete outdoor builds. Turf, irrigation, retaining walls, drainage, planting, and more — all handled by our own team without subcontracting anything out.</p>
       </div>
-      <div class="overview-visual fade-in">🏡</div>
+      <div class="overview-visual fade-in"><img src="LocationImages/Rear1.jpeg" alt="Landscaping Hackham backyard transformation with turf and garden beds" loading="lazy"></div>
     </div>
   </div>
 </section>

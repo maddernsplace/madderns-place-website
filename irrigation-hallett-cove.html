@@ -96,7 +96,8 @@
   .overview-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5rem; align-items: center; margin-top: 3rem; }
   .overview-text p { font-size: 1rem; line-height: 1.85; color: var(--text-mid); margin-bottom: 1.2rem; }
   .overview-visual { background: linear-gradient(155deg, var(--green-deep) 0%, #2d5a34 60%, #4a7a40 100%); border-radius: 6px; height: 380px; display: flex; align-items: center; justify-content: center; font-size: 6rem; position: relative; overflow: hidden; }
-  .overview-visual::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 70%, rgba(168,197,160,0.2) 0%, transparent 55%); }
+  .overview-visual::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 70%, rgba(168,197,160,0.2) 0%, transparent 55%); z-index: 1; }
+  .overview-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 0; }
   .included-section { background: var(--cream); }
   .included-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
   .included-card { background: var(--white); border-radius: 6px; padding: 2rem; border: 1px solid rgba(26,58,31,0.08); transition: box-shadow 0.3s, transform 0.3s; }
@@ -173,7 +174,7 @@
         <p>At Maddern's Place, we design irrigation systems that account for these local conditions from the very start. Head placement, precipitation rates, run times, and controller programming are all chosen with Hallett Cove's specific environment in mind — so your system delivers the right amount of water to the right areas, without waste, runoff, or dry spots.</p>
         <p>We install Hunter MP Rotators for lawn areas, Antelco drip emitters for garden beds, and Hunter Bluetooth NODE controllers that can be programmed and adjusted directly from your phone. All systems are configured to comply with SA Water's watering day schedule for Hallett Cove from the first day they run — no guesswork, no manual overrides needed.</p>
       </div>
-      <div class="overview-visual fade-in">💧</div>
+      <div class="overview-visual fade-in"><img src="LocationImages/Rear2.jpg" alt="Irrigation system Hallett Cove with retaining wall and fresh turf" loading="lazy"></div>
     </div>
   </div>
 </section>

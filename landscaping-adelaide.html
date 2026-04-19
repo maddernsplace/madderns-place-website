@@ -97,7 +97,8 @@
   .overview-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5rem; align-items: center; margin-top: 3rem; }
   .overview-text p { font-size: 1rem; line-height: 1.85; color: var(--text-mid); margin-bottom: 1.2rem; }
   .overview-visual { background: linear-gradient(155deg, var(--green-deep) 0%, #2d5a34 60%, #4a7a40 100%); border-radius: 6px; height: 380px; display: flex; align-items: center; justify-content: center; font-size: 6rem; position: relative; overflow: hidden; }
-  .overview-visual::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 70%, rgba(168,197,160,0.2) 0%, transparent 55%); }
+  .overview-visual::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 70%, rgba(168,197,160,0.2) 0%, transparent 55%); z-index: 1; }
+  .overview-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 0; }
   .included-section { background: var(--cream); }
   .included-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
   .included-card { background: var(--white); border-radius: 6px; padding: 2rem; border: 1px solid rgba(26,58,31,0.08); transition: box-shadow 0.3s, transform 0.3s; }
@@ -180,7 +181,7 @@
         <p>Our landscaping services cover everything your outdoor space could need: retaining walls, new turf installation, irrigation systems, drainage, paving, planting, and gutter cleaning. We manage projects from the initial site visit through to completion, handling every part of the work in-house so your project runs on schedule and on budget without the handoffs and delays that come from using multiple contractors.</p>
         <p>We work with homeowners, property investors, and builders across Adelaide's south, consistently delivering high-quality outdoor spaces that are built to last in local conditions. Honest quotes, clear communication, and results that we're proud of — that's the standard we hold every job to.</p>
       </div>
-      <div class="overview-visual fade-in">🏡</div>
+      <div class="overview-visual fade-in"><img src="LocationImages/image1.JPEG" alt="Landscaping Adelaide front garden with retaining wall and turf installation" loading="lazy"></div>
     </div>
   </div>
 </section>
