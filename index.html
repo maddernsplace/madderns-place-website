@@ -39,49 +39,119 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LandscapeService",
-  "@id": "https://maddernsplace.com/#business",
-  "name": "Maddern's Place Garden & Landscaping",
-  "url": "https://maddernsplace.com",
-  "logo": "https://maddernsplace.com/Home Design.jpeg",
-  "image": "https://maddernsplace.com/Home Design.jpeg",
-  "description": "Professional landscaping services across Hackham, Morphett Vale and Adelaide's southern suburbs. Specialising in landscape design, turf installation, retaining walls, irrigation systems, lawn care and gutter cleaning.",
-  "telephone": "+61459119149",
-  "email": "maddernsplace@gmail.com",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Hackham",
-    "addressRegion": "SA",
-    "addressCountry": "AU"
-  },
-  "areaServed": [
-    { "@type": "City", "name": "Hackham" },
-    { "@type": "City", "name": "Morphett Vale" },
-    { "@type": "City", "name": "Adelaide" },
-    { "@type": "AdministrativeArea", "name": "Adelaide Southern Suburbs" }
-  ],
-  "priceRange": "$$",
-  "openingHoursSpecification": [
+  "@graph": [
     {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-      "opens": "08:00",
-      "closes": "18:00"
+      "@type": "WebSite",
+      "@id": "https://maddernsplace.com/#website",
+      "url": "https://maddernsplace.com",
+      "name": "Maddern's Place Garden & Landscaping",
+      "description": "Professional landscaping services across Adelaide's southern suburbs.",
+      "publisher": { "@id": "https://maddernsplace.com/#business" }
+    },
+    {
+      "@type": ["LandscapeService", "LocalBusiness"],
+      "@id": "https://maddernsplace.com/#business",
+      "name": "Maddern's Place Garden & Landscaping",
+      "url": "https://maddernsplace.com",
+      "logo": "https://maddernsplace.com/Home Design.jpeg",
+      "image": "https://maddernsplace.com/Home Design.jpeg",
+      "description": "Professional landscaping services across Hackham, Morphett Vale and Adelaide's southern suburbs. Specialising in landscape design, turf installation, retaining walls, irrigation systems, lawn care and gutter cleaning.",
+      "telephone": "+61459119149",
+      "email": "maddernsplace@gmail.com",
+      "foundingDate": "2019",
+      "dateModified": "2026-06-06",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hackham",
+        "addressRegion": "SA",
+        "postalCode": "5163",
+        "addressCountry": "AU"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Hackham" },
+        { "@type": "City", "name": "Morphett Vale" },
+        { "@type": "City", "name": "Adelaide" },
+        { "@type": "City", "name": "Hallett Cove" },
+        { "@type": "City", "name": "Happy Valley" },
+        { "@type": "City", "name": "Noarlunga" },
+        { "@type": "City", "name": "Reynella" },
+        { "@type": "City", "name": "Seaford" },
+        { "@type": "City", "name": "Christies Beach" },
+        { "@type": "AdministrativeArea", "name": "Adelaide Southern Suburbs" }
+      ],
+      "priceRange": "$$",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+          "opens": "08:00",
+          "closes": "18:00"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Landscaping Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Landscape Design & Construction", "url": "https://maddernsplace.com/landscaping.html" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Turf Installation", "url": "https://maddernsplace.com/landscaping.html" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Retaining Wall Installation", "url": "https://maddernsplace.com/retaining-walls-adelaide.html" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Irrigation Systems", "url": "https://maddernsplace.com/irrigation.html" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lawn Care & Mowing", "url": "https://maddernsplace.com/mowing.html" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gutter Vacuum Cleaning", "url": "https://maddernsplace.com/gutter-cleaning-adelaide.html" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Garden Design", "url": "https://maddernsplace.com/garden-design.html" } }
+        ]
+      },
+      "sameAs": [
+        "https://www.facebook.com/maddernsplace"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://maddernsplace.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Maddern's Place Garden & Landscaping?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Maddern's Place Garden & Landscaping is a professional landscaping business based in Hackham, South Australia. We provide landscape design, turf installation, retaining walls, irrigation systems, lawn mowing, and gutter cleaning across Adelaide's southern suburbs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who does Maddern's Place help?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We help homeowners and property managers in Hackham, Morphett Vale, Hallett Cove, Happy Valley, Noarlunga, Reynella, Seaford, Christies Beach, and surrounding Adelaide southern suburbs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What landscaping services does Maddern's Place offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Services include: landscape design and construction, turf installation (Kikuyu, Sir Walter Buffalo), retaining wall installation (timber sleeper and concrete block), irrigation system design and installation using Hunter MP Rotators and Bluetooth NODE timers, lawn mowing and maintenance, garden design, and gutter vacuum cleaning."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does landscaping cost at Maddern's Place?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pricing varies by project size and scope. We offer free, no-obligation quotes for all services. Call 0459 119 149 or email maddernsplace@gmail.com to arrange a free on-site consultation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I get a quote from Maddern's Place?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Call 0459 119 149, email maddernsplace@gmail.com, or fill in the quote request form on the website. We'll arrange an on-site consultation at no cost."
+          }
+        }
+      ]
     }
-  ],
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Landscaping Services",
-    "itemListElement": [
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Landscape Design & Construction" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Turf Installation" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Retaining Wall Installation" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Irrigation Systems" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lawn Care & Mowing" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gutter Vacuum Cleaning" } }
-    ]
-  },
-  "sameAs": []
+  ]
 }
 </script>
 
@@ -770,6 +840,78 @@
   </div>
 </div>
 
+<!-- AI ANSWER BLOCK: answer-first summary for AI citation -->
+<section id="quick-answers" style="background:var(--cream); padding:4rem 4rem 0;">
+  <div class="container">
+    <div class="section-label">At a Glance</div>
+    <h2 class="section-title">Adelaide's Southern Suburbs <em>Landscaping</em> Specialists</h2>
+
+    <dl style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem 3rem; margin-top:2rem; color:var(--text-mid); font-size:0.95rem; line-height:1.7;">
+      <div>
+        <dt style="font-weight:600; color:var(--green-deep); margin-bottom:0.2rem;">What is Maddern's Place?</dt>
+        <dd>A professional landscaping business based in Hackham, SA, serving Adelaide's southern suburbs with landscape design, turf, retaining walls, irrigation, lawn mowing, and gutter cleaning.</dd>
+      </div>
+      <div>
+        <dt style="font-weight:600; color:var(--green-deep); margin-bottom:0.2rem;">Who do we help?</dt>
+        <dd>Homeowners and property managers in Hackham, Morphett Vale, Hallett Cove, Happy Valley, Noarlunga, Reynella, Seaford, and Christies Beach.</dd>
+      </div>
+      <div>
+        <dt style="font-weight:600; color:var(--green-deep); margin-bottom:0.2rem;">How much does it cost?</dt>
+        <dd>Pricing depends on project size and scope. We offer free, no-obligation on-site quotes — call <a href="tel:+61459119149" style="color:var(--green-mid);">0459 119 149</a> or use the quote form below.</dd>
+      </div>
+      <div>
+        <dt style="font-weight:600; color:var(--green-deep); margin-bottom:0.2rem;">How does it work?</dt>
+        <dd>On-site consultation → detailed quote → works completed → handover. Clear communication at every step, minimal disruption to your home.</dd>
+      </div>
+    </dl>
+
+    <div style="overflow-x:auto; margin-top:2.5rem;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.88rem; color:var(--text-mid);">
+        <caption style="text-align:left; font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--green-deep); margin-bottom:0.8rem;">Services Summary</caption>
+        <thead>
+          <tr style="border-bottom:2px solid rgba(45,90,52,0.2);">
+            <th style="text-align:left; padding:0.5rem 1rem 0.5rem 0; color:var(--green-deep); font-weight:600;">Service</th>
+            <th style="text-align:left; padding:0.5rem 1rem; color:var(--green-deep); font-weight:600;">What's included</th>
+            <th style="text-align:left; padding:0.5rem 0 0.5rem 1rem; color:var(--green-deep); font-weight:600;">Coverage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(45,90,52,0.1);">
+            <td style="padding:0.6rem 1rem 0.6rem 0; font-weight:500; color:var(--text-dark);"><a href="landscaping.html" style="color:var(--green-mid); text-decoration:none;">Landscape Design & Construction</a></td>
+            <td style="padding:0.6rem 1rem;">Design, earthworks, turf (Kikuyu, Sir Walter), retaining walls, drainage, planting</td>
+            <td style="padding:0.6rem 0 0.6rem 1rem;">Adelaide south</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(45,90,52,0.1);">
+            <td style="padding:0.6rem 1rem 0.6rem 0; font-weight:500; color:var(--text-dark);"><a href="retaining-walls-adelaide.html" style="color:var(--green-mid); text-decoration:none;">Retaining Walls</a></td>
+            <td style="padding:0.6rem 1rem;">Timber sleeper and concrete block retaining walls, excavation, drainage</td>
+            <td style="padding:0.6rem 0 0.6rem 1rem;">Adelaide south</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(45,90,52,0.1);">
+            <td style="padding:0.6rem 1rem 0.6rem 0; font-weight:500; color:var(--text-dark);"><a href="irrigation.html" style="color:var(--green-mid); text-decoration:none;">Irrigation Systems</a></td>
+            <td style="padding:0.6rem 1rem;">Install, upgrade, and repair — Hunter MP Rotators, Bluetooth NODE timers, drip lines</td>
+            <td style="padding:0.6rem 0 0.6rem 1rem;">Adelaide south</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(45,90,52,0.1);">
+            <td style="padding:0.6rem 1rem 0.6rem 0; font-weight:500; color:var(--text-dark);"><a href="mowing.html" style="color:var(--green-mid); text-decoration:none;">Lawn Mowing & Maintenance</a></td>
+            <td style="padding:0.6rem 1rem;">Regular mowing, edging, fertilisation, seasonal lawn treatments</td>
+            <td style="padding:0.6rem 0 0.6rem 1rem;">Adelaide south</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(45,90,52,0.1);">
+            <td style="padding:0.6rem 1rem 0.6rem 0; font-weight:500; color:var(--text-dark);"><a href="garden-design.html" style="color:var(--green-mid); text-decoration:none;">Garden Design</a></td>
+            <td style="padding:0.6rem 1rem;">Custom design from cottage gardens to contemporary outdoor spaces</td>
+            <td style="padding:0.6rem 0 0.6rem 1rem;">Adelaide south</td>
+          </tr>
+          <tr>
+            <td style="padding:0.6rem 1rem 0.6rem 0; font-weight:500; color:var(--text-dark);"><a href="gutter-cleaning-adelaide.html" style="color:var(--green-mid); text-decoration:none;">Gutter Vacuum Cleaning</a></td>
+            <td style="padding:0.6rem 1rem;">Professional gutter cleaning using vacuum equipment for residential properties</td>
+            <td style="padding:0.6rem 0 0.6rem 1rem;">Adelaide south</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="about">
   <div class="container">
@@ -986,6 +1128,52 @@
         Supplier logos coming soon.
       </div>
     </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:var(--white);">
+  <div class="container">
+    <div class="section-label">Common Questions</div>
+    <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+    <div style="margin-top:2.5rem; display:flex; flex-direction:column; gap:0;">
+      <details style="border-bottom:1px solid rgba(26,58,31,0.1); padding:1.2rem 0;">
+        <summary style="font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--green-deep); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center;">
+          What is Maddern's Place Garden &amp; Landscaping?
+          <span style="font-size:1.3rem; color:var(--green-light); flex-shrink:0; margin-left:1rem;">+</span>
+        </summary>
+        <p style="margin-top:0.8rem; font-size:0.95rem; color:var(--text-mid); line-height:1.8;">Maddern's Place Garden &amp; Landscaping is a professional landscaping business based in Hackham, South Australia. We design and build outdoor spaces for homeowners across Adelaide's southern suburbs — including landscape design, turf installation, retaining walls, irrigation, lawn mowing, and gutter cleaning.</p>
+      </details>
+      <details style="border-bottom:1px solid rgba(26,58,31,0.1); padding:1.2rem 0;">
+        <summary style="font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--green-deep); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center;">
+          Which areas do you service?
+          <span style="font-size:1.3rem; color:var(--green-light); flex-shrink:0; margin-left:1rem;">+</span>
+        </summary>
+        <p style="margin-top:0.8rem; font-size:0.95rem; color:var(--text-mid); line-height:1.8;">We service Hackham, Morphett Vale, Hallett Cove, Happy Valley, Noarlunga, Reynella, Seaford, Christies Beach, and surrounding Adelaide southern suburbs. Not sure if we cover your area? Call us on <a href="tel:+61459119149" style="color:var(--green-mid);">0459 119 149</a>.</p>
+      </details>
+      <details style="border-bottom:1px solid rgba(26,58,31,0.1); padding:1.2rem 0;">
+        <summary style="font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--green-deep); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center;">
+          How much does landscaping cost?
+          <span style="font-size:1.3rem; color:var(--green-light); flex-shrink:0; margin-left:1rem;">+</span>
+        </summary>
+        <p style="margin-top:0.8rem; font-size:0.95rem; color:var(--text-mid); line-height:1.8;">Pricing varies by project size, materials, and scope of work. We provide free, no-obligation on-site quotes for all services. Contact us to arrange a consultation and we'll give you a clear, detailed quote upfront.</p>
+      </details>
+      <details style="border-bottom:1px solid rgba(26,58,31,0.1); padding:1.2rem 0;">
+        <summary style="font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--green-deep); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center;">
+          What types of turf do you install?
+          <span style="font-size:1.3rem; color:var(--green-light); flex-shrink:0; margin-left:1rem;">+</span>
+        </summary>
+        <p style="margin-top:0.8rem; font-size:0.95rem; color:var(--text-mid); line-height:1.8;">We supply and install a range of turf varieties including Kikuyu and Sir Walter Buffalo. We'll recommend the best option for your soil type, sun exposure, and how you use the space.</p>
+      </details>
+      <details style="padding:1.2rem 0;">
+        <summary style="font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--green-deep); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center;">
+          How do I get started?
+          <span style="font-size:1.3rem; color:var(--green-light); flex-shrink:0; margin-left:1rem;">+</span>
+        </summary>
+        <p style="margin-top:0.8rem; font-size:0.95rem; color:var(--text-mid); line-height:1.8;">Call us on <a href="tel:+61459119149" style="color:var(--green-mid);">0459 119 149</a>, email <a href="mailto:maddernsplace@gmail.com" style="color:var(--green-mid);">maddernsplace@gmail.com</a>, or fill in the free quote form below. We'll arrange an on-site consultation at a time that suits you.</p>
+      </details>
+    </div>
+    <p style="margin-top:1.5rem; font-size:0.8rem; color:var(--text-mid);"><time datetime="2026-06-06">Last updated June 2026</time></p>
   </div>
 </section>
 

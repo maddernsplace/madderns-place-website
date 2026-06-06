@@ -7,3 +7,16 @@ Disallow: /reviews-admin.html
 Disallow: /site-admin.html
 
 Sitemap: https://maddernsplace.com/sitemap.xml
+
+# AI crawler access
+User-agent: GPTBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# AI-readable site summary
+# https://maddernsplace.com/llms.txt
