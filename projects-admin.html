@@ -141,6 +141,10 @@
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast.err { background: #c0392b; }
 
+  /* SEO char counter colour */
+  .seo-count-warn { color: #c47a00 !important; }
+  .seo-count-over { color: #c0392b !important; font-weight: 600; }
+
   /* Toggle */
   .toggle-row { display: flex; justify-content: space-between; align-items: center; }
   .toggle { position: relative; width: 44px; height: 23px; flex-shrink: 0; }
@@ -253,6 +257,29 @@
               <label>Blog Post Link <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light);">(optional)</span></label>
               <input type="text" id="projBlogLink" placeholder="e.g. blog.html#post-id or https://...">
               <div class="form-hint">Adds a "View Blog Post" button on the project page.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">SEO</div>
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;">
+                <label style="margin-bottom:0;">SEO Title</label>
+                <span id="seoTitleCount" style="font-size:0.7rem; color:var(--text-mid);">0 / 60</span>
+              </div>
+              <input type="text" id="projSeoTitle" placeholder="e.g. Kikuyu Turf Installation Seaview Downs | Maddern's Place"
+                oninput="updateSeoCount('projSeoTitle','seoTitleCount',60)">
+              <div class="form-hint">Ideal: 50–60 characters. Shown as the tab title and Google headline. Leave blank to use the project title.</div>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;">
+                <label style="margin-bottom:0;">Meta Description</label>
+                <span id="seoDescCount" style="font-size:0.7rem; color:var(--text-mid);">0 / 160</span>
+              </div>
+              <textarea id="projSeoDesc" style="min-height:90px; resize:vertical;"
+                placeholder="e.g. Maddern's Place transformed this sloped Seaview Downs yard with Kikuyu turf, retaining walls and drainage. Free quotes Adelaide south."
+                oninput="updateSeoCount('projSeoDesc','seoDescCount',160)"></textarea>
+              <div class="form-hint">Ideal: 140–160 characters. Shown under your link in Google search results.</div>
             </div>
           </div>
         </div>
@@ -607,7 +634,8 @@
     const slug     = proj.slug || '';
     const descRaw  = proj.description || '';
     const desc     = esc(descRaw);
-    const metaDesc = esc(descRaw.replace(/\n/g, ' ').trim().slice(0, 160) || `${proj.title} — landscaping project by Maddern's Place, Adelaide's south.`);
+    const pageTitle = esc(proj.seoTitle || `${proj.title} | Adelaide South Landscaping — Maddern's Place`);
+    const metaDesc  = esc(proj.seoDesc  || descRaw.replace(/\n/g, ' ').trim().slice(0, 160) || `${proj.title} — landscaping project by Maddern's Place, Adelaide's south.`);
     const canonical = `https://maddernsplace.com/${slug}`;
     const imgSrc   = proj.image?.path || '';
     const ogImg    = imgSrc ? `https://maddernsplace.com/${imgSrc}` : 'https://maddernsplace.com/Home Design.jpeg';
@@ -642,20 +670,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${title} | Adelaide South Landscaping — Maddern's Place</title>
+<title>${pageTitle}</title>
 <meta name="description" content="${metaDesc}">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Maddern's Place Garden &amp; Landscaping">
 <link rel="canonical" href="${canonical}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="${canonical}">
-<meta property="og:title" content="${title} | Maddern's Place Landscaping Adelaide">
+<meta property="og:title" content="${pageTitle}">
 <meta property="og:description" content="${metaDesc}">
 <meta property="og:image" content="${esc(ogImg)}">
 <meta property="og:site_name" content="Maddern's Place Garden &amp; Landscaping">
 <meta property="og:locale" content="en_AU">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${title} | Maddern's Place">
+<meta name="twitter:title" content="${pageTitle}">
 <meta name="twitter:description" content="${metaDesc}">
 <meta name="twitter:image" content="${esc(ogImg)}">
 <script type="application/ld+json">
@@ -987,6 +1015,10 @@ ${photos.length ? `<section class="photos-section">
     document.getElementById('projSlug').value     = editingProj?.slug  || '';
     document.getElementById('projDesc').value     = editingProj?.description || '';
     document.getElementById('projBlogLink').value = editingProj?.blogLink || '';
+    document.getElementById('projSeoTitle').value = editingProj?.seoTitle || '';
+    document.getElementById('projSeoDesc').value  = editingProj?.seoDesc  || '';
+    updateSeoCount('projSeoTitle', 'seoTitleCount', 60);
+    updateSeoCount('projSeoDesc',  'seoDescCount',  160);
     document.getElementById('projVisible').checked = editingProj ? editingProj.visible !== false : true;
     document.getElementById('deleteWrap').style.display = editingProj ? 'block' : 'none';
     _slugAutoFilled = !editingProj; // auto-fill slug from title only when creating new project
@@ -1023,8 +1055,14 @@ ${photos.length ? `<section class="photos-section">
   function updateSlugPreview() {
     const slug = document.getElementById('projSlug').value.trim();
     document.getElementById('slugPreview').textContent = slug || 'your-slug';
-    // Once user manually edits, stop auto-filling
     _slugAutoFilled = false;
+  }
+
+  function updateSeoCount(fieldId, counterId, max) {
+    const len = document.getElementById(fieldId).value.length;
+    const el  = document.getElementById(counterId);
+    el.textContent = `${len} / ${max}`;
+    el.className = len > max ? 'seo-count-over' : len > max * 0.85 ? 'seo-count-warn' : '';
   }
 
   function updateImgPreview() {
@@ -1123,6 +1161,8 @@ ${photos.length ? `<section class="photos-section">
     const data = {
       title,
       slug: slug || undefined,
+      seoTitle: document.getElementById('projSeoTitle').value.trim() || undefined,
+      seoDesc:  document.getElementById('projSeoDesc').value.trim()  || undefined,
       description: document.getElementById('projDesc').value.trim(),
       blogLink: document.getElementById('projBlogLink').value.trim(),
       visible: document.getElementById('projVisible').checked,
