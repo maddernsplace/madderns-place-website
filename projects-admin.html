@@ -101,10 +101,19 @@
   .drop-zone p { font-size: 0.82rem; color: var(--text-mid); line-height: 1.5; }
   .drop-zone p strong { color: var(--green-mid); }
   #imgFileInput { display: none; }
+  #extrasFileInput { display: none; }
   .img-preview { margin-top: 1rem; border-radius: 6px; overflow: hidden; position: relative; }
   .img-preview img { width: 100%; max-height: 220px; object-fit: cover; display: block; }
   .img-preview-remove { position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 3px; padding: 0.3rem 0.6rem; cursor: pointer; font-size: 0.75rem; font-family: 'Raleway', sans-serif; }
   .img-preview-remove:hover { background: rgba(192,57,43,0.85); }
+
+  /* Additional photos */
+  .extras-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 0.8rem; }
+  .extra-thumb { position: relative; border-radius: 4px; overflow: hidden; aspect-ratio: 1; }
+  .extra-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .extra-thumb-remove { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 2px; padding: 0.15rem 0.4rem; cursor: pointer; font-size: 0.7rem; font-family: 'Raleway', sans-serif; line-height: 1.3; }
+  .extra-thumb-remove:hover { background: rgba(192,57,43,0.85); }
+  .extras-add-btn { border: 2px dashed rgba(26,58,31,0.25); border-radius: 4px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--green-light); font-size: 1.6rem; transition: all 0.2s; background: var(--cream); }
 
   /* ─── PUBLISH MODAL ─── */
   .modal-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; padding: 2rem; }
@@ -233,7 +242,7 @@
 
         <div class="editor-col">
           <div class="card">
-            <div class="card-title">Project Photo</div>
+            <div class="card-title">Title Photo <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light); font-size:0.7rem;">(main gallery card image)</span></div>
             <div class="drop-zone" id="dropZone" onclick="document.getElementById('imgFileInput').click()">
               <div class="drop-icon">📷</div>
               <p><strong>Click to upload</strong> or drag & drop<br>JPG, PNG, WebP</p>
@@ -243,6 +252,13 @@
               <img id="imgPreviewEl" src="" alt="Preview">
               <button class="img-preview-remove" onclick="removeImg()">✕ Remove</button>
             </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Additional Photos <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light); font-size:0.7rem;">(shown in project lightbox)</span></div>
+            <input type="file" id="extrasFileInput" accept="image/*" multiple onchange="handleExtrasFiles(this.files)">
+            <div id="extrasGrid" class="extras-grid"></div>
+            <div class="form-hint" style="margin-top:0.5rem;">Add up to 12 photos. They'll appear as a gallery when visitors view the project.</div>
           </div>
 
           <div class="card">
@@ -366,6 +382,9 @@
       let dirty = false;
       projects.forEach(p => {
         if (p.image?.path && p.image?.data) { delete p.image.data; dirty = true; }
+        if (Array.isArray(p.photos)) p.photos.forEach(ph => {
+          if (ph.path && ph.data) { delete ph.data; dirty = true; }
+        });
       });
       if (dirty) localStorage.setItem(PROJ_KEY, JSON.stringify(projects));
       return projects;
@@ -468,25 +487,50 @@
 
     try {
       const projects = getProjects();
-      const newImgs = projects.filter(p => p.image?.data && !p.image?.path);
+
+      // Count total new images (title + additional) to upload
+      let totalNew = 0;
+      projects.forEach(p => {
+        if (p.image?.data && !p.image?.path) totalNew++;
+        if (Array.isArray(p.photos)) p.photos.forEach(ph => { if (ph.data && !ph.path) totalNew++; });
+      });
       let done = 0;
 
       for (const proj of projects) {
+        // Upload title photo if new
         if (proj.image?.data && !proj.image?.path) {
           const ext = (proj.image.name?.match(/\.\w+$/) || ['.jpg'])[0].toLowerCase().replace(/jpeg/, 'jpg');
           const filename = `project-images/${proj.id}${ext}`;
-          document.getElementById('progressFill').style.width = Math.round((done / Math.max(newImgs.length, 1)) * 70) + '%';
+          document.getElementById('progressFill').style.width = Math.round((done / Math.max(totalNew, 1)) * 70) + '%';
           document.getElementById('progressStatus').textContent = `Uploading: ${proj.image.name || 'photo'}`;
           await commitFile(repo, branch, filename, b64FromDataUrl(proj.image.data), `Add project image: ${proj.title}`, token);
           proj.image.path = filename;
           done++;
+        }
+        // Upload additional photos if new
+        if (Array.isArray(proj.photos)) {
+          for (let i = 0; i < proj.photos.length; i++) {
+            const ph = proj.photos[i];
+            if (ph.data && !ph.path) {
+              const ext = (ph.name?.match(/\.\w+$/) || ['.jpg'])[0].toLowerCase().replace(/jpeg/, 'jpg');
+              const filename = `project-images/${proj.id}_${i + 1}${ext}`;
+              document.getElementById('progressFill').style.width = Math.round((done / Math.max(totalNew, 1)) * 70) + '%';
+              document.getElementById('progressStatus').textContent = `Uploading extra photo ${i + 1}: ${ph.name || 'photo'}`;
+              await commitFile(repo, branch, filename, b64FromDataUrl(ph.data), `Add project photo: ${proj.title}`, token);
+              ph.path = filename;
+              done++;
+            }
+          }
         }
       }
 
       // Build publishable version — no base64
       const publishable = projects.map(p => ({
         ...p,
-        image: p.image ? { name: p.image.name, path: p.image.path || '' } : null
+        image: p.image ? { name: p.image.name, path: p.image.path || '' } : null,
+        photos: Array.isArray(p.photos) && p.photos.length
+          ? p.photos.map(ph => ({ name: ph.name, path: ph.path || '' }))
+          : undefined
       }));
 
       document.getElementById('progressFill').style.width = '85%';
@@ -494,7 +538,10 @@
       await commitFile(repo, branch, 'projects.json', b64Text(JSON.stringify(publishable, null, 2)), `Update projects gallery (${projects.length} projects)`, token);
 
       // Strip base64 data now that all images are on GitHub, then save
-      projects.forEach(p => { if (p.image?.path && p.image?.data) delete p.image.data; });
+      projects.forEach(p => {
+        if (p.image?.path && p.image?.data) delete p.image.data;
+        if (Array.isArray(p.photos)) p.photos.forEach(ph => { if (ph.path && ph.data) delete ph.data; });
+      });
       saveProjects(projects);
       localStorage.removeItem(DIRTY_KEY);
 
@@ -608,15 +655,17 @@
 
   // ─── EDITOR ──────────────────────────────────────────────────────────────────
   let editingProj = null;
-  let editImg = null; // { data, name, path }
+  let editImg = null;    // { data, name, path }
+  let editPhotos = [];   // [{ data, name, path }, ...]
 
-  function openNew() { editingProj = null; editImg = null; loadEditor(); }
+  function openNew() { editingProj = null; editImg = null; editPhotos = []; loadEditor(); }
 
   function openEdit(id) {
     const p = getProjects().find(x => x.id === id);
     if (!p) return;
     editingProj = p;
     editImg = p.image ? { ...p.image } : null;
+    editPhotos = Array.isArray(p.photos) ? p.photos.map(ph => ({ ...ph })) : [];
     loadEditor();
   }
 
@@ -628,6 +677,7 @@
     document.getElementById('projVisible').checked = editingProj ? editingProj.visible !== false : true;
     document.getElementById('deleteWrap').style.display = editingProj ? 'block' : 'none';
     updateImgPreview();
+    renderExtrasGrid();
     showView('editor');
   }
 
@@ -656,6 +706,46 @@
   }
 
   function removeImg() { editImg = null; updateImgPreview(); }
+
+  // ─── ADDITIONAL PHOTOS ───────────────────────────────────────────────────────
+  function renderExtrasGrid() {
+    const grid = document.getElementById('extrasGrid');
+    const thumbs = editPhotos.map((ph, i) => {
+      const src = ph.data || ph.path || '';
+      return `<div class="extra-thumb">
+        <img src="${src}" alt="Photo ${i+1}">
+        <button class="extra-thumb-remove" onclick="removeExtraPhoto(${i})">✕</button>
+      </div>`;
+    }).join('');
+    const addBtn = editPhotos.length < 12
+      ? `<div class="extras-add-btn" onclick="document.getElementById('extrasFileInput').click()" title="Add photos">+</div>`
+      : '';
+    grid.innerHTML = thumbs + addBtn;
+  }
+
+  function handleExtrasFiles(files) {
+    const remaining = 12 - editPhotos.length;
+    const toLoad = Array.from(files).slice(0, remaining);
+    let loaded = 0;
+    toLoad.forEach(file => {
+      if (!file.type.startsWith('image/')) { loaded++; return; }
+      const reader = new FileReader();
+      reader.onload = e => {
+        shrink(e.target.result, 1200, 0.78, data => {
+          editPhotos.push({ data, name: file.name });
+          loaded++;
+          if (loaded === toLoad.length) renderExtrasGrid();
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+    document.getElementById('extrasFileInput').value = '';
+  }
+
+  function removeExtraPhoto(idx) {
+    editPhotos.splice(idx, 1);
+    renderExtrasGrid();
+  }
 
   function shrink(src, maxW, q, cb) {
     const img = new Image();
@@ -687,6 +777,7 @@
       blogLink: document.getElementById('projBlogLink').value.trim(),
       visible: document.getElementById('projVisible').checked,
       image: editImg,
+      photos: editPhotos.length ? editPhotos : undefined,
       updatedAt: Date.now()
     };
 
