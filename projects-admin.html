@@ -315,9 +315,15 @@
         <div class="card">
           <div class="card-title">GitHub Publishing</div>
           <div class="info-box">
-            <strong>Same GitHub token as the Blog Admin.</strong> If you've already set it up there, just copy your details here too.
-            <br><br>
-            Token needs <code>Contents: Read and write</code> on your repository.
+            <strong>How to create a token:</strong>
+            <ol>
+              <li>Go to <strong>github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong></li>
+              <li>Click <strong>Generate new token</strong></li>
+              <li>Set <strong>Repository access</strong> to your site repo</li>
+              <li>Under <strong>Permissions → Repository → Contents</strong>, choose <strong>Read and write</strong></li>
+              <li>Copy the token (starts with <code>github_pat_</code>) and paste it below</li>
+            </ol>
+            <br>Tokens expire — if publishing was working before, generate a new one and paste it here.
           </div>
           <div class="form-group">
             <label>GitHub Personal Access Token</label>
@@ -579,7 +585,17 @@
 
     } catch(e) {
       const el = document.getElementById('publishError');
-      el.textContent = 'Error: ' + e.message; el.style.display = 'block';
+      const msg = e.message || '';
+      let friendly = 'Error: ' + msg;
+      if (/bad credentials|401|unauthorized/i.test(msg)) {
+        friendly = '❌ Bad credentials — your GitHub token is missing, expired, or incorrect. Go to <a href="#" onclick="closeModal();showView(\'settings\');return false;" style="color:#7a1a1a;font-weight:700;">Settings</a> and update your Personal Access Token.';
+      } else if (/not found|404/i.test(msg)) {
+        friendly = '❌ Repository not found — check the repo name in <a href="#" onclick="closeModal();showView(\'settings\');return false;" style="color:#7a1a1a;font-weight:700;">Settings</a> (format: owner/repo).';
+      } else if (/rate limit/i.test(msg)) {
+        friendly = '❌ GitHub rate limit hit — wait a few minutes then try again.';
+      }
+      el.innerHTML = friendly;
+      el.style.display = 'block';
       document.getElementById('confirmBtn').disabled = false;
       document.getElementById('publishProgress').style.display = 'none';
     } finally { publishing = false; }
