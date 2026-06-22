@@ -224,18 +224,35 @@
           <div class="card">
             <div class="form-group">
               <label>Project Title</label>
-              <input type="text" id="projTitle" placeholder="e.g. Backyard Garden Transformation">
+              <input type="text" id="projTitle" placeholder="e.g. Seaview Downs Sloped Yard — Kikuyu Turf Installation"
+                oninput="maybeAutoSlug()">
+            </div>
+            <div class="form-group">
+              <label>
+                URL Slug
+                <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light);">(SEO page URL)</span>
+              </label>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="projSlug" placeholder="seaview-downs-kikuyu-turf-installation" style="flex:1;"
+                  oninput="updateSlugPreview()">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="autoSlug()" style="flex-shrink:0; white-space:nowrap;">Auto-generate</button>
+              </div>
+              <div class="form-hint">
+                Creates a dedicated SEO page at
+                <strong>maddernsplace.com/<span id="slugPreview" style="color:var(--green-mid);">your-slug</span></strong>
+                — leave blank to use lightbox only.
+              </div>
             </div>
             <div class="form-group">
               <label>Description</label>
               <textarea id="projDesc" style="min-height:140px; resize:vertical;"
                 placeholder="Describe the project — what was done, materials used, the client's goals, seasonal timing, etc."></textarea>
-              <div class="form-hint">Shown in a popup when visitors click the gallery card. Be as detailed as you like.</div>
+              <div class="form-hint">Shown on the project page and in the gallery lightbox.</div>
             </div>
             <div class="form-group" style="margin-bottom:0;">
               <label>Blog Post Link <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light);">(optional)</span></label>
               <input type="text" id="projBlogLink" placeholder="e.g. blog.html#post-id or https://...">
-              <div class="form-hint">When visitors click this project, a "View Blog Post" button will appear. Leave blank for now — add it once you've published the blog post.</div>
+              <div class="form-hint">Adds a "View Blog Post" button on the project page.</div>
             </div>
           </div>
         </div>
@@ -533,7 +550,17 @@
           : undefined
       }));
 
-      document.getElementById('progressFill').style.width = '85%';
+      // Commit individual project pages for projects with slugs
+      const withSlugs = projects.filter(p => p.slug && p.visible !== false);
+      for (let i = 0; i < withSlugs.length; i++) {
+        const proj = withSlugs[i];
+        document.getElementById('progressFill').style.width = Math.round(85 + (i / Math.max(withSlugs.length, 1)) * 10) + '%';
+        document.getElementById('progressStatus').textContent = `Generating page: ${proj.slug}.html`;
+        const pageHtml = generateProjectHtml(proj);
+        await commitFile(repo, branch, `${proj.slug}.html`, b64Text(pageHtml), `Project page: ${proj.title}`, token);
+      }
+
+      document.getElementById('progressFill').style.width = '95%';
       document.getElementById('progressStatus').textContent = 'Updating projects.json...';
       await commitFile(repo, branch, 'projects.json', b64Text(JSON.stringify(publishable, null, 2)), `Update projects gallery (${projects.length} projects)`, token);
 
@@ -556,6 +583,172 @@
       document.getElementById('confirmBtn').disabled = false;
       document.getElementById('publishProgress').style.display = 'none';
     } finally { publishing = false; }
+  }
+
+  // ─── PROJECT PAGE GENERATOR ──────────────────────────────────────────────────
+  function generateProjectHtml(proj) {
+    const title    = esc(proj.title || 'Project');
+    const slug     = proj.slug || '';
+    const desc     = esc(proj.description || '');
+    const descRaw  = (proj.description || '').replace(/\n/g, ' ').trim().slice(0, 160);
+    const metaDesc = esc(descRaw || `${proj.title} — landscaping project by Maddern's Place, Adelaide's south.`);
+    const canonical = `https://maddernsplace.com/${slug}`;
+    const imgSrc   = proj.image?.path || '';
+    const ogImg    = imgSrc ? `https://maddernsplace.com/${imgSrc}` : 'https://maddernsplace.com/Home Design.jpeg';
+    const photos   = Array.isArray(proj.photos) ? proj.photos.filter(p => p.path) : [];
+    const blogLink = proj.blogLink || '';
+
+    const heroStyle = imgSrc
+      ? `background: linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)), url('${imgSrc}') center/cover no-repeat;`
+      : `background: linear-gradient(155deg, #1a3a1f 0%, #2d5a34 60%, #4a7a40 100%);`;
+
+    const photosHtml = photos.length ? `
+    <section style="padding:4rem; background:#f5f0e8;">
+      <div style="max-width:1100px; margin:0 auto;">
+        <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:#4a8c55; display:flex; align-items:center; gap:0.8rem; margin-bottom:2rem;">
+          <span style="display:block; width:30px; height:1px; background:#4a8c55;"></span>Project Photos
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:1rem;">
+          ${photos.map((ph, i) => `<a href="${ph.path}" target="_blank" rel="noopener"
+            style="display:block; border-radius:6px; overflow:hidden; aspect-ratio:4/3; background:#1a3a1f;">
+            <img src="${ph.path}" alt="${title} — photo ${i+1}" loading="lazy"
+              style="width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.3s;"
+              onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform=''">
+          </a>`).join('')}
+        </div>
+      </div>
+    </section>` : '';
+
+    const blogBtnHtml = blogLink
+      ? `<a href="${esc(blogLink)}" style="display:inline-block; padding:1rem 2.2rem; background:#1a5c8a; color:#f5f0e8; text-decoration:none; border-radius:2px; font-family:'Raleway',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; transition:background 0.3s;">View Blog Post →</a>`
+      : '';
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${title} | Adelaide Landscaping — Maddern's Place</title>
+<meta name="description" content="${metaDesc}">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Maddern's Place Garden &amp; Landscaping">
+<link rel="canonical" href="${canonical}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="${canonical}">
+<meta property="og:title" content="${title} | Maddern's Place Landscaping Adelaide">
+<meta property="og:description" content="${metaDesc}">
+<meta property="og:image" content="${esc(ogImg)}">
+<meta property="og:site_name" content="Maddern's Place Garden &amp; Landscaping">
+<meta property="og:locale" content="en_AU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${title} | Maddern's Place">
+<meta name="twitter:description" content="${metaDesc}">
+<meta name="twitter:image" content="${esc(ogImg)}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "${proj.title || ''}",
+  "description": "${(proj.description || '').replace(/"/g, '\\"').replace(/\n/g, ' ')}",
+  "url": "${canonical}",
+  ${imgSrc ? `"image": "${ogImg}",` : ''}
+  "author": {
+    "@type": "LocalBusiness",
+    "@id": "https://maddernsplace.com/#business",
+    "name": "Maddern's Place Garden &amp; Landscaping"
+  }
+}
+<\/script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --green-deep:#1a3a1f; --green-mid:#2d5a34; --green-light:#4a8c55; --green-pale:#a8c5a0; --brown-dark:#3d2b1a; --brown-mid:#6b4c2e; --brown-light:#c4a882; --cream:#f5f0e8; --white:#fdfcfa; }
+  *{margin:0;padding:0;box-sizing:border-box} html{scroll-behavior:smooth} body{font-family:'Raleway',sans-serif;background:var(--white);color:#1e1e1e;overflow-x:hidden}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;background:rgba(26,58,31,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(168,197,160,0.2)}
+  .logo{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--brown-light);letter-spacing:0.04em;text-decoration:none}
+  .logo span{color:var(--green-pale);font-style:italic}
+  .nav-links{display:flex;gap:2.5rem;list-style:none}
+  .nav-links a{color:var(--cream);text-decoration:none;font-size:0.82rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.3s}
+  .nav-links a:hover{color:var(--brown-light)}
+  .nav-cta{background:var(--brown-mid);color:var(--cream)!important;padding:0.5rem 1.4rem!important;border-radius:2px}
+  .nav-cta:hover{background:var(--brown-light)!important;color:var(--brown-dark)!important}
+  .hero{min-height:70vh;display:flex;align-items:flex-end;padding:0 4rem 5rem;${heroStyle}}
+  .hero-content{max-width:1100px;margin:0 auto;width:100%}
+  .hero-label{font-size:0.75rem;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:var(--brown-light);display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
+  .hero-label::before{content:'';display:block;width:40px;height:1px;background:var(--brown-light)}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,4.5rem);color:var(--cream);line-height:1.08;max-width:820px}
+  .body-section{padding:5rem 4rem;background:var(--white)}
+  .body-inner{max-width:760px;margin:0 auto}
+  .section-label{font-size:0.75rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--green-light);display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem}
+  .section-label::before{content:'';display:block;width:30px;height:1px;background:var(--green-light)}
+  .body-desc{font-size:1.05rem;line-height:1.85;color:#4a4a4a;white-space:pre-line}
+  .actions{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.5rem}
+  footer{background:var(--brown-dark);color:rgba(245,240,232,0.6);padding:3rem 4rem}
+  .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
+  .footer-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--brown-light)}
+  .footer-logo span{color:var(--green-pale);font-style:italic}
+  .footer-links{display:flex;gap:2rem}
+  .footer-links a{color:rgba(245,240,232,0.5);text-decoration:none;font-size:0.78rem;letter-spacing:0.08em;transition:color 0.3s}
+  .footer-links a:hover{color:var(--brown-light)}
+  @media(max-width:900px){nav{padding:1rem 2rem} .nav-links{display:none} .hero{padding:0 2rem 4rem;min-height:55vh} .body-section{padding:3.5rem 2rem} section[style*="4rem"]{padding:3rem 2rem!important} footer{padding:2.5rem 1.5rem}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">Maddern's <span>Place</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="projects.html">Gallery</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-label">Landscaping Project — Adelaide South</div>
+    <h1>${title}</h1>
+  </div>
+</div>
+
+<section class="body-section">
+  <div class="body-inner">
+    <div class="section-label">About This Project</div>
+    ${desc ? `<p class="body-desc">${desc}</p>` : ''}
+    <div class="actions">
+      <a href="index.html#contact" style="display:inline-block;padding:1rem 2.2rem;background:#6b4c2e;color:#f5f0e8;text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;">Get a Free Quote</a>
+      ${blogBtnHtml}
+      <a href="projects.html" style="display:inline-block;padding:1rem 2.2rem;border:1px solid rgba(45,90,52,0.35);color:#2d5a34;text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;">← All Projects</a>
+    </div>
+  </div>
+</section>
+
+${photosHtml}
+
+<section style="padding:5rem 4rem;background:#1a3a1f;text-align:center;">
+  <div style="max-width:600px;margin:0 auto;">
+    <div style="font-size:0.75rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:#a8c5a0;margin-bottom:1.2rem;">Ready to Transform Your Space?</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);color:#f5f0e8;margin-bottom:1rem;">Let's build something <em style="color:#a8c5a0;font-style:italic;">beautiful</em></h2>
+    <p style="color:rgba(245,240,232,0.65);font-size:0.95rem;line-height:1.75;margin-bottom:2rem;">Based in Hackham, we service Morphett Vale, Reynella, Hallett Cove, Happy Valley, Noarlunga, Seaford, Christies Beach and all of Adelaide's south.</p>
+    <a href="index.html#contact" style="display:inline-block;padding:1rem 2.4rem;background:#6b4c2e;color:#f5f0e8;text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;transition:background 0.3s;">Get a Free Quote</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Maddern's <span>Place</span><br><small style="font-family:'Raleway',sans-serif;font-size:0.7rem;letter-spacing:0.1em;color:rgba(245,240,232,0.4);">GARDEN &amp; LANDSCAPING</small></div>
+    <div style="font-size:0.8rem;">© ${new Date().getFullYear()} Maddern's Place Garden &amp; Landscaping. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Gallery</a>
+      <a href="blog.html">Blog</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>`;
   }
 
   // ─── AUTH ────────────────────────────────────────────────────────────────────
@@ -672,13 +865,47 @@
   function loadEditor() {
     document.getElementById('editorHeading').textContent = editingProj ? 'Edit Project' : 'New Project';
     document.getElementById('projTitle').value    = editingProj?.title || '';
+    document.getElementById('projSlug').value     = editingProj?.slug  || '';
     document.getElementById('projDesc').value     = editingProj?.description || '';
     document.getElementById('projBlogLink').value = editingProj?.blogLink || '';
     document.getElementById('projVisible').checked = editingProj ? editingProj.visible !== false : true;
     document.getElementById('deleteWrap').style.display = editingProj ? 'block' : 'none';
+    _slugAutoFilled = !editingProj; // auto-fill slug from title only when creating new project
+    updateSlugPreview();
     updateImgPreview();
     renderExtrasGrid();
     showView('editor');
+  }
+
+  // ─── SLUG HELPERS ────────────────────────────────────────────────────────────
+  let _slugAutoFilled = true;
+
+  function titleToSlug(title) {
+    return title.toLowerCase()
+      .replace(/[''`]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function maybeAutoSlug() {
+    if (_slugAutoFilled) {
+      document.getElementById('projSlug').value = titleToSlug(document.getElementById('projTitle').value);
+    }
+    updateSlugPreview();
+  }
+
+  function autoSlug() {
+    const slug = titleToSlug(document.getElementById('projTitle').value);
+    document.getElementById('projSlug').value = slug;
+    _slugAutoFilled = true;
+    updateSlugPreview();
+  }
+
+  function updateSlugPreview() {
+    const slug = document.getElementById('projSlug').value.trim();
+    document.getElementById('slugPreview').textContent = slug || 'your-slug';
+    // Once user manually edits, stop auto-filling
+    _slugAutoFilled = false;
   }
 
   function updateImgPreview() {
@@ -771,8 +998,12 @@
     const title = document.getElementById('projTitle').value.trim();
     if (!title) { toast('Please enter a project title.', true); return; }
 
+    const rawSlug = document.getElementById('projSlug').value.trim();
+    const slug = rawSlug ? titleToSlug(rawSlug) || rawSlug : '';
+
     const data = {
       title,
+      slug: slug || undefined,
       description: document.getElementById('projDesc').value.trim(),
       blogLink: document.getElementById('projBlogLink').value.trim(),
       visible: document.getElementById('projVisible').checked,

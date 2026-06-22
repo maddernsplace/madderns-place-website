@@ -365,7 +365,10 @@
         ? `<img src="${src}" alt="${esc(p.title)}" loading="lazy">`
         : `<div class="project-card-img-placeholder" style="${gradientBgs[i % gradientBgs.length]}">🌱</div>`;
       const descPreview = (p.description || '').replace(/\n/g, ' ').trim();
-      return `<div class="project-card" onclick="openLightbox(${i})">
+      const clickHandler = p.slug
+        ? `onclick="location.href='${p.slug}.html'"`
+        : `onclick="openLightbox(${i})"`;
+      return `<div class="project-card" ${clickHandler}>
         <div class="project-card-img">${imgHtml}</div>
         <div class="project-card-body">
           <div class="project-card-title">${esc(p.title)}</div>

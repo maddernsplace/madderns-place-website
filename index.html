@@ -1332,7 +1332,8 @@
           : '';
         const fallbackClass = src ? '' : gradients[i % gradients.length];
         const realIdx = projects.indexOf(p);
-        return `<div class="gallery-item" onclick="openLightbox(${realIdx})" style="cursor:pointer;">
+        const clickAct = p.slug ? `location.href='${p.slug}.html'` : `openLightbox(${realIdx})`;
+        return `<div class="gallery-item" onclick="${clickAct}" style="cursor:pointer;">
           <div class="gi-inner ${fallbackClass}" style="${imgStyle}">
             <span class="gi-label">${esc(p.title)}</span>
           </div>
