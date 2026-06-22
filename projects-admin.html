@@ -605,46 +605,44 @@
   function generateProjectHtml(proj) {
     const title    = esc(proj.title || 'Project');
     const slug     = proj.slug || '';
-    const desc     = esc(proj.description || '');
-    const descRaw  = (proj.description || '').replace(/\n/g, ' ').trim().slice(0, 160);
-    const metaDesc = esc(descRaw || `${proj.title} — landscaping project by Maddern's Place, Adelaide's south.`);
+    const descRaw  = proj.description || '';
+    const desc     = esc(descRaw);
+    const metaDesc = esc(descRaw.replace(/\n/g, ' ').trim().slice(0, 160) || `${proj.title} — landscaping project by Maddern's Place, Adelaide's south.`);
     const canonical = `https://maddernsplace.com/${slug}`;
     const imgSrc   = proj.image?.path || '';
     const ogImg    = imgSrc ? `https://maddernsplace.com/${imgSrc}` : 'https://maddernsplace.com/Home Design.jpeg';
     const photos   = Array.isArray(proj.photos) ? proj.photos.filter(p => p.path) : [];
     const blogLink = proj.blogLink || '';
+    const year     = new Date().getFullYear();
 
     const heroStyle = imgSrc
-      ? `background: linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)), url('${imgSrc}') center/cover no-repeat;`
-      : `background: linear-gradient(155deg, #1a3a1f 0%, #2d5a34 60%, #4a7a40 100%);`;
+      ? `background:linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%), url('${imgSrc}') center/cover no-repeat;`
+      : `background:linear-gradient(155deg,#1a3a1f 0%,#2d5a34 60%,#4a7a40 100%);`;
 
-    const photosHtml = photos.length ? `
-    <section style="padding:4rem; background:#f5f0e8;">
-      <div style="max-width:1100px; margin:0 auto;">
-        <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:#4a8c55; display:flex; align-items:center; gap:0.8rem; margin-bottom:2rem;">
-          <span style="display:block; width:30px; height:1px; background:#4a8c55;"></span>Project Photos
-        </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:1rem;">
-          ${photos.map((ph, i) => `<a href="${ph.path}" target="_blank" rel="noopener"
-            style="display:block; border-radius:6px; overflow:hidden; aspect-ratio:4/3; background:#1a3a1f;">
-            <img src="${ph.path}" alt="${title} — photo ${i+1}" loading="lazy"
-              style="width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.3s;"
-              onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform=''">
-          </a>`).join('')}
-        </div>
+    // Photo gallery — first photo featured large if 3+ photos
+    let photosHtml = '';
+    if (photos.length === 1) {
+      photosHtml = `<div class="gal-single"><a href="${photos[0].path}" target="_blank"><img src="${photos[0].path}" alt="${title} — photo" loading="lazy"></a></div>`;
+    } else if (photos.length === 2) {
+      photosHtml = `<div class="gal-two">${photos.map((ph,i) => `<a href="${ph.path}" target="_blank"><img src="${ph.path}" alt="${title} — photo ${i+1}" loading="lazy"></a>`).join('')}</div>`;
+    } else if (photos.length >= 3) {
+      const [first, ...rest] = photos;
+      photosHtml = `<div class="gal-featured">
+        <a href="${first.path}" target="_blank" class="gal-main"><img src="${first.path}" alt="${title} — main photo" loading="lazy"></a>
+        <div class="gal-side">${rest.slice(0,4).map((ph,i) => `<a href="${ph.path}" target="_blank"><img src="${ph.path}" alt="${title} — photo ${i+2}" loading="lazy"></a>`).join('')}</div>
       </div>
-    </section>` : '';
+      ${rest.length > 4 ? `<div class="gal-more">${rest.slice(4).map((ph,i) => `<a href="${ph.path}" target="_blank"><img src="${ph.path}" alt="${title} — photo ${i+6}" loading="lazy"></a>`).join('')}</div>` : ''}`;
+    }
 
     const blogBtnHtml = blogLink
-      ? `<a href="${esc(blogLink)}" style="display:inline-block; padding:1rem 2.2rem; background:#1a5c8a; color:#f5f0e8; text-decoration:none; border-radius:2px; font-family:'Raleway',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; transition:background 0.3s;">View Blog Post →</a>`
-      : '';
+      ? `<a href="${esc(blogLink)}" class="btn-blue">View Blog Post →</a>` : '';
 
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${title} | Adelaide Landscaping — Maddern's Place</title>
+<title>${title} | Adelaide South Landscaping — Maddern's Place</title>
 <meta name="description" content="${metaDesc}">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Maddern's Place Garden &amp; Landscaping">
@@ -664,52 +662,121 @@
 {
   "@context": "https://schema.org",
   "@type": "CreativeWork",
-  "name": "${proj.title || ''}",
-  "description": "${(proj.description || '').replace(/"/g, '\\"').replace(/\n/g, ' ')}",
+  "name": "${(proj.title||'').replace(/"/g,'\\"')}",
+  "description": "${descRaw.replace(/"/g,'\\"').replace(/\n/g,' ')}",
   "url": "${canonical}",
   ${imgSrc ? `"image": "${ogImg}",` : ''}
   "author": {
     "@type": "LocalBusiness",
     "@id": "https://maddernsplace.com/#business",
-    "name": "Maddern's Place Garden &amp; Landscaping"
+    "name": "Maddern's Place Garden & Landscaping"
   }
 }
 <\/script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root { --green-deep:#1a3a1f; --green-mid:#2d5a34; --green-light:#4a8c55; --green-pale:#a8c5a0; --brown-dark:#3d2b1a; --brown-mid:#6b4c2e; --brown-light:#c4a882; --cream:#f5f0e8; --white:#fdfcfa; }
-  *{margin:0;padding:0;box-sizing:border-box} html{scroll-behavior:smooth} body{font-family:'Raleway',sans-serif;background:var(--white);color:#1e1e1e;overflow-x:hidden}
-  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;background:rgba(26,58,31,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(168,197,160,0.2)}
-  .logo{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--brown-light);letter-spacing:0.04em;text-decoration:none}
-  .logo span{color:var(--green-pale);font-style:italic}
-  .nav-links{display:flex;gap:2.5rem;list-style:none}
-  .nav-links a{color:var(--cream);text-decoration:none;font-size:0.82rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.3s}
-  .nav-links a:hover{color:var(--brown-light)}
-  .nav-cta{background:var(--brown-mid);color:var(--cream)!important;padding:0.5rem 1.4rem!important;border-radius:2px}
-  .nav-cta:hover{background:var(--brown-light)!important;color:var(--brown-dark)!important}
-  .hero{min-height:70vh;display:flex;align-items:flex-end;padding:0 4rem 5rem;${heroStyle}}
-  .hero-content{max-width:1100px;margin:0 auto;width:100%}
-  .hero-label{font-size:0.75rem;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:var(--brown-light);display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
-  .hero-label::before{content:'';display:block;width:40px;height:1px;background:var(--brown-light)}
-  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,4.5rem);color:var(--cream);line-height:1.08;max-width:820px}
-  .body-section{padding:5rem 4rem;background:var(--white)}
-  .body-inner{max-width:760px;margin:0 auto}
-  .section-label{font-size:0.75rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--green-light);display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem}
-  .section-label::before{content:'';display:block;width:30px;height:1px;background:var(--green-light)}
-  .body-desc{font-size:1.05rem;line-height:1.85;color:#4a4a4a;white-space:pre-line}
-  .actions{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.5rem}
-  footer{background:var(--brown-dark);color:rgba(245,240,232,0.6);padding:3rem 4rem}
+  :root{--gd:#1a3a1f;--gm:#2d5a34;--gl:#4a8c55;--gp:#a8c5a0;--bd:#3d2b1a;--bm:#6b4c2e;--bl:#c4a882;--cr:#f5f0e8;--wh:#fdfcfa;--tm:#4a4a4a}
+  *{margin:0;padding:0;box-sizing:border-box} html{scroll-behavior:smooth}
+  body{font-family:'Raleway',sans-serif;background:var(--wh);color:#1e1e1e;overflow-x:hidden}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 4rem;background:rgba(26,58,31,0.93);backdrop-filter:blur(14px);border-bottom:1px solid rgba(168,197,160,0.18)}
+  .logo{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--bl);letter-spacing:0.04em;text-decoration:none}
+  .logo span{color:var(--gp);font-style:italic}
+  .nav-links{display:flex;gap:2.4rem;list-style:none}
+  .nav-links a{color:var(--cr);text-decoration:none;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:color .25s}
+  .nav-links a:hover{color:var(--bl)}
+  .nav-cta{background:var(--bm);color:var(--cr)!important;padding:.45rem 1.3rem!important;border-radius:2px;transition:background .25s!important}
+  .nav-cta:hover{background:var(--bl)!important;color:var(--bd)!important}
+
+  /* HERO */
+  .hero{min-height:82vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 4rem 5rem;position:relative;${heroStyle}}
+  .breadcrumb{position:absolute;top:calc(1.1rem + 64px + 1.2rem);left:4rem;display:flex;align-items:center;gap:.5rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,232,.55)}
+  .breadcrumb a{color:rgba(245,240,232,.55);text-decoration:none;transition:color .2s}
+  .breadcrumb a:hover{color:var(--bl)}
+  .breadcrumb span{opacity:.4}
+  .hero-inner{max-width:1100px;margin:0 auto;width:100%}
+  .hero-eyebrow{font-size:.74rem;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--bl);display:flex;align-items:center;gap:1rem;margin-bottom:1.1rem}
+  .hero-eyebrow::before{content:'';display:block;width:40px;height:1px;background:var(--bl)}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5.5vw,5rem);color:var(--cr);line-height:1.06;max-width:880px}
+
+  /* CONTENT GRID */
+  .content-wrap{max-width:1100px;margin:0 auto;padding:5rem 4rem;display:grid;grid-template-columns:1fr 320px;gap:5rem;align-items:start}
+  .label{font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gl);display:flex;align-items:center;gap:.8rem;margin-bottom:1.4rem}
+  .label::before{content:'';display:block;width:28px;height:1px;background:var(--gl)}
+  .proj-desc{font-size:1.05rem;line-height:1.9;color:var(--tm);white-space:pre-line}
+  .proj-actions{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:2.4rem}
+  .btn-brown{display:inline-block;padding:.9rem 2rem;background:var(--bm);color:var(--cr);text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:background .25s}
+  .btn-brown:hover{background:var(--bl);color:var(--bd)}
+  .btn-outline{display:inline-block;padding:.9rem 2rem;border:1px solid rgba(45,90,52,.3);color:var(--gm);text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:all .25s}
+  .btn-outline:hover{background:var(--gm);color:var(--cr)}
+  .btn-blue{display:inline-block;padding:.9rem 2rem;background:#1a5c8a;color:#f5f0e8;text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+
+  /* SIDEBAR CARD */
+  .info-card{background:var(--cr);border-radius:6px;padding:2rem;border:1px solid rgba(26,58,31,.08);position:sticky;top:110px}
+  .info-card-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--gd);margin-bottom:1.4rem;line-height:1.3}
+  .info-row{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:1.1rem}
+  .info-icon{width:36px;height:36px;border-radius:50%;background:rgba(26,58,31,.08);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;margin-top:.05rem}
+  .info-text span{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gl);display:block;margin-bottom:.15rem}
+  .info-text strong{font-size:.9rem;color:#1e1e1e}
+  .info-card-cta{display:block;margin-top:1.6rem;padding:.9rem;background:var(--bm);color:var(--cr);text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-align:center;transition:background .25s}
+  .info-card-cta:hover{background:var(--bl);color:var(--bd)}
+
+  /* PHOTOS */
+  .photos-section{background:var(--cr);padding:0 4rem 5rem}
+  .photos-inner{max-width:1100px;margin:0 auto}
+  .gal-single img{width:100%;max-height:540px;object-fit:cover;border-radius:6px;display:block}
+  .gal-single a{display:block;border-radius:6px;overflow:hidden}
+  .gal-two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .gal-two a{display:block;border-radius:6px;overflow:hidden;aspect-ratio:4/3}
+  .gal-two a img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+  .gal-two a:hover img{transform:scale(1.04)}
+  .gal-featured{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto;gap:1rem}
+  .gal-main{display:block;border-radius:6px;overflow:hidden;aspect-ratio:3/2}
+  .gal-main img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+  .gal-main:hover img{transform:scale(1.03)}
+  .gal-side{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-content:start}
+  .gal-side a{display:block;border-radius:6px;overflow:hidden;aspect-ratio:1}
+  .gal-side a img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+  .gal-side a:hover img{transform:scale(1.05)}
+  .gal-more{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1rem}
+  .gal-more a{display:block;border-radius:6px;overflow:hidden;aspect-ratio:4/3}
+  .gal-more a img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+  .gal-more a:hover img{transform:scale(1.04)}
+
+  /* CTA BAND */
+  .cta-band{background:var(--gd);padding:5rem 4rem;text-align:center}
+  .cta-band-inner{max-width:580px;margin:0 auto}
+  .cta-eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gp);margin-bottom:1.1rem}
+  .cta-band h2{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3.5vw,3rem);color:var(--cr);margin-bottom:1rem;line-height:1.2}
+  .cta-band h2 em{color:var(--gp);font-style:italic}
+  .cta-band p{color:rgba(245,240,232,.62);font-size:.93rem;line-height:1.8;margin-bottom:2.2rem}
+
+  /* FOOTER */
+  footer{background:var(--bd);color:rgba(245,240,232,.6);padding:3rem 4rem}
   .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
-  .footer-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--brown-light)}
-  .footer-logo span{color:var(--green-pale);font-style:italic}
+  .footer-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--bl)}
+  .footer-logo span{color:var(--gp);font-style:italic}
   .footer-links{display:flex;gap:2rem}
-  .footer-links a{color:rgba(245,240,232,0.5);text-decoration:none;font-size:0.78rem;letter-spacing:0.08em;transition:color 0.3s}
-  .footer-links a:hover{color:var(--brown-light)}
-  @media(max-width:900px){nav{padding:1rem 2rem} .nav-links{display:none} .hero{padding:0 2rem 4rem;min-height:55vh} .body-section{padding:3.5rem 2rem} section[style*="4rem"]{padding:3rem 2rem!important} footer{padding:2.5rem 1.5rem}}
+  .footer-links a{color:rgba(245,240,232,.5);text-decoration:none;font-size:.78rem;letter-spacing:.08em;transition:color .25s}
+  .footer-links a:hover{color:var(--bl)}
+
+  /* RESPONSIVE */
+  @media(max-width:960px){
+    nav{padding:1rem 1.8rem} .nav-links{display:none}
+    .hero{padding:0 1.8rem 4rem;min-height:62vh} .breadcrumb{left:1.8rem}
+    .content-wrap{grid-template-columns:1fr;gap:2.5rem;padding:3.5rem 1.8rem}
+    .info-card{position:static}
+    .photos-section{padding:0 1.8rem 3.5rem}
+    .gal-featured{grid-template-columns:1fr} .gal-side{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+    .cta-band{padding:4rem 1.8rem}
+    footer{padding:2.5rem 1.8rem} .footer-inner{flex-direction:column;text-align:center}
+  }
 </style>
 </head>
 <body>
+
 <nav>
   <a href="index.html" class="logo">Maddern's <span>Place</span></a>
   <ul class="nav-links">
@@ -722,39 +789,75 @@
 </nav>
 
 <div class="hero">
-  <div class="hero-content">
-    <div class="hero-label">Landscaping Project — Adelaide South</div>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span>/</span>
+    <a href="projects.html">Projects</a>
+    <span>/</span>
+    <span style="color:rgba(245,240,232,.8);">${title}</span>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Landscaping Adelaide South</div>
     <h1>${title}</h1>
   </div>
 </div>
 
-<section class="body-section">
-  <div class="body-inner">
-    <div class="section-label">About This Project</div>
-    ${desc ? `<p class="body-desc">${desc}</p>` : ''}
-    <div class="actions">
-      <a href="index.html#contact" style="display:inline-block;padding:1rem 2.2rem;background:#6b4c2e;color:#f5f0e8;text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;">Get a Free Quote</a>
-      ${blogBtnHtml}
-      <a href="projects.html" style="display:inline-block;padding:1rem 2.2rem;border:1px solid rgba(45,90,52,0.35);color:#2d5a34;text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;">← All Projects</a>
+<div style="background:var(--wh);">
+  <div class="content-wrap">
+    <div class="proj-left">
+      <div class="label">About This Project</div>
+      ${desc ? `<p class="proj-desc">${desc}</p>` : ''}
+      <div class="proj-actions">
+        <a href="index.html#contact" class="btn-brown">Get a Free Quote</a>
+        ${blogBtnHtml}
+        <a href="projects.html" class="btn-outline">← All Projects</a>
+      </div>
     </div>
+    <aside>
+      <div class="info-card">
+        <div class="info-card-title">Interested in a similar project?</div>
+        <div class="info-row">
+          <div class="info-icon">📍</div>
+          <div class="info-text"><span>Service Area</span><strong>Adelaide South, SA</strong></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📞</div>
+          <div class="info-text"><span>Phone</span><strong><a href="tel:+61459119149" style="color:#1e1e1e;text-decoration:none;">0459 119 149</a></strong></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">✉️</div>
+          <div class="info-text"><span>Email</span><strong><a href="mailto:maddernsplace@gmail.com" style="color:#1e1e1e;text-decoration:none;">maddernsplace@gmail.com</a></strong></div>
+        </div>
+        <div class="info-row" style="margin-bottom:0;">
+          <div class="info-icon">🕐</div>
+          <div class="info-text"><span>Hours</span><strong>Mon–Fri, 8am–6pm</strong></div>
+        </div>
+        <a href="index.html#contact" class="info-card-cta">Request a Free Quote</a>
+      </div>
+    </aside>
   </div>
-</section>
+</div>
 
-${photosHtml}
+${photos.length ? `<section class="photos-section">
+  <div class="photos-inner">
+    <div class="label">Project Photos</div>
+    ${photosHtml}
+  </div>
+</section>` : ''}
 
-<section style="padding:5rem 4rem;background:#1a3a1f;text-align:center;">
-  <div style="max-width:600px;margin:0 auto;">
-    <div style="font-size:0.75rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:#a8c5a0;margin-bottom:1.2rem;">Ready to Transform Your Space?</div>
-    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);color:#f5f0e8;margin-bottom:1rem;">Let's build something <em style="color:#a8c5a0;font-style:italic;">beautiful</em></h2>
-    <p style="color:rgba(245,240,232,0.65);font-size:0.95rem;line-height:1.75;margin-bottom:2rem;">Based in Hackham, we service Morphett Vale, Reynella, Hallett Cove, Happy Valley, Noarlunga, Seaford, Christies Beach and all of Adelaide's south.</p>
-    <a href="index.html#contact" style="display:inline-block;padding:1rem 2.4rem;background:#6b4c2e;color:#f5f0e8;text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;transition:background 0.3s;">Get a Free Quote</a>
+<section class="cta-band">
+  <div class="cta-band-inner">
+    <div class="cta-eyebrow">Ready to Transform Your Space?</div>
+    <h2>Let's build something <em>beautiful</em></h2>
+    <p>Based in Hackham, we service Morphett Vale, Reynella, Hallett Cove, Happy Valley, Noarlunga, Seaford, Christies Beach and all of Adelaide's south. Free on-site quotes, no obligation.</p>
+    <a href="index.html#contact" class="btn-brown">Get a Free Quote</a>
   </div>
 </section>
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">Maddern's <span>Place</span><br><small style="font-family:'Raleway',sans-serif;font-size:0.7rem;letter-spacing:0.1em;color:rgba(245,240,232,0.4);">GARDEN &amp; LANDSCAPING</small></div>
-    <div style="font-size:0.8rem;">© ${new Date().getFullYear()} Maddern's Place Garden &amp; Landscaping. All rights reserved.</div>
+    <div class="footer-logo">Maddern's <span>Place</span><br><small style="font-family:'Raleway',sans-serif;font-size:.7rem;letter-spacing:.1em;color:rgba(245,240,232,.4);">GARDEN &amp; LANDSCAPING</small></div>
+    <div style="font-size:.8rem;">© ${year} Maddern's Place Garden &amp; Landscaping. All rights reserved.</div>
     <div class="footer-links">
       <a href="index.html">Home</a>
       <a href="projects.html">Gallery</a>
