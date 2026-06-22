@@ -101,8 +101,14 @@
       "name": "seaford2.JPEG",
       "path": "project-images/proj_1774141533204_yti.jpg"
     },
-    "updatedAt": 1782124204209,
-    "slug": "driveway-paving-front-yard-landscaping-seaford-sa"
+    "updatedAt": 1782124327100,
+    "slug": "driveway-paving-front-yard-landscaping-seaford-sa",
+    "photos": [
+      {
+        "name": "seaford2.JPEG",
+        "path": "project-images/proj_1774141533204_yti_1.jpg"
+      }
+    ]
   },
   {
     "id": "proj_1774141565416_3hc",
