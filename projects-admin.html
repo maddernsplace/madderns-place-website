@@ -115,6 +115,28 @@
   .extra-thumb-remove:hover { background: rgba(192,57,43,0.85); }
   .extras-add-btn { border: 2px dashed rgba(26,58,31,0.25); border-radius: 4px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--green-light); font-size: 1.6rem; transition: all 0.2s; background: var(--cream); }
 
+  /* Rich text editor */
+  .rte-toolbar { display: flex; gap: 0.3rem; margin-bottom: 0.4rem; flex-wrap: wrap; align-items: center; }
+  .rte-btn { background: var(--cream); border: 1px solid rgba(26,58,31,0.2); border-radius: 3px; padding: 0.28rem 0.6rem; cursor: pointer; font-size: 0.82rem; font-family: 'Raleway', sans-serif; color: var(--green-deep); line-height: 1.4; transition: all 0.15s; }
+  .rte-btn:hover { background: rgba(168,197,160,0.25); }
+  .rte-btn.active { background: var(--green-mid); color: white; border-color: var(--green-mid); }
+  .rte-sep { width: 1px; height: 1.4rem; background: rgba(26,58,31,0.15); margin: 0 0.2rem; align-self: center; }
+  #projDesc { min-height: 140px; padding: 0.75rem; border: 1px solid rgba(26,58,31,0.2); border-radius: 4px; font-family: 'Raleway', sans-serif; font-size: 0.9rem; line-height: 1.7; color: #1e1e1e; background: white; outline: none; cursor: text; }
+  #projDesc:focus { border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(74,140,85,0.12); }
+  #projDesc:empty::before { content: attr(data-placeholder); color: rgba(74,74,74,0.35); pointer-events: none; display: block; }
+  #projDesc strong, #projDesc b { font-weight: 700; }
+  #projDesc em, #projDesc i { font-style: italic; }
+  #projDesc img { max-width: 100%; border-radius: 4px; margin: 0.5rem 0; display: block; }
+  .img-picker-wrap { position: relative; display: inline-block; }
+  .img-picker-overlay { display: none; position: absolute; top: calc(100% + 6px); left: 0; z-index: 60; background: white; border: 1px solid rgba(26,58,31,0.2); border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.14); padding: 0.75rem; width: 260px; }
+  .img-picker-overlay.open { display: block; }
+  .img-picker-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-light); margin-bottom: 0.5rem; }
+  .img-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+  .img-picker-item { aspect-ratio: 1; border-radius: 4px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: border-color 0.15s; }
+  .img-picker-item:hover { border-color: var(--green-mid); }
+  .img-picker-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .img-picker-empty { font-size: 0.8rem; color: var(--text-mid); line-height: 1.5; }
+
   /* ─── PUBLISH MODAL ─── */
   .modal-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; padding: 2rem; }
   .modal-overlay.open { display: flex; }
@@ -249,9 +271,22 @@
             </div>
             <div class="form-group">
               <label>Description</label>
-              <textarea id="projDesc" style="min-height:140px; resize:vertical;"
-                placeholder="Describe the project — what was done, materials used, the client's goals, seasonal timing, etc."></textarea>
-              <div class="form-hint">Shown on the project page and in the gallery lightbox.</div>
+              <div class="rte-toolbar">
+                <button type="button" class="rte-btn" id="tbBold" onmousedown="event.preventDefault(); execFmt('bold');" title="Bold"><strong>B</strong></button>
+                <button type="button" class="rte-btn" id="tbItalic" onmousedown="event.preventDefault(); execFmt('italic');" title="Italic"><em>I</em></button>
+                <div class="rte-sep"></div>
+                <div class="img-picker-wrap">
+                  <button type="button" class="rte-btn" id="tbImg" onmousedown="event.preventDefault(); openImgPicker();" title="Insert a photo into the description">🖼 Insert Photo</button>
+                  <div class="img-picker-overlay" id="imgPickerOverlay">
+                    <div class="img-picker-label">Choose a photo to insert</div>
+                    <div class="img-picker-grid" id="imgPickerGrid"></div>
+                  </div>
+                </div>
+              </div>
+              <div id="projDesc" contenteditable="true"
+                data-placeholder="Describe the project — what was done, materials used, the client's goals, seasonal timing, etc."
+                onkeyup="updateTbState()" onmouseup="updateTbState()" onfocus="updateTbState()" onclick="closeImgPicker()"></div>
+              <div class="form-hint">Shown on the project page and in the gallery lightbox. Use <strong>B</strong> to bold text, 🖼 to embed photos.</div>
             </div>
             <div class="form-group" style="margin-bottom:0;">
               <label>Blog Post Link <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light);">(optional)</span></label>
@@ -574,14 +609,27 @@
         }
       }
 
-      // Build publishable version — no base64
-      const publishable = projects.map(p => ({
-        ...p,
-        image: p.image ? { name: p.image.name, path: p.image.path || '' } : null,
-        photos: Array.isArray(p.photos) && p.photos.length
-          ? p.photos.map(ph => ({ name: ph.name, path: ph.path || '' }))
-          : undefined
-      }));
+      // Build publishable version — no base64; replace embedded data: URLs in descriptions with paths
+      const publishable = projects.map(p => {
+        let description = p.description || '';
+        // Replace any data: URLs in <img> tags with their published path
+        if (p.image?.data && p.image?.path) {
+          description = description.split(p.image.data).join(p.image.path);
+        }
+        if (Array.isArray(p.photos)) {
+          p.photos.forEach(ph => {
+            if (ph.data && ph.path) description = description.split(ph.data).join(ph.path);
+          });
+        }
+        return {
+          ...p,
+          description,
+          image: p.image ? { name: p.image.name, path: p.image.path || '' } : null,
+          photos: Array.isArray(p.photos) && p.photos.length
+            ? p.photos.map(ph => ({ name: ph.name, path: ph.path || '' }))
+            : undefined
+        };
+      });
 
       // Commit individual project pages for projects with slugs
       const withSlugs = projects.filter(p => p.slug && p.visible !== false);
@@ -633,9 +681,9 @@
     const title    = esc(proj.title || 'Project');
     const slug     = proj.slug || '';
     const descRaw  = proj.description || '';
-    const desc     = esc(descRaw);
+    const descPlain = descRaw.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
     const pageTitle = esc(proj.seoTitle || `${proj.title} | Adelaide South Landscaping — Maddern's Place`);
-    const metaDesc  = esc(proj.seoDesc  || descRaw.replace(/\n/g, ' ').trim().slice(0, 160) || `${proj.title} — landscaping project by Maddern's Place, Adelaide's south.`);
+    const metaDesc  = esc(proj.seoDesc  || descPlain.slice(0, 160) || `${proj.title} — landscaping project by Maddern's Place, Adelaide's south.`);
     const canonical = `https://maddernsplace.com/${slug}`;
     const imgSrc   = proj.image?.path || '';
     const ogImg    = imgSrc ? `https://maddernsplace.com/${imgSrc}` : 'https://maddernsplace.com/Home Design.jpeg';
@@ -691,7 +739,7 @@
   "@context": "https://schema.org",
   "@type": "CreativeWork",
   "name": "${(proj.title||'').replace(/"/g,'\\"')}",
-  "description": "${descRaw.replace(/"/g,'\\"').replace(/\n/g,' ')}",
+  "description": "${descPlain.replace(/"/g,'\\"')}",
   "url": "${canonical}",
   ${imgSrc ? `"image": "${ogImg}",` : ''}
   "author": {
@@ -733,7 +781,7 @@
   .content-wrap{max-width:1100px;margin:0 auto;padding:5rem 4rem;display:grid;grid-template-columns:1fr 320px;gap:5rem;align-items:start}
   .label{font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gl);display:flex;align-items:center;gap:.8rem;margin-bottom:1.4rem}
   .label::before{content:'';display:block;width:28px;height:1px;background:var(--gl)}
-  .proj-desc{font-size:1.05rem;line-height:1.9;color:var(--tm);white-space:pre-line}
+  .proj-desc{font-size:1.05rem;line-height:1.9;color:var(--tm)}.proj-desc img{max-width:100%;border-radius:6px;margin:1rem 0;display:block}
   .proj-actions{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:2.4rem}
   .btn-brown{display:inline-block;padding:.9rem 2rem;background:var(--bm);color:var(--cr);text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:background .25s}
   .btn-brown:hover{background:var(--bl);color:var(--bd)}
@@ -834,7 +882,7 @@
   <div class="content-wrap">
     <div class="proj-left">
       <div class="label">About This Project</div>
-      ${desc ? `<p class="proj-desc">${desc}</p>` : ''}
+      ${descRaw ? `<div class="proj-desc">${descRaw}</div>` : ''}
       <div class="proj-actions">
         <a href="index.html#contact" class="btn-brown">Get a Free Quote</a>
         ${blogBtnHtml}
@@ -985,12 +1033,77 @@ ${photos.length ? `<section class="photos-section">
         <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.35rem; flex-wrap:wrap;">
           <div class="project-card-title">${esc(p.title || 'Untitled')}</div>${vis}${blogBadge}
         </div>
-        <div class="project-card-desc">${esc(p.description || '')}</div>
+        <div class="project-card-desc">${esc((p.description || '').replace(/<[^>]+>/g, ''))}</div>
         <div class="project-card-actions">
           <button class="btn btn-secondary btn-sm" onclick="openEdit('${p.id}')">Edit</button>
         </div>
       </div>
     </div>`;
+  }
+
+  // ─── RICH TEXT EDITOR ────────────────────────────────────────────────────────
+  let _pickerPhotos = [];
+  let _savedSel = null;
+
+  function execFmt(cmd) {
+    document.getElementById('projDesc').focus();
+    document.execCommand(cmd, false, null);
+    updateTbState();
+  }
+
+  function updateTbState() {
+    document.getElementById('tbBold').classList.toggle('active', document.queryCommandState('bold'));
+    document.getElementById('tbItalic').classList.toggle('active', document.queryCommandState('italic'));
+  }
+
+  function openImgPicker() {
+    const overlay = document.getElementById('imgPickerOverlay');
+    if (overlay.classList.contains('open')) { overlay.classList.remove('open'); return; }
+    // Save current selection so we can restore it before inserting
+    const sel = window.getSelection();
+    _savedSel = (sel && sel.rangeCount) ? sel.getRangeAt(0).cloneRange() : null;
+    // Build photo list: title photo first, then additionals
+    _pickerPhotos = [];
+    if (editImg?.data || editImg?.path) _pickerPhotos.push(editImg.data || editImg.path);
+    editPhotos.forEach(ph => { if (ph.data || ph.path) _pickerPhotos.push(ph.data || ph.path); });
+    const grid = document.getElementById('imgPickerGrid');
+    if (!_pickerPhotos.length) {
+      grid.innerHTML = '<p class="img-picker-empty">No photos yet — add a Title Photo or Additional Photos first, then you can embed them here.</p>';
+    } else {
+      grid.innerHTML = _pickerPhotos.map((src, i) =>
+        `<div class="img-picker-item" onclick="insertPickerImg(${i})"><img src="${src.startsWith('data:') ? src : src}" alt="Photo ${i+1}"></div>`
+      ).join('');
+    }
+    overlay.classList.add('open');
+  }
+
+  function closeImgPicker() {
+    document.getElementById('imgPickerOverlay').classList.remove('open');
+  }
+
+  function insertPickerImg(idx) {
+    closeImgPicker();
+    const src = _pickerPhotos[idx];
+    if (!src) return;
+    const editor = document.getElementById('projDesc');
+    editor.focus();
+    if (_savedSel) {
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(_savedSel);
+    }
+    document.execCommand('insertHTML', false,
+      `<img src="${src}" alt="Project photo" style="max-width:100%;border-radius:4px;margin:0.5rem 0;display:block;">`);
+    updateTbState();
+  }
+
+  function getDescHtml() {
+    const el = document.getElementById('projDesc');
+    return el.innerHTML.trim();
+  }
+
+  function loadDescHtml(html) {
+    document.getElementById('projDesc').innerHTML = html || '';
   }
 
   // ─── EDITOR ──────────────────────────────────────────────────────────────────
@@ -1013,7 +1126,7 @@ ${photos.length ? `<section class="photos-section">
     document.getElementById('editorHeading').textContent = editingProj ? 'Edit Project' : 'New Project';
     document.getElementById('projTitle').value    = editingProj?.title || '';
     document.getElementById('projSlug').value     = editingProj?.slug  || '';
-    document.getElementById('projDesc').value     = editingProj?.description || '';
+    loadDescHtml(editingProj?.description || '');
     document.getElementById('projBlogLink').value = editingProj?.blogLink || '';
     document.getElementById('projSeoTitle').value = editingProj?.seoTitle || '';
     document.getElementById('projSeoDesc').value  = editingProj?.seoDesc  || '';
@@ -1163,7 +1276,7 @@ ${photos.length ? `<section class="photos-section">
       slug: slug || undefined,
       seoTitle: document.getElementById('projSeoTitle').value.trim() || undefined,
       seoDesc:  document.getElementById('projSeoDesc').value.trim()  || undefined,
-      description: document.getElementById('projDesc').value.trim(),
+      description: getDescHtml(),
       blogLink: document.getElementById('projBlogLink').value.trim(),
       visible: document.getElementById('projVisible').checked,
       image: editImg,
