@@ -366,7 +366,7 @@
         : `<div class="project-card-img-placeholder" style="${gradientBgs[i % gradientBgs.length]}">🌱</div>`;
       const descPreview = (p.description || '').replace(/<[^>]+>/g, '').replace(/\n/g, ' ').trim();
       const clickHandler = p.slug
-        ? `onclick="location.href='${p.slug}.html'"`
+        ? `onclick="location.href='/${p.slug}.html'"`
         : `onclick="openLightbox(${i})"`;
       return `<div class="project-card" ${clickHandler}>
         <div class="project-card-img">${imgHtml}</div>
