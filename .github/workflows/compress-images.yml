@@ -1,0 +1,61 @@
+name: Compress Images
+
+on:
+  push:
+    paths:
+      - '**.jpg'
+      - '**.jpeg'
+      - '**.JPG'
+      - '**.JPEG'
+      - '**.png'
+      - '**.PNG'
+      - '**.webp'
+
+jobs:
+  compress:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Install ImageMagick
+        run: sudo apt-get install -y imagemagick
+
+      - name: Get changed image files
+        id: changed
+        run: |
+          git diff --name-only HEAD~1 HEAD -- '*.jpg' '*.jpeg' '*.JPG' '*.JPEG' '*.png' '*.PNG' '*.webp' > /tmp/changed_images.txt
+          cat /tmp/changed_images.txt
+
+      - name: Compress images
+        run: |
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            size=$(stat -c%s "$file")
+            # Only compress if file is larger than 200KB
+            if [ "$size" -gt 204800 ]; then
+              echo "Compressing: $file ($(( size / 1024 ))KB)"
+              convert "$file" -resize "1920x1920>" -quality 82 "$file"
+              newsize=$(stat -c%s "$file")
+              echo "  → $(( newsize / 1024 ))KB"
+            else
+              echo "Skipping (already small): $file"
+            fi
+          done < /tmp/changed_images.txt
+
+      - name: Commit compressed images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-compress uploaded images"
+            git push
+          fi
