@@ -323,7 +323,7 @@
 
   async function loadProjects() {
     try {
-      const r = await fetch('projects.json?v=' + Date.now());
+      const r = await fetch('/projects.json?v=' + Date.now());
       if (r.ok) {
         const all = await r.json();
         _projects = all.filter(p => p.visible !== false);
@@ -364,7 +364,7 @@
       const imgHtml = src
         ? `<img src="${src}" alt="${esc(p.title)}" loading="lazy">`
         : `<div class="project-card-img-placeholder" style="${gradientBgs[i % gradientBgs.length]}">🌱</div>`;
-      const descPreview = (p.description || '').replace(/\n/g, ' ').trim();
+      const descPreview = (p.description || '').replace(/<[^>]+>/g, '').replace(/\n/g, ' ').trim();
       const clickHandler = p.slug
         ? `onclick="location.href='${p.slug}.html'"`
         : `onclick="openLightbox(${i})"`;
@@ -444,7 +444,7 @@
   async function loadBeforeAfter() {
     let items = [];
     try {
-      const r = await fetch('beforeafter.json?v=' + Date.now());
+      const r = await fetch('/beforeafter.json?v=' + Date.now());
       if (r.ok) items = (await r.json()).filter(x => x.visible !== false);
     } catch {}
 
