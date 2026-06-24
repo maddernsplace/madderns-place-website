@@ -71,6 +71,12 @@
   .nav-links a:hover, .nav-links a.active { color: var(--brown-light); }
   .nav-cta { background: var(--brown-mid); color: var(--cream) !important; padding: 0.5rem 1.4rem !important; border-radius: 2px; }
   .nav-cta:hover { background: var(--brown-light) !important; color: var(--brown-dark) !important; }
+  .nav-has-dropdown { position: relative; }
+  .nav-dropdown { position: absolute; top: calc(100% + 1rem); left: 50%; transform: translateX(-50%) translateY(-6px); background: rgba(26,58,31,0.97); border: 1px solid rgba(168,197,160,0.2); border-radius: 4px; min-width: 210px; padding: 0.5rem 0; list-style: none; opacity: 0; visibility: hidden; transition: opacity 0.2s, transform 0.2s, visibility 0.2s; z-index: 200; }
+  .nav-dropdown li a { display: block; padding: 0.55rem 1.2rem; font-size: 0.78rem; letter-spacing: 0.08em; white-space: nowrap; }
+  .nav-dropdown li a:hover { background: rgba(168,197,160,0.1); color: var(--brown-light); }
+  .nav-has-dropdown:hover .nav-dropdown, .nav-has-dropdown:focus-within .nav-dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  .nav-has-dropdown > a::after { content: ' ▾'; font-size: 0.65rem; opacity: 0.7; }
 
   /* ─── PAGE HERO ─── */
   .page-hero {
@@ -244,10 +250,19 @@
   <a href="/" class="logo">Maddern's <span>Place</span></a>
   <ul class="nav-links">
     <li><a href="/#about">About</a></li>
-    <li><a href="/#services">Services</a></li>
-    <li><a href="/#gallery" class="active">Gallery</a></li>
+    <li class="nav-has-dropdown">
+      <a href="/#services">Services</a>
+      <ul class="nav-dropdown">
+        <li><a href="/turf-installation-adelaide/">🌿 Turf Installation</a></li>
+        <li><a href="/retaining-walls-adelaide/">🧱 Retaining Walls</a></li>
+        <li><a href="/irrigation/">💧 Irrigation Systems</a></li>
+        <li><a href="/lawn-renovation-adelaide/">✂️ Lawn Renovation</a></li>
+        <li><a href="/landscaping/">🏡 Full Landscaping</a></li>
+        <li><a href="/garden-design/">🌸 Garden Design</a></li>
+      </ul>
+    </li>
+    <li><a href="/projects/" class="active">Gallery</a></li>
     <li><a href="/blog/">Blog</a></li>
-    <li><a href="/shop/">Shop</a></li>
     <li><a href="/#contact" class="nav-cta">Get a Quote</a></li>
   </ul>
 </nav>
@@ -318,6 +333,7 @@
 
 <script>
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function normPath(p) { if (!p || p.startsWith('http') || p.startsWith('data:') || p.startsWith('/')) return p; return '/' + p; }
 
   let _projects = [];
 
@@ -360,7 +376,7 @@
     }
 
     grid.innerHTML = _projects.map((p, i) => {
-      const src = p.image?.path || p.image?.data || null;
+      const src = normPath(p.image?.path) || p.image?.data || null;
       const imgHtml = src
         ? `<img src="${src}" alt="${esc(p.title)}" loading="lazy">`
         : `<div class="project-card-img-placeholder" style="${gradientBgs[i % gradientBgs.length]}">🌱</div>`;
@@ -382,7 +398,7 @@
   function openLightbox(idx) {
     const p = _projects[idx];
     if (!p) return;
-    const src = p.image?.path || p.image?.data || null;
+    const src = normPath(p.image?.path) || p.image?.data || null;
     const img = document.getElementById('lbImg');
     if (src) { img.src = src; img.alt = p.title || ''; img.style.display = 'block'; }
     else { img.style.display = 'none'; }
@@ -398,7 +414,7 @@
     const photos = Array.isArray(p.photos) ? p.photos.filter(ph => ph.path || ph.data) : [];
     if (photos.length) {
       photosGrid.innerHTML = photos.map((ph, i) => {
-        const psrc = ph.path || ph.data || '';
+        const psrc = normPath(ph.path) || ph.data || '';
         return `<img src="${psrc}" alt="Photo ${i+1}" loading="lazy" onclick="openLbViewer('${psrc.replace(/'/g,"\\'")}'); event.stopPropagation();"
           style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:4px; cursor:zoom-in; transition:opacity 0.2s;"
           onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">`;
@@ -458,10 +474,10 @@
     section.style.display = '';
     grid.innerHTML = withImages.map((item, i) => {
       const bBg = item.before
-        ? `url('${item.before}')`
+        ? `url('${normPath(item.before)}')`
         : BA_PLACEHOLDERS[i * 2 % BA_PLACEHOLDERS.length];
       const aBg = item.after
-        ? `url('${item.after}')`
+        ? `url('${normPath(item.after)}')`
         : BA_PLACEHOLDERS[(i * 2 + 1) % BA_PLACEHOLDERS.length];
       return `
         <div class="ba-card">
