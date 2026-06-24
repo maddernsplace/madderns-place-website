@@ -9,71 +9,38 @@
 <style>
   :root {
     --green-deep: #1a3a1f; --green-mid: #2d5a34; --green-light: #4a8c55;
-    --green-pale: #a8c5a0; --brown-dark: #3d2b1a; --brown-mid: #6b4c2e;
-    --brown-light: #c4a882; --cream: #f5f0e8; --white: #fdfcfa;
+    --green-pale: #a8c5a0; --brown-light: #c4a882; --cream: #f5f0e8; --white: #fdfcfa;
     --text-dark: #1e1e1e; --text-mid: #4a4a4a;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Raleway', sans-serif; background: #eceae3; color: var(--text-dark); min-height: 100vh; }
 
   /* ─── LOGIN ─── */
-  .login-screen {
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    background: var(--green-deep);
-  }
-  .login-box {
-    background: var(--white); padding: 3rem; border-radius: 8px;
-    width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  }
+  .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--green-deep); }
+  .login-box { background: var(--white); padding: 3rem; border-radius: 8px; width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
   .login-box h1 { font-family: 'Playfair Display', serif; color: var(--green-deep); margin-bottom: 0.4rem; font-size: 1.8rem; }
   .login-box p { color: var(--text-mid); font-size: 0.88rem; margin-bottom: 2rem; }
-  .login-input {
-    width: 100%; padding: 0.9rem 1rem; border: 1px solid rgba(26,58,31,0.2); border-radius: 4px;
-    font-family: 'Raleway', sans-serif; font-size: 0.95rem;
-    background: var(--cream); margin-bottom: 1rem; outline: none; transition: border-color 0.3s;
-  }
-  .login-input:focus { border-color: var(--green-mid); }
-  .login-btn {
-    width: 100%; padding: 0.9rem; background: var(--green-deep); color: var(--cream);
-    border: none; border-radius: 4px; font-family: 'Raleway', sans-serif;
-    font-size: 0.88rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-    cursor: pointer; transition: background 0.3s;
-  }
+  .login-input { width: 100%; padding: 0.9rem 1rem; border: 1px solid rgba(26,58,31,0.2); border-radius: 4px; font-family: 'Raleway', sans-serif; font-size: 0.95rem; background: var(--cream); margin-bottom: 1rem; outline: none; }
+  .login-btn { width: 100%; padding: 0.9rem; background: var(--green-deep); color: var(--cream); border: none; border-radius: 4px; font-family: 'Raleway', sans-serif; font-size: 0.88rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
   .login-btn:hover { background: var(--green-mid); }
   .login-error { color: #c0392b; font-size: 0.83rem; margin-top: 0.6rem; display: none; }
 
-  /* ─── APP SHELL ─── */
+  /* ─── SHELL ─── */
   .admin-app { display: none; }
-  .admin-header {
-    background: var(--green-deep); padding: 1rem 2rem;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    border-bottom: 1px solid rgba(168,197,160,0.15);
-  }
+  .admin-header { background: var(--green-deep); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
   .admin-logo { font-family: 'Playfair Display', serif; color: var(--brown-light); font-size: 1.1rem; }
   .admin-logo span { color: var(--green-pale); font-style: italic; }
   .admin-logo small { font-family: 'Raleway', sans-serif; font-size: 0.68rem; letter-spacing: 0.12em; color: rgba(245,240,232,0.4); margin-left: 0.6rem; font-style: normal; }
   .admin-nav { display: flex; gap: 0.8rem; align-items: center; }
-  .admin-nav a { color: rgba(245,240,232,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.06em; transition: color 0.2s; padding: 0.4rem 0.6rem; }
+  .admin-nav a { color: rgba(245,240,232,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.06em; padding: 0.4rem 0.6rem; }
   .admin-nav a:hover { color: var(--brown-light); }
-  .admin-nav button {
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-    color: var(--cream); padding: 0.4rem 1rem; border-radius: 3px; cursor: pointer;
-    font-family: 'Raleway', sans-serif; font-size: 0.75rem; font-weight: 500;
-    letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s;
-  }
+  .admin-nav button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--cream); padding: 0.4rem 1rem; border-radius: 3px; cursor: pointer; font-family: 'Raleway', sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
   .admin-nav button:hover { background: rgba(255,255,255,0.2); }
 
   .admin-body { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; }
 
   /* ─── BUTTONS ─── */
-  .btn {
-    padding: 0.7rem 1.5rem; border: none; border-radius: 3px;
-    font-family: 'Raleway', sans-serif; font-size: 0.8rem;
-    font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-    cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;
-    text-decoration: none;
-  }
+  .btn { padding: 0.7rem 1.5rem; border: none; border-radius: 3px; font-family: 'Raleway', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem; }
   .btn-primary { background: var(--green-mid); color: var(--cream); }
   .btn-primary:hover { background: var(--green-deep); }
   .btn-secondary { background: var(--white); color: var(--text-dark); border: 1px solid rgba(26,58,31,0.2); }
@@ -81,55 +48,28 @@
   .btn-danger { background: #c0392b; color: white; }
   .btn-danger:hover { background: #a93226; }
   .btn-sm { padding: 0.4rem 0.85rem; font-size: 0.73rem; }
-  .btn-publish {
-    background: #1a5c8a; color: white;
-    border: none; border-radius: 3px; padding: 0.6rem 1.3rem;
-    font-family: 'Raleway', sans-serif; font-size: 0.78rem; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 0.5rem; transition: background 0.2s;
-  }
+  .btn-publish { background: #1a5c8a; color: white; border: none; border-radius: 3px; padding: 0.6rem 1.3rem; font-family: 'Raleway', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
   .btn-publish:hover { background: #155073; }
-  .btn-publish:disabled { background: #5a8aaa; cursor: default; opacity: 0.7; }
+  .btn-publish:disabled { opacity: 0.7; cursor: default; }
 
-  /* ─── DASHBOARD ─── */
+  /* ─── PAGE HEADER ─── */
   .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
   .page-header h2 { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--green-deep); }
   .page-header-actions { display: flex; gap: 0.7rem; align-items: center; }
 
-  /* Publish status banner */
-  .publish-banner {
-    background: #fff8e6; border: 1px solid #f5c842; border-radius: 4px;
-    padding: 0.8rem 1.2rem; margin-bottom: 1.5rem;
-    display: none; align-items: center; justify-content: space-between; gap: 1rem;
-  }
+  /* Banners */
+  .publish-banner { background: #fff8e6; border: 1px solid #f5c842; border-radius: 4px; padding: 0.8rem 1.2rem; margin-bottom: 1.5rem; display: none; align-items: center; justify-content: space-between; gap: 1rem; }
   .publish-banner.show { display: flex; }
   .publish-banner-text { font-size: 0.85rem; color: #7a5c00; }
-  .publish-banner-text strong { color: #5a4200; }
-
-  /* GitHub settings not configured warning */
-  .gh-warning {
-    background: #fef3f3; border: 1px solid #f5b7b1; border-radius: 4px;
-    padding: 0.8rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: #7a1a1a;
-    display: none;
-  }
+  .gh-warning { background: #fef3f3; border: 1px solid #f5b7b1; border-radius: 4px; padding: 0.8rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: #7a1a1a; display: none; }
   .gh-warning.show { display: block; }
   .gh-warning a { color: #7a1a1a; font-weight: 600; }
 
-  /* Posts list */
+  /* ─── POST CARDS ─── */
   .posts-list { display: flex; flex-direction: column; gap: 1rem; }
-  .post-row {
-    background: var(--white); border-radius: 6px; padding: 1.2rem 1.5rem;
-    display: grid; grid-template-columns: 80px 1fr auto;
-    gap: 1.2rem; align-items: center;
-    border: 1px solid rgba(26,58,31,0.07); transition: box-shadow 0.2s;
-  }
+  .post-row { background: var(--white); border-radius: 6px; padding: 1.2rem 1.5rem; display: grid; grid-template-columns: 80px 1fr auto; gap: 1.2rem; align-items: center; border: 1px solid rgba(26,58,31,0.07); transition: box-shadow 0.2s; }
   .post-row:hover { box-shadow: 0 4px 20px rgba(26,58,31,0.1); }
-  .post-thumb {
-    width: 80px; height: 58px; border-radius: 4px; overflow: hidden; flex-shrink: 0;
-    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.6rem; color: rgba(255,255,255,0.4);
-  }
+  .post-thumb { width: 80px; height: 58px; border-radius: 4px; overflow: hidden; flex-shrink: 0; background: linear-gradient(135deg, var(--green-deep), var(--green-mid)); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: rgba(255,255,255,0.4); }
   .post-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .post-row-info h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--green-deep); margin-bottom: 0.25rem; }
   .post-row-meta { font-size: 0.76rem; color: var(--text-mid); display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
@@ -147,104 +87,56 @@
   #editorView { display: none; }
   .editor-layout { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; }
   .editor-col { display: flex; flex-direction: column; gap: 1.5rem; }
-
   .card { background: var(--white); border-radius: 6px; padding: 1.8rem; border: 1px solid rgba(26,58,31,0.07); }
   .card-title { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-light); margin-bottom: 1.2rem; }
-
   label { display: block; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 0.4rem; }
-  input[type="text"], input[type="date"], input[type="password"], textarea, select {
-    width: 100%; padding: 0.72rem 0.9rem; border: 1px solid rgba(26,58,31,0.2); border-radius: 4px;
-    font-family: 'Raleway', sans-serif; font-size: 0.9rem; background: var(--cream); color: var(--text-dark);
-    outline: none; transition: border-color 0.3s;
-  }
-  input:focus, textarea:focus, select:focus { border-color: var(--green-mid); }
+  input[type="text"], input[type="date"], input[type="password"], textarea { width: 100%; padding: 0.72rem 0.9rem; border: 1px solid rgba(26,58,31,0.2); border-radius: 4px; font-family: 'Raleway', sans-serif; font-size: 0.9rem; background: var(--cream); color: var(--text-dark); outline: none; transition: border-color 0.3s; }
+  input:focus, textarea:focus { border-color: var(--green-mid); }
   .form-group { margin-bottom: 1.2rem; }
   .form-group:last-child { margin-bottom: 0; }
   .form-hint { font-size: 0.72rem; color: var(--text-mid); margin-top: 0.35rem; line-height: 1.5; }
 
-  /* Content editor */
-  .editor-toolbar {
-    display: flex; gap: 0.3rem; flex-wrap: wrap; padding: 0.5rem 0.6rem;
-    background: var(--cream); border: 1px solid rgba(26,58,31,0.2);
-    border-bottom: none; border-radius: 4px 4px 0 0;
-  }
-  .toolbar-btn {
-    padding: 0.3rem 0.6rem; border: 1px solid rgba(26,58,31,0.15); background: var(--white);
-    border-radius: 3px; cursor: pointer; font-size: 0.78rem; font-weight: 600;
-    color: var(--text-dark); transition: all 0.15s; font-family: 'Raleway', sans-serif; line-height: 1.2;
-  }
-  .toolbar-btn:hover { background: var(--green-pale); border-color: var(--green-mid); }
-  .toolbar-sep { width: 1px; background: rgba(26,58,31,0.15); margin: 0.2rem 0.1rem; align-self: stretch; }
-  .content-editor {
-    min-height: 340px; padding: 1.2rem; outline: none; line-height: 1.8;
-    border: 1px solid rgba(26,58,31,0.2); border-radius: 0 0 4px 4px;
-    background: var(--white); font-family: 'Raleway', sans-serif;
-    font-size: 0.95rem; color: var(--text-dark);
-  }
-  .content-editor:focus { border-color: var(--green-mid); }
-  .content-editor:empty::before { content: attr(data-placeholder); color: rgba(74,74,74,0.4); pointer-events: none; }
-  .content-editor h2 { font-family: 'Playfair Display', serif; color: var(--green-deep); margin: 1rem 0 0.4rem; font-size: 1.4rem; }
-  .content-editor h3 { font-family: 'Playfair Display', serif; color: var(--green-mid); margin: 0.8rem 0 0.3rem; font-size: 1.15rem; }
-  .content-editor p { margin-bottom: 0.7rem; }
-  .content-editor img { max-width: 100%; border-radius: 4px; margin: 0.5rem 0; }
-  .content-editor ul, .content-editor ol { margin: 0.4rem 0 0.8rem 1.5rem; }
-
   /* Image upload */
-  .drop-zone {
-    border: 2px dashed rgba(26,58,31,0.25); border-radius: 6px; padding: 1.8rem;
-    text-align: center; cursor: pointer; transition: all 0.2s; background: var(--cream);
-  }
+  .drop-zone { border: 2px dashed rgba(26,58,31,0.25); border-radius: 6px; padding: 1.8rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--cream); }
   .drop-zone:hover, .drop-zone.drag-over { border-color: var(--green-mid); background: rgba(168,197,160,0.12); }
   .drop-zone .drop-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
   .drop-zone p { font-size: 0.82rem; color: var(--text-mid); line-height: 1.5; }
   .drop-zone p strong { color: var(--green-mid); }
-  #imgFileInput { display: none; }
+  .cover-preview { margin-top: 1rem; border-radius: 6px; overflow: hidden; position: relative; display: none; }
+  .cover-preview img { width: 100%; max-height: 220px; object-fit: cover; display: block; }
+  .cover-preview-remove { position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 3px; padding: 0.3rem 0.6rem; cursor: pointer; font-size: 0.75rem; font-family: 'Raleway', sans-serif; }
+  .cover-preview-remove:hover { background: rgba(192,57,43,0.85); }
 
-  .images-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-top: 1rem; }
-  .img-thumb {
-    border-radius: 4px; overflow: hidden; position: relative;
-    border: 2px solid transparent; transition: border-color 0.2s;
-  }
-  .img-thumb.featured { border-color: var(--green-mid); }
-  .img-thumb img { width: 100%; height: 85px; object-fit: cover; display: block; }
-  .img-thumb-actions { padding: 0.35rem 0.35rem 0.4rem; background: var(--white); display: flex; gap: 0.25rem; }
-  .img-btn {
-    font-size: 0.65rem; padding: 0.22rem 0.35rem; border: 1px solid rgba(26,58,31,0.2);
-    border-radius: 3px; cursor: pointer; background: var(--cream); font-family: 'Raleway', sans-serif;
-    font-weight: 600; transition: all 0.15s; flex: 1; text-align: center;
-  }
-  .img-btn:hover { background: var(--green-pale); }
-  .img-btn.active { background: var(--green-mid); color: white; border-color: var(--green-mid); }
-  .img-btn.del:hover { background: #fde8e6; border-color: #c0392b; color: #c0392b; }
-  .featured-label {
-    position: absolute; top: 0.25rem; left: 0.25rem;
-    background: var(--green-mid); color: white; font-size: 0.58rem; font-weight: 700;
-    letter-spacing: 0.06em; text-transform: uppercase; padding: 0.12rem 0.35rem; border-radius: 2px;
-  }
+  /* Gallery grid */
+  .extras-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 0.8rem; }
+  .extra-thumb { position: relative; border-radius: 4px; overflow: hidden; aspect-ratio: 1; }
+  .extra-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .extra-thumb-remove { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 2px; padding: 0.15rem 0.4rem; cursor: pointer; font-size: 0.7rem; font-family: 'Raleway', sans-serif; line-height: 1.3; }
+  .extra-thumb-remove:hover { background: rgba(192,57,43,0.85); }
+  .extras-add-btn { border: 2px dashed rgba(26,58,31,0.25); border-radius: 4px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--green-light); font-size: 1.6rem; transition: all 0.2s; background: var(--cream); }
+  .extras-add-btn:hover { border-color: var(--green-mid); background: rgba(168,197,160,0.12); }
 
-  /* Toggle */
-  .toggle-row { display: flex; justify-content: space-between; align-items: center; }
-  .toggle-row span { font-size: 0.88rem; color: var(--text-dark); }
-  .toggle { position: relative; width: 44px; height: 23px; flex-shrink: 0; }
-  .toggle input { opacity: 0; width: 0; height: 0; }
-  .slider { position: absolute; inset: 0; cursor: pointer; background: #ccc; border-radius: 23px; transition: 0.3s; }
-  .slider:before { content: ''; position: absolute; height: 17px; width: 17px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
-  .toggle input:checked + .slider { background: var(--green-mid); }
-  .toggle input:checked + .slider:before { transform: translateX(21px); }
+  /* Rich text editor */
+  .rte-toolbar { display: flex; gap: 0.3rem; margin-bottom: 0.4rem; flex-wrap: wrap; align-items: center; }
+  .rte-btn { background: var(--cream); border: 1px solid rgba(26,58,31,0.2); border-radius: 3px; padding: 0.28rem 0.6rem; cursor: pointer; font-size: 0.82rem; font-family: 'Raleway', sans-serif; color: var(--green-deep); line-height: 1.4; transition: all 0.15s; }
+  .rte-btn:hover { background: rgba(168,197,160,0.25); }
+  .rte-btn.active { background: var(--green-mid); color: white; border-color: var(--green-mid); }
+  .rte-sep { width: 1px; height: 1.4rem; background: rgba(26,58,31,0.15); margin: 0 0.2rem; align-self: center; }
+  #contentEditor { min-height: 340px; padding: 1rem; border: 1px solid rgba(26,58,31,0.2); border-radius: 4px; font-family: 'Raleway', sans-serif; font-size: 0.95rem; line-height: 1.8; color: #1e1e1e; background: white; outline: none; cursor: text; }
+  #contentEditor:focus { border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(74,140,85,0.12); }
+  #contentEditor:empty::before { content: attr(data-placeholder); color: rgba(74,74,74,0.35); pointer-events: none; display: block; }
+  #contentEditor h2 { font-family: 'Playfair Display', serif; color: var(--green-deep); margin: 1rem 0 0.4rem; font-size: 1.4rem; }
+  #contentEditor h3 { font-family: 'Playfair Display', serif; color: var(--green-mid); margin: 0.8rem 0 0.3rem; font-size: 1.15rem; }
+  #contentEditor p { margin-bottom: 0.7rem; }
+  #contentEditor img { max-width: 100%; border-radius: 4px; margin: 0.5rem 0; display: block; }
+  #contentEditor ul, #contentEditor ol { margin: 0.4rem 0 0.8rem 1.5rem; }
 
-  /* ─── PUBLISH MODAL ─── */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
-    display: none; align-items: center; justify-content: center; padding: 2rem;
-  }
+  /* Photo picker modal */
+  .modal-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; padding: 2rem; }
   .modal-overlay.open { display: flex; }
-  .publish-modal {
-    background: var(--white); border-radius: 8px; width: 100%; max-width: 500px;
-    padding: 2.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  }
+  .publish-modal { background: var(--white); border-radius: 8px; width: 100%; max-width: 500px; padding: 2.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
   .publish-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--green-deep); margin-bottom: 0.5rem; }
   .publish-modal p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.6; margin-bottom: 1.5rem; }
-  .publish-progress { margin: 1.5rem 0; }
   .progress-bar { height: 6px; background: rgba(26,58,31,0.12); border-radius: 3px; overflow: hidden; margin-bottom: 0.6rem; }
   .progress-fill { height: 100%; background: var(--green-mid); border-radius: 3px; transition: width 0.4s; }
   .progress-status { font-size: 0.8rem; color: var(--text-mid); }
@@ -254,26 +146,39 @@
   .publish-error { display: none; padding: 0.8rem 1rem; background: #fde8e6; border-radius: 4px; font-size: 0.85rem; color: #7a1a1a; margin-top: 1rem; }
   .modal-actions { display: flex; gap: 0.8rem; margin-top: 1.5rem; justify-content: flex-end; }
 
-  /* Toast */
-  .toast {
-    position: fixed; bottom: 2rem; right: 2rem;
-    background: var(--green-deep); color: var(--cream);
-    padding: 0.85rem 1.4rem; border-radius: 4px; font-size: 0.85rem; font-weight: 500;
-    transform: translateY(120px); opacity: 0; transition: all 0.3s; z-index: 999;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast.err { background: #c0392b; }
+  /* Photo picker */
+  .picker-modal { background: var(--white); border-radius: 8px; width: 100%; max-width: 420px; padding: 1.8rem; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+  .picker-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--green-deep); margin-bottom: 1rem; }
+  .picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1rem; }
+  .picker-item { aspect-ratio: 1; border-radius: 4px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: border-color 0.15s; }
+  .picker-item:hover { border-color: var(--green-mid); }
+  .picker-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .picker-label { font-size: 0.65rem; text-align: center; color: var(--text-mid); margin-top: 0.2rem; }
+  .picker-empty { font-size: 0.85rem; color: var(--text-mid); line-height: 1.6; }
 
-  /* GitHub token setup info box */
-  .info-box {
-    background: #f0f7ff; border: 1px solid #b3d4f5; border-radius: 4px;
-    padding: 1rem 1.2rem; font-size: 0.82rem; color: #1a3a5c; line-height: 1.6; margin-bottom: 1.2rem;
-  }
+  /* Settings */
+  .info-box { background: #f0f7ff; border: 1px solid #b3d4f5; border-radius: 4px; padding: 1rem 1.2rem; font-size: 0.82rem; color: #1a3a5c; line-height: 1.6; margin-bottom: 1.2rem; }
   .info-box strong { color: #0f2540; }
   .info-box ol { margin: 0.4rem 0 0 1.2rem; }
-  .info-box li { margin-bottom: 0.2rem; }
   .info-box code { background: #d8ecff; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+
+  /* SEO char counter */
+  .seo-count-warn { color: #c47a00 !important; }
+  .seo-count-over { color: #c0392b !important; font-weight: 600; }
+
+  /* Toggle */
+  .toggle-row { display: flex; justify-content: space-between; align-items: center; }
+  .toggle { position: relative; width: 44px; height: 23px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; inset: 0; cursor: pointer; background: #ccc; border-radius: 23px; transition: 0.3s; }
+  .slider:before { content: ''; position: absolute; height: 17px; width: 17px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+  .toggle input:checked + .slider { background: var(--green-mid); }
+  .toggle input:checked + .slider:before { transform: translateX(21px); }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--green-deep); color: var(--cream); padding: 0.85rem 1.4rem; border-radius: 4px; font-size: 0.85rem; font-weight: 500; transform: translateY(120px); opacity: 0; transition: all 0.3s; z-index: 999; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.err { background: #c0392b; }
 
   @media (max-width: 820px) {
     .editor-layout { grid-template-columns: 1fr; }
@@ -301,13 +206,13 @@
   </div>
 </div>
 
-<!-- ─── ADMIN APP ─── -->
+<!-- ─── APP ─── -->
 <div class="admin-app" id="adminApp">
   <header class="admin-header">
     <div class="admin-logo">Maddern's <span>Place</span><small>BLOG ADMIN</small></div>
     <nav class="admin-nav">
       <a href="index.html">← Site</a>
-      <a href="/blog/" target="_blank">View Blog ↗</a>
+      <a href="projects-admin.html">Projects Admin</a>
       <a href="#settingsView" onclick="showView('settings'); return false;">Settings</a>
       <button onclick="doLogout()">Logout</button>
     </nav>
@@ -329,7 +234,7 @@
         <h2>Blog Posts</h2>
         <div class="page-header-actions">
           <button class="btn-publish" onclick="openPublishModal()" id="headerPublishBtn">🚀 Publish to GitHub</button>
-          <button class="btn btn-primary" onclick="openNewPost()">+ New Post</button>
+          <button class="btn btn-primary" onclick="openNew()">+ New Post</button>
         </div>
       </div>
       <div id="postsList"></div>
@@ -351,33 +256,74 @@
           <div class="card">
             <div class="form-group">
               <label>Post Title</label>
-              <input type="text" id="postTitle" placeholder="e.g. Top 5 Spring Garden Tips">
+              <input type="text" id="postTitle" placeholder="e.g. Top 5 Spring Garden Tips for Adelaide"
+                oninput="maybeAutoSlug()">
+            </div>
+            <div class="form-group">
+              <label>
+                URL Slug
+                <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light);">(SEO page URL)</span>
+              </label>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="postSlug" placeholder="spring-garden-tips-adelaide" style="flex:1;"
+                  oninput="onSlugInput()">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="autoSlug()" style="flex-shrink:0; white-space:nowrap;">Auto-generate</button>
+              </div>
+              <div class="form-hint">
+                Creates a dedicated SEO page at
+                <strong>maddernsplace.com/blog/<span id="slugPreview" style="color:var(--green-mid);">your-slug</span>/</strong>
+              </div>
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label>Short Excerpt <span style="text-transform:none; font-weight:400; letter-spacing:0;">(shown on blog cards & home page)</span></label>
-              <textarea id="postExcerpt" style="min-height:75px; resize:vertical;" placeholder="A brief summary that appears on the blog card..."></textarea>
+              <label>Short Excerpt <span style="text-transform:none; font-weight:400; letter-spacing:0;">(shown on blog cards)</span></label>
+              <textarea id="postExcerpt" style="min-height:75px; resize:vertical;" placeholder="A brief summary that appears on the blog listing page..."></textarea>
             </div>
           </div>
 
           <div class="card">
             <div class="card-title">Post Content</div>
-            <div class="editor-toolbar">
-              <button class="toolbar-btn" onclick="fmt('bold')"><b>B</b></button>
-              <button class="toolbar-btn" onclick="fmt('italic')"><i>I</i></button>
-              <button class="toolbar-btn" onclick="fmt('underline')"><u>U</u></button>
-              <div class="toolbar-sep"></div>
-              <button class="toolbar-btn" onclick="fmtBlock('h2')">H2</button>
-              <button class="toolbar-btn" onclick="fmtBlock('h3')">H3</button>
-              <button class="toolbar-btn" onclick="fmtBlock('p')">¶</button>
-              <div class="toolbar-sep"></div>
-              <button class="toolbar-btn" onclick="fmt('insertUnorderedList')">• List</button>
-              <button class="toolbar-btn" onclick="fmt('insertOrderedList')">1. List</button>
-              <div class="toolbar-sep"></div>
-              <button class="toolbar-btn" onclick="insertLink()">🔗 Link</button>
-              <button class="toolbar-btn" onclick="fmt('insertHorizontalRule')">— HR</button>
+            <div class="rte-toolbar">
+              <button type="button" class="rte-btn" id="tbBold" onmousedown="event.preventDefault(); execFmt('bold');"><strong>B</strong></button>
+              <button type="button" class="rte-btn" id="tbItalic" onmousedown="event.preventDefault(); execFmt('italic');"><em>I</em></button>
+              <button type="button" class="rte-btn" onmousedown="event.preventDefault(); execFmt('underline');"><u>U</u></button>
+              <div class="rte-sep"></div>
+              <button type="button" class="rte-btn" onmousedown="event.preventDefault(); execBlock('h2');">H2</button>
+              <button type="button" class="rte-btn" onmousedown="event.preventDefault(); execBlock('h3');">H3</button>
+              <button type="button" class="rte-btn" onmousedown="event.preventDefault(); execBlock('p');">¶</button>
+              <div class="rte-sep"></div>
+              <button type="button" class="rte-btn" onmousedown="event.preventDefault(); execFmt('insertUnorderedList');">• List</button>
+              <button type="button" class="rte-btn" onmousedown="event.preventDefault(); execFmt('insertOrderedList');">1. List</button>
+              <div class="rte-sep"></div>
+              <button type="button" class="rte-btn" onmousedown="event.preventDefault(); insertLink();">🔗 Link</button>
+              <div class="rte-sep"></div>
+              <button type="button" class="rte-btn" onmousedown="event.preventDefault(); openPickerModal();">🖼 Insert Photo</button>
             </div>
-            <div class="content-editor" id="contentEditor" contenteditable="true"
-                 data-placeholder="Write your post content here..."></div>
+            <div id="contentEditor" contenteditable="true"
+              data-placeholder="Write your post content here..."
+              onkeyup="updateTbState()" onmouseup="updateTbState()" onfocus="updateTbState()"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">SEO</div>
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;">
+                <label style="margin-bottom:0;">SEO Title</label>
+                <span id="seoTitleCount" style="font-size:0.7rem; color:var(--text-mid);">0 / 60</span>
+              </div>
+              <input type="text" id="postSeoTitle" placeholder="e.g. Spring Garden Tips Adelaide | Maddern's Place"
+                oninput="updateSeoCount('postSeoTitle','seoTitleCount',60)">
+              <div class="form-hint">Ideal: 50–60 characters. Shown in Google search and browser tab. Leave blank to use the post title.</div>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;">
+                <label style="margin-bottom:0;">Meta Description</label>
+                <span id="seoDescCount" style="font-size:0.7rem; color:var(--text-mid);">0 / 160</span>
+              </div>
+              <textarea id="postSeoDesc" style="min-height:90px; resize:vertical;"
+                placeholder="e.g. Our top 5 spring garden tips for Adelaide south — lawn care, pruning, mulching and more from Maddern's Place."
+                oninput="updateSeoCount('postSeoDesc','seoDescCount',160)"></textarea>
+              <div class="form-hint">Ideal: 140–160 characters. Shown under your link in Google search results.</div>
+            </div>
           </div>
         </div>
 
@@ -388,6 +334,10 @@
               <label>Date</label>
               <input type="date" id="postDate">
             </div>
+            <div class="form-group">
+              <label>Category <span style="font-weight:400; text-transform:none; letter-spacing:0;">(optional)</span></label>
+              <input type="text" id="postCategory" placeholder="e.g. Lawn Care, Garden Tips, Projects">
+            </div>
             <div class="form-group" style="margin-bottom:0;">
               <div class="toggle-row">
                 <span>Published</span>
@@ -396,17 +346,28 @@
                   <span class="slider"></span>
                 </label>
               </div>
+              <div class="form-hint" style="margin-top:0.5rem;">Unpublished posts are saved as drafts and not shown on the blog.</div>
             </div>
           </div>
 
           <div class="card">
-            <div class="card-title">Images</div>
-            <div class="drop-zone" id="dropZone" onclick="document.getElementById('imgFileInput').click()">
+            <div class="card-title">Cover Photo <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light); font-size:0.7rem;">(blog card & hero image)</span></div>
+            <div class="drop-zone" id="coverDropZone" onclick="document.getElementById('coverFileInput').click()">
               <div class="drop-icon">📷</div>
-              <p><strong>Click to upload</strong> or drag & drop<br>JPG, PNG, GIF, WebP</p>
+              <p><strong>Click to upload</strong> or drag & drop<br>JPG, PNG, WebP</p>
             </div>
-            <input type="file" id="imgFileInput" accept="image/*" multiple onchange="handleFiles(this.files)">
-            <div class="images-grid" id="imagesGrid"></div>
+            <input type="file" id="coverFileInput" accept="image/*" onchange="handleCoverFile(this.files[0])">
+            <div class="cover-preview" id="coverPreview">
+              <img id="coverPreviewEl" src="" alt="Cover preview">
+              <button class="cover-preview-remove" onclick="removeCover()">✕ Remove</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Gallery Photos <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--green-light); font-size:0.7rem;">(shown in post)</span></div>
+            <input type="file" id="galleryFileInput" accept="image/*" multiple onchange="handleGalleryFiles(this.files)">
+            <div id="galleryGrid" class="extras-grid"></div>
+            <div class="form-hint" style="margin-top:0.5rem;">Add up to 12 photos. You can also insert them into the post body using 🖼 Insert Photo.</div>
           </div>
 
           <div class="card">
@@ -428,25 +389,23 @@
         <h2>Settings</h2>
         <button class="btn btn-secondary" onclick="showView('dash')">← Back</button>
       </div>
-
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; max-width:900px;">
-        <!-- GitHub Publishing -->
-        <div class="card" style="grid-column:1/-1;">
+      <div style="max-width:600px;">
+        <div class="card">
           <div class="card-title">GitHub Publishing</div>
           <div class="info-box">
-            <strong>How to get your GitHub Token:</strong>
+            <strong>How to create a token:</strong>
             <ol>
               <li>Go to <strong>github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong></li>
               <li>Click <strong>Generate new token</strong></li>
-              <li>Set expiry (1 year recommended), select your repository</li>
-              <li>Under <strong>Repository permissions</strong>, set <code>Contents</code> to <strong>Read and write</strong></li>
-              <li>Generate and paste the token below</li>
+              <li>Set <strong>Repository access</strong> to your site repo</li>
+              <li>Under <strong>Permissions → Repository → Contents</strong>, choose <strong>Read and write</strong></li>
+              <li>Copy the token (starts with <code>github_pat_</code>) and paste it below</li>
             </ol>
+            <br>Tokens expire — if publishing was working before, generate a new one and paste it here.
           </div>
           <div class="form-group">
             <label>GitHub Personal Access Token</label>
             <input type="password" id="ghToken" placeholder="github_pat_...">
-            <div class="form-hint">Stored locally on your device only. Never shared.</div>
           </div>
           <div class="form-group">
             <label>Repository</label>
@@ -458,13 +417,12 @@
             <input type="text" id="ghBranch" placeholder="main">
           </div>
           <div style="display:flex; gap:0.8rem; align-items:center;">
-            <button class="btn btn-primary" onclick="saveGitHubSettings()">Save GitHub Settings</button>
-            <button class="btn btn-secondary" onclick="testGitHubConnection()">Test Connection</button>
+            <button class="btn btn-primary" onclick="saveGHSettings()">Save Settings</button>
+            <button class="btn btn-secondary" onclick="testGH()">Test Connection</button>
             <span id="ghTestResult" style="font-size:0.82rem;"></span>
           </div>
         </div>
 
-        <!-- Password -->
         <div class="card">
           <div class="card-title">Change Password</div>
           <div class="form-group">
@@ -490,20 +448,31 @@
 <!-- ─── PUBLISH MODAL ─── -->
 <div class="modal-overlay" id="publishModal">
   <div class="publish-modal">
-    <h3 id="publishModalTitle">Publish to GitHub</h3>
-    <p id="publishModalDesc">This will commit your posts and images to your GitHub repository. They'll be live for all visitors within seconds.</p>
-    <div class="publish-progress" id="publishProgress" style="display:none;">
+    <h3>Publish Blog to GitHub</h3>
+    <p id="publishDesc">This will commit your posts and photos to the repo. They'll appear on your blog within seconds.</p>
+    <div id="publishProgress" style="display:none;">
       <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
       <div class="progress-status" id="progressStatus">Starting...</div>
     </div>
     <div class="publish-done" id="publishDone">
       <div class="done-icon">✅</div>
-      <p>Published successfully! Posts are now live.</p>
+      <p>Published! Your blog is now updated.</p>
     </div>
     <div class="publish-error" id="publishError"></div>
     <div class="modal-actions" id="modalActions">
       <button class="btn btn-secondary" onclick="closePublishModal()">Cancel</button>
-      <button class="btn-publish" id="confirmPublishBtn" onclick="runPublish()">🚀 Publish Now</button>
+      <button class="btn-publish" id="confirmBtn" onclick="runPublish()">🚀 Publish Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PHOTO PICKER MODAL ─── -->
+<div class="modal-overlay" id="pickerModal">
+  <div class="picker-modal">
+    <h3>Insert Photo</h3>
+    <div id="pickerContent"></div>
+    <div style="text-align:right;">
+      <button class="btn btn-secondary btn-sm" onclick="closePickerModal()">Cancel</button>
     </div>
   </div>
 </div>
@@ -511,7 +480,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ─── CONSTANTS ───────────────────────────────────────────────────────────────
   const POSTS_KEY   = 'madderns_blog_posts';
   const PASS_KEY    = 'madderns_admin_pass';
   const DIRTY_KEY   = 'madderns_has_unpublished';
@@ -521,23 +489,40 @@
   function getPosts() {
     try {
       const posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
-      // Free up space: drop base64 data from any image already uploaded to GitHub
-      let dirty = false;
-      posts.forEach(p => (p.images || []).forEach(img => {
-        if (img.path && img.data) { delete img.data; dirty = true; }
-      }));
-      if (dirty) localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+      // Migrate old images[]/featuredImageId format → cover/gallery
+      posts.forEach(p => {
+        if (Array.isArray(p.images) && !p.cover) {
+          const feat = p.images.find(i => i.id === p.featuredImageId);
+          if (feat) p.cover = { data: feat.data, path: feat.path, name: feat.name };
+          p.gallery = p.images.filter(i => i.id !== p.featuredImageId).map(i => ({ id: i.id, data: i.data, path: i.path, name: i.name }));
+          delete p.images; delete p.featuredImageId;
+        }
+        // Free up space: drop base64 data from images already on GitHub
+        if (p.cover?.path && p.cover?.data) { delete p.cover.data; }
+        if (Array.isArray(p.gallery)) p.gallery.forEach(g => { if (g.path && g.data) delete g.data; });
+      });
+      localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
       return posts;
-    }
-    catch { return []; }
+    } catch { return []; }
   }
   function savePosts(posts) { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); }
   function getPass() { return localStorage.getItem(PASS_KEY) || DEFAULT_PASS; }
   function uid()  { return 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
-  function iuid() { return 'i_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
+  function gid()  { return 'g_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
   function today() { return new Date().toISOString().slice(0,10); }
 
-  // ─── GITHUB SETTINGS ─────────────────────────────────────────────────────────
+  async function seedPostsIfNeeded() {
+    const stored = localStorage.getItem(POSTS_KEY);
+    if (!stored || stored === '[]') {
+      try {
+        const r = await fetch('posts.json?t=' + Date.now());
+        const remote = await r.json();
+        if (Array.isArray(remote) && remote.length > 0) localStorage.setItem(POSTS_KEY, JSON.stringify(remote));
+      } catch {}
+    }
+  }
+
+  // ─── GITHUB ──────────────────────────────────────────────────────────────────
   function getGH() {
     return {
       token:  localStorage.getItem('mp_gh_token')  || '',
@@ -547,39 +532,16 @@
   }
   function ghConfigured() { const g = getGH(); return !!(g.token && g.repo); }
 
-  function saveGitHubSettings() {
+  function saveGHSettings() {
     localStorage.setItem('mp_gh_token',  document.getElementById('ghToken').value.trim());
     localStorage.setItem('mp_gh_repo',   document.getElementById('ghRepo').value.trim());
     localStorage.setItem('mp_gh_branch', document.getElementById('ghBranch').value.trim() || 'main');
     toast('GitHub settings saved!');
-    updateDashboardBanners();
+    updateBanners();
   }
 
-  async function testGitHubConnection() {
-    const r = document.getElementById('ghTestResult');
-    r.textContent = 'Testing...'; r.style.color = '';
-    const { token, repo } = getGH();
-    if (!token || !repo) { r.textContent = '✕ Fill in token and repo first.'; r.style.color = '#c0392b'; return; }
-    try {
-      const res = await ghRequest('GET', `/repos/${repo}`, token);
-      r.textContent = `✓ Connected to ${res.full_name}`;
-      r.style.color = '#2d5a34';
-    } catch(e) {
-      r.textContent = '✕ ' + e.message;
-      r.style.color = '#c0392b';
-    }
-  }
-
-  // ─── GITHUB API ───────────────────────────────────────────────────────────────
   async function ghRequest(method, path, token, body) {
-    const opts = {
-      method,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      }
-    };
+    const opts = { method, headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' } };
     if (body) opts.body = JSON.stringify(body);
     const r = await fetch(`https://api.github.com${path}`, opts);
     const json = await r.json().catch(() => ({}));
@@ -588,10 +550,8 @@
   }
 
   async function getFileSHA(repo, branch, path, token) {
-    try {
-      const d = await ghRequest('GET', `/repos/${repo}/contents/${encodeURIComponent(path)}?ref=${branch}`, token);
-      return d.sha;
-    } catch { return null; }
+    try { const d = await ghRequest('GET', `/repos/${repo}/contents/${encodeURIComponent(path)}?ref=${branch}`, token); return d.sha; }
+    catch { return null; }
   }
 
   async function commitFile(repo, branch, filePath, content, message, token) {
@@ -604,30 +564,32 @@
   function b64Text(str) { return btoa(unescape(encodeURIComponent(str))); }
   function b64FromDataUrl(dataUrl) { return dataUrl.split(',')[1]; }
 
+  async function testGH() {
+    const r = document.getElementById('ghTestResult');
+    r.textContent = 'Testing...'; r.style.color = '';
+    const { token, repo } = getGH();
+    if (!token || !repo) { r.textContent = '✕ Fill in token and repo first.'; r.style.color = '#c0392b'; return; }
+    try {
+      const res = await ghRequest('GET', `/repos/${repo}`, token);
+      r.textContent = `✓ Connected to ${res.full_name}`; r.style.color = '#2d5a34';
+    } catch(e) { r.textContent = '✕ ' + e.message; r.style.color = '#c0392b'; }
+  }
+
   // ─── PUBLISH ─────────────────────────────────────────────────────────────────
   let publishing = false;
 
   function openPublishModal() {
-    if (!ghConfigured()) {
-      toast('Set up GitHub settings first.', true);
-      showView('settings');
-      return;
-    }
-    document.getElementById('publishModalTitle').textContent = 'Publish to GitHub';
-    document.getElementById('publishModalDesc').style.display = '';
+    if (!ghConfigured()) { toast('Set up GitHub settings first.', true); showView('settings'); return; }
+    document.getElementById('publishDesc').style.display = '';
     document.getElementById('publishProgress').style.display = 'none';
     document.getElementById('publishDone').style.display = 'none';
     document.getElementById('publishError').style.display = 'none';
-    document.getElementById('modalActions').style.display = 'flex';
-    document.getElementById('confirmPublishBtn').style.display = '';
+    document.getElementById('modalActions').innerHTML = `<button class="btn btn-secondary" onclick="closePublishModal()">Cancel</button><button class="btn-publish" id="confirmBtn" onclick="runPublish()">🚀 Publish Now</button>`;
     document.getElementById('progressFill').style.width = '0%';
     document.getElementById('publishModal').classList.add('open');
   }
 
-  function closePublishModal() {
-    if (publishing) return;
-    document.getElementById('publishModal').classList.remove('open');
-  }
+  function closePublishModal() { if (!publishing) document.getElementById('publishModal').classList.remove('open'); }
 
   function setProgress(pct, status) {
     document.getElementById('progressFill').style.width = pct + '%';
@@ -637,8 +599,8 @@
   async function runPublish() {
     if (publishing) return;
     publishing = true;
-    document.getElementById('confirmPublishBtn').disabled = true;
-    document.getElementById('publishModalDesc').style.display = 'none';
+    document.getElementById('confirmBtn').disabled = true;
+    document.getElementById('publishDesc').style.display = 'none';
     document.getElementById('publishProgress').style.display = 'block';
     document.getElementById('publishError').style.display = 'none';
 
@@ -646,89 +608,342 @@
 
     try {
       const posts = getPosts();
-      const totalImages = posts.reduce((n, p) => n + (p.images||[]).filter(i => !i.path && i.data).length, 0);
-      let imgsDone = 0;
 
-      // Upload new images (those without a path yet)
+      // Count new images to upload
+      let totalNew = 0;
+      posts.forEach(p => {
+        if (p.cover?.data && !p.cover?.path) totalNew++;
+        if (Array.isArray(p.gallery)) p.gallery.forEach(g => { if (g.data && !g.path) totalNew++; });
+      });
+      let done = 0;
+
       for (const post of posts) {
-        for (const img of (post.images || [])) {
-          if (!img.path && img.data) {
-            const ext = (img.name.match(/\.\w+$/) || ['.jpg'])[0].toLowerCase().replace(/jpeg/, 'jpg');
-            const filename = `blog-images/${post.id}-${img.id}${ext}`;
-            setProgress(
-              Math.round((imgsDone / Math.max(totalImages, 1)) * 70),
-              `Uploading image ${imgsDone + 1} of ${totalImages}: ${img.name}`
-            );
-            await commitFile(repo, branch, filename, b64FromDataUrl(img.data), `Add blog image: ${img.name}`, token);
-            img.path = filename;
-            imgsDone++;
+        // Upload cover if new
+        if (post.cover?.data && !post.cover?.path) {
+          const ext = (post.cover.name?.match(/\.\w+$/) || ['.jpg'])[0].toLowerCase().replace(/jpeg/, 'jpg');
+          const filename = `blog-images/${post.id}_cover${ext}`;
+          setProgress(Math.round((done / Math.max(totalNew, 1)) * 70), `Uploading cover: ${post.cover.name || 'photo'}`);
+          await commitFile(repo, branch, filename, b64FromDataUrl(post.cover.data), `Add blog cover: ${post.title}`, token);
+          post.cover.path = filename;
+          done++;
+        }
+        // Upload gallery photos
+        if (Array.isArray(post.gallery)) {
+          for (let i = 0; i < post.gallery.length; i++) {
+            const g = post.gallery[i];
+            if (g.data && !g.path) {
+              const ext = (g.name?.match(/\.\w+$/) || ['.jpg'])[0].toLowerCase().replace(/jpeg/, 'jpg');
+              const filename = `blog-images/${post.id}_${i + 1}${ext}`;
+              setProgress(Math.round((done / Math.max(totalNew, 1)) * 70), `Uploading photo ${i + 1}: ${g.name || 'photo'}`);
+              await commitFile(repo, branch, filename, b64FromDataUrl(g.data), `Add blog photo: ${post.title}`, token);
+              g.path = filename;
+              done++;
+            }
           }
         }
       }
 
-      // Build publishable JSON — paths only, no base64 blobs
+      // Commit individual post pages for published posts with slugs
+      const withSlugs = posts.filter(p => p.slug && p.published !== false);
+      for (let i = 0; i < withSlugs.length; i++) {
+        const post = withSlugs[i];
+        setProgress(Math.round(75 + (i / Math.max(withSlugs.length, 1)) * 15), `Generating page: blog/${post.slug}/`);
+        const pageHtml = generatePostHtml(post);
+        await commitFile(repo, branch, `blog/${post.slug}/index.html`, b64Text(pageHtml), `Blog post page: ${post.title}`, token);
+      }
+
+      // Build publishable JSON — paths only, no base64
       const publishable = posts.map(p => ({
         ...p,
-        images: (p.images || []).map(({ id, name, path }) => ({ id, name, path: path || '' }))
+        cover: p.cover ? { name: p.cover.name, path: p.cover.path || '' } : undefined,
+        gallery: Array.isArray(p.gallery) && p.gallery.length
+          ? p.gallery.map(g => ({ id: g.id, name: g.name, path: g.path || '' }))
+          : undefined
       }));
 
-      setProgress(80, 'Updating posts.json...');
-      await commitFile(
-        repo, branch, 'posts.json',
-        b64Text(JSON.stringify(publishable, null, 2)),
-        `Update blog posts (${posts.filter(p => p.published).length} published)`,
-        token
-      );
+      setProgress(92, 'Updating posts.json...');
+      await commitFile(repo, branch, 'posts.json', b64Text(JSON.stringify(publishable, null, 2)), `Update blog posts (${posts.filter(p => p.published !== false).length} published)`, token);
 
-      // Strip base64 data now that all images are on GitHub, then save
-      posts.forEach(p => (p.images || []).forEach(img => {
-        if (img.path && img.data) delete img.data;
-      }));
+      // Strip base64 data now uploaded
+      posts.forEach(p => {
+        if (p.cover?.path && p.cover?.data) delete p.cover.data;
+        if (Array.isArray(p.gallery)) p.gallery.forEach(g => { if (g.path && g.data) delete g.data; });
+      });
       savePosts(posts);
       localStorage.removeItem(DIRTY_KEY);
 
       setProgress(100, 'Done!');
       document.getElementById('publishProgress').style.display = 'none';
       document.getElementById('publishDone').style.display = 'block';
-      document.getElementById('modalActions').innerHTML =
-        `<button class="btn btn-primary" onclick="closePublishModal(); renderDashboard();">Done</button>`;
+      document.getElementById('modalActions').innerHTML = `<button class="btn btn-primary" onclick="closePublishModal(); renderDash();">Done</button>`;
 
     } catch(e) {
-      const errEl = document.getElementById('publishError');
-      errEl.textContent = 'Error: ' + e.message;
-      errEl.style.display = 'block';
-      document.getElementById('confirmPublishBtn').disabled = false;
+      const el = document.getElementById('publishError');
+      const msg = e.message || '';
+      let friendly = 'Error: ' + msg;
+      if (/bad credentials|401|unauthorized/i.test(msg)) {
+        friendly = '❌ Bad credentials — your GitHub token is missing, expired, or incorrect. Go to <a href="#" onclick="closePublishModal();showView(\'settings\');return false;" style="color:#7a1a1a;font-weight:700;">Settings</a> and update your Personal Access Token.';
+      } else if (/not found|404/i.test(msg)) {
+        friendly = '❌ Repository not found — check the repo name in <a href="#" onclick="closePublishModal();showView(\'settings\');return false;" style="color:#7a1a1a;font-weight:700;">Settings</a> (format: owner/repo).';
+      } else if (/rate limit/i.test(msg)) {
+        friendly = '❌ GitHub rate limit hit — wait a few minutes then try again.';
+      }
+      el.innerHTML = friendly;
+      el.style.display = 'block';
+      document.getElementById('confirmBtn').disabled = false;
       document.getElementById('publishProgress').style.display = 'none';
-    } finally {
-      publishing = false;
-    }
+    } finally { publishing = false; }
+  }
+
+  // ─── BLOG POST PAGE GENERATOR ────────────────────────────────────────────────
+  function generatePostHtml(post) {
+    const title     = esc(post.title || 'Blog Post');
+    const slug      = post.slug || '';
+    const contentRaw = post.content || '';
+    const contentPlain = contentRaw.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    const pageTitle  = esc(post.seoTitle || `${post.title} | Maddern's Place`);
+    const metaDesc   = esc(post.seoDesc || post.excerpt || contentPlain.slice(0, 160) || `${post.title} — blog post by Maddern's Place, Adelaide's south.`);
+    const canonical  = `https://maddernsplace.com/blog/${slug}/`;
+    const coverSrc   = post.cover?.path || '';
+    const ogImg      = coverSrc ? `https://maddernsplace.com/${coverSrc}` : 'https://maddernsplace.com/Home Design.jpeg';
+    const gallery    = Array.isArray(post.gallery) ? post.gallery.filter(g => g.path) : [];
+    const dateStr    = post.date || '';
+    const category   = post.category || '';
+    const year       = new Date().getFullYear();
+
+    const heroStyle = coverSrc
+      ? `background:linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%), url('/${coverSrc}') center/cover no-repeat;`
+      : `background:linear-gradient(155deg,#1a3a1f 0%,#2d5a34 60%,#4a7a40 100%);`;
+
+    const formattedDate = dateStr ? (() => {
+      const [y,m,d] = dateStr.split('-').map(Number);
+      return `${d} ${['January','February','March','April','May','June','July','August','September','October','November','December'][m-1]} ${y}`;
+    })() : '';
+
+    const galleryHtml = gallery.length ? `
+<section class="gallery-section">
+  <div class="gallery-inner">
+    <div class="label">Photos</div>
+    <div class="gallery-grid">${gallery.map((g,i) => `<a href="/${g.path}" target="_blank" class="gallery-item"><img src="/${g.path}" alt="${title} — photo ${i+1}" loading="lazy"></a>`).join('')}</div>
+  </div>
+</section>` : '';
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${pageTitle}</title>
+<meta name="description" content="${metaDesc}">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Maddern's Place Garden &amp; Landscaping">
+<link rel="canonical" href="${canonical}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="${canonical}">
+<meta property="og:title" content="${pageTitle}">
+<meta property="og:description" content="${metaDesc}">
+<meta property="og:image" content="${esc(ogImg)}">
+<meta property="og:site_name" content="Maddern's Place Garden &amp; Landscaping">
+<meta property="og:locale" content="en_AU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${pageTitle}">
+<meta name="twitter:description" content="${metaDesc}">
+<meta name="twitter:image" content="${esc(ogImg)}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "${(post.title||'').replace(/"/g,'\\"')}",
+  "description": "${(contentPlain.slice(0,200)).replace(/"/g,'\\"')}",
+  "url": "${canonical}",
+  ${coverSrc ? `"image": "${ogImg}",` : ''}
+  ${dateStr ? `"datePublished": "${dateStr}",` : ''}
+  "author": {
+    "@type": "LocalBusiness",
+    "@id": "https://maddernsplace.com/#business",
+    "name": "Maddern's Place Garden & Landscaping"
+  },
+  "publisher": {
+    "@type": "LocalBusiness",
+    "name": "Maddern's Place Garden & Landscaping",
+    "url": "https://maddernsplace.com"
+  }
+}
+<\/script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--gd:#1a3a1f;--gm:#2d5a34;--gl:#4a8c55;--gp:#a8c5a0;--bd:#3d2b1a;--bm:#6b4c2e;--bl:#c4a882;--cr:#f5f0e8;--wh:#fdfcfa;--tm:#4a4a4a}
+  *{margin:0;padding:0;box-sizing:border-box} html{scroll-behavior:smooth}
+  body{font-family:'Raleway',sans-serif;background:var(--wh);color:#1e1e1e;overflow-x:hidden}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 4rem;background:rgba(26,58,31,0.93);backdrop-filter:blur(14px);border-bottom:1px solid rgba(168,197,160,0.18)}
+  .logo{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--bl);letter-spacing:0.04em;text-decoration:none}
+  .logo span{color:var(--gp);font-style:italic}
+  .nav-links{display:flex;gap:2.4rem;list-style:none}
+  .nav-links a{color:var(--cr);text-decoration:none;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:color .25s}
+  .nav-links a:hover{color:var(--bl)}
+  .nav-cta{background:var(--bm);color:var(--cr)!important;padding:.45rem 1.3rem!important;border-radius:2px;transition:background .25s!important}
+  .nav-cta:hover{background:var(--bl)!important;color:var(--bd)!important}
+  .hero{min-height:78vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 4rem 5rem;position:relative;${heroStyle}}
+  .breadcrumb{position:absolute;top:calc(1.1rem + 64px + 1.2rem);left:4rem;display:flex;align-items:center;gap:.5rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,232,.55)}
+  .breadcrumb a{color:rgba(245,240,232,.55);text-decoration:none;transition:color .2s}
+  .breadcrumb a:hover{color:var(--bl)}
+  .breadcrumb span{opacity:.4}
+  .hero-inner{max-width:1100px;margin:0 auto;width:100%}
+  .hero-eyebrow{font-size:.74rem;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--bl);display:flex;align-items:center;gap:1rem;margin-bottom:1.1rem}
+  .hero-eyebrow::before{content:'';display:block;width:40px;height:1px;background:var(--bl)}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,4.4rem);color:var(--cr);line-height:1.08;max-width:860px}
+  .content-wrap{max-width:1100px;margin:0 auto;padding:5rem 4rem;display:grid;grid-template-columns:1fr 300px;gap:5rem;align-items:start}
+  .label{font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gl);display:flex;align-items:center;gap:.8rem;margin-bottom:1.4rem}
+  .label::before{content:'';display:block;width:28px;height:1px;background:var(--gl)}
+  .post-meta{display:flex;gap:1.2rem;align-items:center;margin-bottom:2rem;flex-wrap:wrap}
+  .post-meta-item{font-size:.78rem;color:var(--tm);display:flex;align-items:center;gap:.4rem}
+  .post-content{font-size:1.05rem;line-height:1.9;color:var(--tm)}
+  .post-content h2{font-family:'Playfair Display',serif;color:var(--gd);margin:2rem 0 .7rem;font-size:1.6rem}
+  .post-content h3{font-family:'Playfair Display',serif;color:var(--gm);margin:1.5rem 0 .5rem;font-size:1.25rem}
+  .post-content p{margin-bottom:1rem}
+  .post-content img{max-width:100%;border-radius:6px;margin:1rem 0;display:block}
+  .post-content ul,.post-content ol{margin:.4rem 0 1rem 1.5rem}
+  .post-content a{color:var(--gm);text-decoration:underline}
+  .post-actions{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:2.4rem}
+  .btn-brown{display:inline-block;padding:.9rem 2rem;background:var(--bm);color:var(--cr);text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:background .25s}
+  .btn-brown:hover{background:var(--bl);color:var(--bd)}
+  .btn-outline{display:inline-block;padding:.9rem 2rem;border:1px solid rgba(45,90,52,.3);color:var(--gm);text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:all .25s}
+  .btn-outline:hover{background:var(--gm);color:var(--cr)}
+  .info-card{background:var(--cr);border-radius:6px;padding:2rem;border:1px solid rgba(26,58,31,.08);position:sticky;top:110px}
+  .info-card-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gd);margin-bottom:1.4rem;line-height:1.3}
+  .info-row{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:1.1rem}
+  .info-icon{width:36px;height:36px;border-radius:50%;background:rgba(26,58,31,.08);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;margin-top:.05rem}
+  .info-text span{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gl);display:block;margin-bottom:.15rem}
+  .info-text strong{font-size:.9rem;color:#1e1e1e}
+  .info-card-cta{display:block;margin-top:1.6rem;padding:.9rem;background:var(--bm);color:var(--cr);text-decoration:none;border-radius:2px;font-family:'Raleway',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-align:center;transition:background .25s}
+  .info-card-cta:hover{background:var(--bl);color:var(--bd)}
+  .gallery-section{background:var(--cr);padding:0 4rem 5rem}
+  .gallery-inner{max-width:1100px;margin:0 auto}
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
+  .gallery-item{display:block;border-radius:6px;overflow:hidden;aspect-ratio:4/3}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+  .gallery-item:hover img{transform:scale(1.04)}
+  .cta-band{background:var(--gd);padding:5rem 4rem;text-align:center}
+  .cta-band-inner{max-width:580px;margin:0 auto}
+  .cta-eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gp);margin-bottom:1.1rem}
+  .cta-band h2{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3.5vw,3rem);color:var(--cr);margin-bottom:1rem;line-height:1.2}
+  .cta-band h2 em{color:var(--gp);font-style:italic}
+  .cta-band p{color:rgba(245,240,232,.62);font-size:.93rem;line-height:1.8;margin-bottom:2.2rem}
+  footer{background:var(--bd);color:rgba(245,240,232,.6);padding:3rem 4rem}
+  .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
+  .footer-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--bl)}
+  .footer-logo span{color:var(--gp);font-style:italic}
+  .footer-links{display:flex;gap:2rem}
+  .footer-links a{color:rgba(245,240,232,.5);text-decoration:none;font-size:.78rem;letter-spacing:.08em;transition:color .25s}
+  .footer-links a:hover{color:var(--bl)}
+  @media(max-width:960px){
+    nav{padding:1rem 1.8rem} .nav-links{display:none}
+    .hero{padding:0 1.8rem 4rem;min-height:60vh} .breadcrumb{left:1.8rem}
+    .content-wrap{grid-template-columns:1fr;gap:2.5rem;padding:3.5rem 1.8rem}
+    .info-card{position:static}
+    .gallery-section{padding:0 1.8rem 3.5rem}
+    .cta-band{padding:4rem 1.8rem}
+    footer{padding:2.5rem 1.8rem} .footer-inner{flex-direction:column;text-align:center}
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/index.html" class="logo">Maddern's <span>Place</span></a>
+  <ul class="nav-links">
+    <li><a href="/index.html#about">About</a></li>
+    <li><a href="/index.html#services">Services</a></li>
+    <li><a href="/projects/">Gallery</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/index.html#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+<div class="hero">
+  <div class="breadcrumb">
+    <a href="/index.html">Home</a>
+    <span>/</span>
+    <a href="/blog/">Blog</a>
+    <span>/</span>
+    <span style="color:rgba(245,240,232,.8);">${title}</span>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">${category ? esc(category) : 'Garden &amp; Landscaping'}</div>
+    <h1>${title}</h1>
+  </div>
+</div>
+<div style="background:var(--wh);">
+  <div class="content-wrap">
+    <div>
+      <div class="label">Blog Post</div>
+      ${formattedDate || category ? `<div class="post-meta">
+        ${formattedDate ? `<div class="post-meta-item">📅 ${formattedDate}</div>` : ''}
+        ${category ? `<div class="post-meta-item">🏷 ${esc(category)}</div>` : ''}
+      </div>` : ''}
+      <div class="post-content">${contentRaw}</div>
+      <div class="post-actions">
+        <a href="/index.html#contact" class="btn-brown">Get a Free Quote</a>
+        <a href="/blog/" class="btn-outline">← All Posts</a>
+      </div>
+    </div>
+    <aside>
+      <div class="info-card">
+        <div class="info-card-title">Get expert garden advice</div>
+        <div class="info-row">
+          <div class="info-icon">📍</div>
+          <div class="info-text"><span>Service Area</span><strong>Adelaide South, SA</strong></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📞</div>
+          <div class="info-text"><span>Phone</span><strong><a href="tel:+61459119149" style="color:#1e1e1e;text-decoration:none;">0459 119 149</a></strong></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">✉️</div>
+          <div class="info-text"><span>Email</span><strong><a href="mailto:maddernsplace@gmail.com" style="color:#1e1e1e;text-decoration:none;">maddernsplace@gmail.com</a></strong></div>
+        </div>
+        <div class="info-row" style="margin-bottom:0;">
+          <div class="info-icon">🕐</div>
+          <div class="info-text"><span>Hours</span><strong>Mon–Fri, 8am–6pm</strong></div>
+        </div>
+        <a href="/index.html#contact" class="info-card-cta">Request a Free Quote</a>
+      </div>
+    </aside>
+  </div>
+</div>
+${galleryHtml}
+<section class="cta-band">
+  <div class="cta-band-inner">
+    <div class="cta-eyebrow">Ready to Transform Your Garden?</div>
+    <h2>Let's build something <em>beautiful</em></h2>
+    <p>Based in Hackham, we service Morphett Vale, Reynella, Hallett Cove, Happy Valley, Noarlunga, Seaford, Christies Beach and all of Adelaide's south. Free on-site quotes, no obligation.</p>
+    <a href="/index.html#contact" class="btn-brown">Get a Free Quote</a>
+  </div>
+</section>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Maddern's <span>Place</span><br><small style="font-family:'Raleway',sans-serif;font-size:.7rem;letter-spacing:.1em;color:rgba(245,240,232,.4);">GARDEN &amp; LANDSCAPING</small></div>
+    <div style="font-size:.8rem;">© ${year} Maddern's Place Garden &amp; Landscaping. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="/index.html">Home</a>
+      <a href="/projects/">Gallery</a>
+      <a href="/blog/">Blog</a>
+      <a href="/index.html#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>`;
   }
 
   // ─── AUTH ────────────────────────────────────────────────────────────────────
   let authed = sessionStorage.getItem('mp_auth') === '1';
 
-  // Seed posts from posts.json if localStorage is empty
-  async function seedPostsIfNeeded() {
-    const stored = localStorage.getItem(POSTS_KEY);
-    if (!stored || stored === '[]') {
-      try {
-        const r = await fetch('posts.json?t=' + Date.now());
-        const remote = await r.json();
-        if (Array.isArray(remote) && remote.length > 0) {
-          localStorage.setItem(POSTS_KEY, JSON.stringify(remote));
-        }
-      } catch(e) {}
-    }
-  }
-
-  async function doLogin() {
+  function doLogin() {
     if (document.getElementById('loginPw').value === getPass()) {
-      sessionStorage.setItem('mp_auth', '1');
-      authed = true;
+      sessionStorage.setItem('mp_auth', '1'); authed = true;
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminApp').style.display = 'block';
-      await seedPostsIfNeeded();
-      showView('dash');
+      seedPostsIfNeeded().then(() => showView('dash'));
     } else {
       document.getElementById('loginErr').style.display = 'block';
       document.getElementById('loginPw').value = '';
@@ -743,18 +958,6 @@
     }
   }
 
-  function changePassword() {
-    const cur = document.getElementById('currentPw').value;
-    const nw  = document.getElementById('newPw').value.trim();
-    const con = document.getElementById('confirmPw').value;
-    if (cur !== getPass())  { toast('Current password is incorrect.', true); return; }
-    if (!nw)                { toast('New password cannot be empty.', true); return; }
-    if (nw !== con)         { toast('Passwords do not match.', true); return; }
-    localStorage.setItem(PASS_KEY, nw);
-    ['currentPw','newPw','confirmPw'].forEach(id => document.getElementById(id).value = '');
-    toast('Password updated!');
-  }
-
   if (authed) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminApp').style.display = 'block';
@@ -763,11 +966,9 @@
 
   // ─── VIEWS ───────────────────────────────────────────────────────────────────
   function showView(name) {
-    ['dashView','editorView','settingsView'].forEach(id => {
-      document.getElementById(id).style.display = 'none';
-    });
+    ['dashView','editorView','settingsView'].forEach(id => document.getElementById(id).style.display = 'none');
     document.getElementById(name + 'View').style.display = 'block';
-    if (name === 'dash') renderDashboard();
+    if (name === 'dash') renderDash();
     if (name === 'settings') loadSettingsForm();
   }
 
@@ -779,42 +980,45 @@
   }
 
   // ─── DASHBOARD ───────────────────────────────────────────────────────────────
-  function renderDashboard() {
-    updateDashboardBanners();
-    const posts = getPosts().sort((a,b) => b.createdAt - a.createdAt);
+  function renderDash() {
+    updateBanners();
+    const posts = getPosts().sort((a, b) => b.createdAt - a.createdAt);
     const el = document.getElementById('postsList');
     if (!posts.length) {
       el.innerHTML = `<div class="empty-state">
         <div class="empty-icon">✍️</div>
         <h3>No posts yet</h3>
-        <p>Create your first blog post to share garden tips, project stories, and seasonal advice.</p>
-        <button class="btn btn-primary" onclick="openNewPost()">+ Create First Post</button>
+        <p>Create your first blog post to share garden tips, project stories, and seasonal advice with visitors.</p>
+        <button class="btn btn-primary" onclick="openNew()">+ Create First Post</button>
       </div>`;
       return;
     }
     el.innerHTML = `<div class="posts-list">${posts.map(postRow).join('')}</div>`;
   }
 
-  function updateDashboardBanners() {
-    const configured = ghConfigured();
+  function updateBanners() {
+    const ok = ghConfigured();
     const dirty = localStorage.getItem(DIRTY_KEY) === '1';
-    document.getElementById('ghWarning').classList.toggle('show', !configured);
-    document.getElementById('publishBanner').classList.toggle('show', configured && dirty);
+    document.getElementById('ghWarning').classList.toggle('show', !ok);
+    document.getElementById('publishBanner').classList.toggle('show', ok && dirty);
     const hpb = document.getElementById('headerPublishBtn');
-    if (hpb) hpb.style.display = configured ? '' : 'none';
+    if (hpb) hpb.style.display = ok ? '' : 'none';
   }
 
   function postRow(p) {
-    const feat = getFeaturedImg(p);
-    const thumb = feat ? `<img src="${feat}" alt="">` : '🌿';
-    const badge = p.published
+    const src = p.cover?.data || (p.cover?.path ? '/' + p.cover.path : null);
+    const thumb = src ? `<img src="${src}" alt="">` : '🌿';
+    const badge = p.published !== false
       ? `<span class="badge badge-pub">Published</span>`
       : `<span class="badge badge-draft">Draft</span>`;
+    const catBadge = p.category
+      ? `<span style="font-size:0.72rem; color:#155073; background:#d8ecff; padding:0.15rem 0.5rem; border-radius:10px; font-weight:600;">${esc(p.category)}</span>`
+      : '';
     return `<div class="post-row">
       <div class="post-thumb">${thumb}</div>
       <div class="post-row-info">
         <h3>${esc(p.title || 'Untitled')}</h3>
-        <div class="post-row-meta">${badge}<span>${fmtDate(p.date)}</span></div>
+        <div class="post-row-meta">${badge}${catBadge}<span>${fmtDate(p.date)}</span>${p.slug ? `<span style="color:var(--green-light);">/${p.slug}/</span>` : ''}</div>
       </div>
       <div class="post-row-actions">
         <button class="btn btn-secondary btn-sm" onclick="openEdit('${p.id}')">Edit</button>
@@ -822,39 +1026,205 @@
     </div>`;
   }
 
-  // Return displayable src for featured image (data url or path)
-  function getFeaturedImg(p) {
-    const img = (p.images||[]).find(i => i.id === p.featuredImageId);
-    if (!img) return null;
-    return img.data || img.path || null;
-  }
-
   // ─── EDITOR STATE ────────────────────────────────────────────────────────────
   let editingPost = null;
-  let editImages  = [];
-  let featuredId  = null;
+  let editCover   = null;  // { data, name, path }
+  let editGallery = [];    // [{ id, data, name, path }, ...]
+  let _slugAutoFilled = true;
+  let _savedSel = null;
 
-  function openNewPost() { editingPost = null; editImages = []; featuredId = null; loadEditor(); }
+  function openNew() { editingPost = null; editCover = null; editGallery = []; loadEditor(); }
 
   function openEdit(id) {
     const p = getPosts().find(x => x.id === id);
     if (!p) return;
     editingPost = p;
-    editImages  = (p.images || []).map(i => ({...i}));
-    featuredId  = p.featuredImageId || null;
+    editCover   = p.cover ? { ...p.cover } : null;
+    editGallery = Array.isArray(p.gallery) ? p.gallery.map(g => ({ ...g })) : [];
     loadEditor();
   }
 
   function loadEditor() {
     document.getElementById('editorHeading').textContent = editingPost ? 'Edit Post' : 'New Post';
-    document.getElementById('postTitle').value    = editingPost?.title   || '';
-    document.getElementById('postExcerpt').value  = editingPost?.excerpt || '';
+    document.getElementById('postTitle').value     = editingPost?.title    || '';
+    document.getElementById('postSlug').value      = editingPost?.slug     || '';
+    document.getElementById('postExcerpt').value   = editingPost?.excerpt  || '';
+    document.getElementById('postDate').value      = editingPost?.date     || today();
+    document.getElementById('postCategory').value  = editingPost?.category || '';
+    document.getElementById('postSeoTitle').value  = editingPost?.seoTitle || '';
+    document.getElementById('postSeoDesc').value   = editingPost?.seoDesc  || '';
     document.getElementById('contentEditor').innerHTML = editingPost?.content || '';
-    document.getElementById('postDate').value     = editingPost?.date || today();
-    document.getElementById('postPublished').checked  = editingPost ? editingPost.published : true;
+    document.getElementById('postPublished').checked = editingPost ? editingPost.published !== false : true;
     document.getElementById('deleteWrap').style.display = editingPost ? 'block' : 'none';
-    renderImages();
+    updateSeoCount('postSeoTitle', 'seoTitleCount', 60);
+    updateSeoCount('postSeoDesc',  'seoDescCount',  160);
+    _slugAutoFilled = !editingPost;
+    updateSlugPreview();
+    updateCoverPreview();
+    renderGalleryGrid();
     showView('editor');
+  }
+
+  // ─── SLUG ────────────────────────────────────────────────────────────────────
+  function titleToSlug(t) {
+    return t.toLowerCase().replace(/[''`]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+  function maybeAutoSlug() {
+    if (_slugAutoFilled) document.getElementById('postSlug').value = titleToSlug(document.getElementById('postTitle').value);
+    updateSlugPreview();
+  }
+  function autoSlug() {
+    document.getElementById('postSlug').value = titleToSlug(document.getElementById('postTitle').value);
+    _slugAutoFilled = true;
+    updateSlugPreview();
+  }
+  function onSlugInput() { _slugAutoFilled = false; updateSlugPreview(); }
+  function updateSlugPreview() {
+    document.getElementById('slugPreview').textContent = document.getElementById('postSlug').value.trim() || 'your-slug';
+  }
+
+  // ─── SEO COUNTERS ────────────────────────────────────────────────────────────
+  function updateSeoCount(fieldId, counterId, max) {
+    const len = document.getElementById(fieldId).value.length;
+    const el  = document.getElementById(counterId);
+    el.textContent = `${len} / ${max}`;
+    el.className = len > max ? 'seo-count-over' : len > max * 0.85 ? 'seo-count-warn' : '';
+  }
+
+  // ─── COVER PHOTO ─────────────────────────────────────────────────────────────
+  function handleCoverFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => shrink(e.target.result, 1200, 0.82, data => {
+      editCover = { data, name: file.name };
+      updateCoverPreview();
+    });
+    reader.readAsDataURL(file);
+    document.getElementById('coverFileInput').value = '';
+  }
+  function updateCoverPreview() {
+    const src = editCover?.data || (editCover?.path ? '/' + editCover.path : null);
+    const preview = document.getElementById('coverPreview');
+    if (src) {
+      document.getElementById('coverPreviewEl').src = src;
+      preview.style.display = 'block';
+    } else {
+      preview.style.display = 'none';
+    }
+  }
+  function removeCover() { editCover = null; updateCoverPreview(); }
+
+  const coverDZ = document.getElementById('coverDropZone');
+  coverDZ.addEventListener('dragover', e => { e.preventDefault(); coverDZ.classList.add('drag-over'); });
+  coverDZ.addEventListener('dragleave', () => coverDZ.classList.remove('drag-over'));
+  coverDZ.addEventListener('drop', e => { e.preventDefault(); coverDZ.classList.remove('drag-over'); handleCoverFile(e.dataTransfer.files[0]); });
+
+  // ─── GALLERY PHOTOS ──────────────────────────────────────────────────────────
+  function handleGalleryFiles(files) {
+    const remaining = 12 - editGallery.length;
+    const toLoad = Array.from(files).slice(0, remaining);
+    let loaded = 0;
+    toLoad.forEach(file => {
+      if (!file.type.startsWith('image/')) { loaded++; return; }
+      const reader = new FileReader();
+      reader.onload = e => shrink(e.target.result, 1200, 0.80, data => {
+        editGallery.push({ id: gid(), data, name: file.name });
+        loaded++;
+        if (loaded === toLoad.length) renderGalleryGrid();
+      });
+      reader.readAsDataURL(file);
+    });
+    document.getElementById('galleryFileInput').value = '';
+  }
+  function renderGalleryGrid() {
+    const grid = document.getElementById('galleryGrid');
+    const thumbs = editGallery.map((g, i) => {
+      const src = g.data || (g.path ? '/' + g.path : '');
+      return `<div class="extra-thumb">
+        <img src="${src}" alt="Photo ${i+1}">
+        <button class="extra-thumb-remove" onclick="removeGalleryPhoto(${i})">✕</button>
+      </div>`;
+    }).join('');
+    const addBtn = editGallery.length < 12
+      ? `<div class="extras-add-btn" onclick="document.getElementById('galleryFileInput').click()" title="Add photos">+</div>`
+      : '';
+    grid.innerHTML = thumbs + addBtn;
+  }
+  function removeGalleryPhoto(idx) {
+    editGallery.splice(idx, 1);
+    renderGalleryGrid();
+  }
+
+  // ─── RICH TEXT EDITOR ────────────────────────────────────────────────────────
+  function execFmt(cmd) {
+    document.getElementById('contentEditor').focus();
+    document.execCommand(cmd, false, null);
+    updateTbState();
+  }
+  function execBlock(tag) {
+    document.getElementById('contentEditor').focus();
+    document.execCommand('formatBlock', false, tag);
+  }
+  function insertLink() {
+    const url = prompt('Enter URL:');
+    if (url) { document.getElementById('contentEditor').focus(); document.execCommand('createLink', false, url); }
+  }
+  function updateTbState() {
+    document.getElementById('tbBold').classList.toggle('active', document.queryCommandState('bold'));
+    document.getElementById('tbItalic').classList.toggle('active', document.queryCommandState('italic'));
+  }
+
+  // ─── PHOTO PICKER ────────────────────────────────────────────────────────────
+  function openPickerModal() {
+    const sel = window.getSelection();
+    _savedSel = (sel && sel.rangeCount) ? sel.getRangeAt(0).cloneRange() : null;
+
+    const all = [];
+    if (editCover?.data || editCover?.path) all.push({ src: editCover.data || '/' + editCover.path, label: 'Cover' });
+    editGallery.forEach((g, i) => { if (g.data || g.path) all.push({ src: g.data || '/' + g.path, label: `Photo ${i+1}` }); });
+
+    const content = document.getElementById('pickerContent');
+    if (!all.length) {
+      content.innerHTML = `<p class="picker-empty">No photos yet — add a Cover Photo or Gallery Photos first.</p>`;
+    } else {
+      content.innerHTML = `<div class="picker-grid">${all.map((item, i) =>
+        `<div>
+          <div class="picker-item" onclick="insertPickedPhoto(${i})">
+            <img src="${item.src}" alt="${item.label}">
+          </div>
+          <div class="picker-label">${item.label}</div>
+        </div>`
+      ).join('')}</div>`;
+      content._photos = all;
+    }
+    document.getElementById('pickerModal').classList.add('open');
+  }
+  function closePickerModal() { document.getElementById('pickerModal').classList.remove('open'); }
+  function insertPickedPhoto(idx) {
+    const all = document.getElementById('pickerContent')._photos || [];
+    const item = all[idx];
+    closePickerModal();
+    if (!item) return;
+    const editor = document.getElementById('contentEditor');
+    editor.focus();
+    if (_savedSel) { const s = window.getSelection(); s.removeAllRanges(); s.addRange(_savedSel); }
+    document.execCommand('insertHTML', false,
+      `<img src="${item.src}" alt="Blog photo" style="max-width:100%;border-radius:6px;margin:1rem 0;display:block;">`);
+    updateTbState();
+  }
+
+  // ─── IMAGE SHRINK ────────────────────────────────────────────────────────────
+  function shrink(src, maxW, q, cb) {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      cb(c.toDataURL('image/jpeg', q));
+    };
+    img.src = src;
   }
 
   // ─── SAVE / DELETE ───────────────────────────────────────────────────────────
@@ -862,14 +1232,21 @@
     const title = document.getElementById('postTitle').value.trim();
     if (!title) { toast('Please enter a post title.', true); return; }
 
+    const rawSlug = document.getElementById('postSlug').value.trim();
+    const slug = rawSlug ? titleToSlug(rawSlug) || rawSlug : '';
+
     const data = {
       title,
+      slug: slug || undefined,
       excerpt:   document.getElementById('postExcerpt').value.trim(),
       content:   document.getElementById('contentEditor').innerHTML,
       date:      document.getElementById('postDate').value,
+      category:  document.getElementById('postCategory').value.trim() || undefined,
+      seoTitle:  document.getElementById('postSeoTitle').value.trim() || undefined,
+      seoDesc:   document.getElementById('postSeoDesc').value.trim()  || undefined,
       published: document.getElementById('postPublished').checked,
-      images:    editImages,
-      featuredImageId: featuredId,
+      cover:     editCover,
+      gallery:   editGallery.length ? editGallery : undefined,
       updatedAt: Date.now()
     };
 
@@ -884,15 +1261,10 @@
     try {
       savePosts(posts);
       localStorage.setItem(DIRTY_KEY, '1');
-      if (andPublish) {
-        showView('dash');
-        openPublishModal();
-      } else {
-        toast(editingPost ? 'Draft saved!' : 'Post created!');
-        showView('dash');
-      }
+      if (andPublish) { showView('dash'); openPublishModal(); }
+      else { toast(editingPost ? 'Draft saved!' : 'Post created!'); showView('dash'); }
     } catch(e) {
-      if (e.name === 'QuotaExceededError') toast('Storage full — remove some images.', true);
+      if (e.name === 'QuotaExceededError') toast('Storage full — try removing some photos.', true);
       else toast('Error saving. Try again.', true);
     }
   }
@@ -906,90 +1278,19 @@
     showView('dash');
   }
 
-  // ─── IMAGES ──────────────────────────────────────────────────────────────────
-  function handleFiles(files) {
-    Array.from(files).forEach(file => {
-      if (!file.type.startsWith('image/')) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        shrink(e.target.result, 900, 0.72, data => {
-          const id = iuid();
-          editImages.push({ id, data, name: file.name });
-          if (!featuredId) featuredId = id;
-          renderImages();
-        });
-      };
-      reader.readAsDataURL(file);
-    });
-    document.getElementById('imgFileInput').value = '';
-  }
-
-  function shrink(src, maxW, q, cb) {
-    const img = new Image();
-    img.onload = () => {
-      let w = img.width, h = img.height;
-      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
-      const c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      c.getContext('2d').drawImage(img, 0, 0, w, h);
-      cb(c.toDataURL('image/jpeg', q));
-    };
-    img.src = src;
-  }
-
-  function renderImages() {
-    const grid = document.getElementById('imagesGrid');
-    if (!editImages.length) { grid.innerHTML = ''; return; }
-    grid.innerHTML = editImages.map(img => {
-      const isFeat = img.id === featuredId;
-      const src    = img.data || img.path || '';
-      return `<div class="img-thumb ${isFeat ? 'featured' : ''}">
-        ${isFeat ? '<div class="featured-label">Cover</div>' : ''}
-        <img src="${src}" alt="${esc(img.name)}">
-        <div class="img-thumb-actions">
-          <button class="img-btn ${isFeat ? 'active' : ''}" onclick="setFeatured('${img.id}')"
-                  title="Use as cover image on blog cards and home page">
-            ${isFeat ? '★ Cover' : '☆ Cover'}
-          </button>
-          <button class="img-btn" onclick="insertImg('${img.id}')" title="Insert into post body">↳ Insert</button>
-          <button class="img-btn del" onclick="removeImg('${img.id}')">✕</button>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  function setFeatured(id) { featuredId = id; renderImages(); }
-
-  function removeImg(id) {
-    editImages = editImages.filter(i => i.id !== id);
-    if (featuredId === id) featuredId = editImages[0]?.id || null;
-    renderImages();
-  }
-
-  function insertImg(id) {
-    const img = editImages.find(i => i.id === id);
-    if (!img) return;
-    const src = img.data || img.path || '';
-    document.getElementById('contentEditor').focus();
-    document.execCommand('insertHTML', false,
-      `<img src="${src}" alt="${esc(img.name)}" style="max-width:100%;">`);
-  }
-
-  // Drag & drop on the drop zone
-  const dz = document.getElementById('dropZone');
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
-
-  // ─── TOOLBAR ─────────────────────────────────────────────────────────────────
-  function fmt(cmd) { document.getElementById('contentEditor').focus(); document.execCommand(cmd, false, null); }
-  function fmtBlock(tag) { document.getElementById('contentEditor').focus(); document.execCommand('formatBlock', false, tag); }
-  function insertLink() {
-    const url = prompt('Enter URL:');
-    if (url) { document.getElementById('contentEditor').focus(); document.execCommand('createLink', false, url); }
-  }
-
   // ─── UTILS ───────────────────────────────────────────────────────────────────
+  function changePassword() {
+    const cur = document.getElementById('currentPw').value;
+    const nw  = document.getElementById('newPw').value;
+    const con = document.getElementById('confirmPw').value;
+    if (cur !== getPass())  { toast('Current password is incorrect.', true); return; }
+    if (!nw)                { toast('New password cannot be empty.', true); return; }
+    if (nw !== con)         { toast('Passwords do not match.', true); return; }
+    localStorage.setItem(PASS_KEY, nw);
+    ['currentPw','newPw','confirmPw'].forEach(id => document.getElementById(id).value = '');
+    toast('Password updated!');
+  }
+
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function fmtDate(d) {
     if (!d) return 'No date';
@@ -1002,10 +1303,8 @@
     setTimeout(() => t.className = 'toast', 3000);
   }
 
-  // Close publish modal on overlay click
-  document.getElementById('publishModal').addEventListener('click', e => {
-    if (e.target === document.getElementById('publishModal')) closePublishModal();
-  });
+  document.getElementById('publishModal').addEventListener('click', e => { if (e.target === document.getElementById('publishModal')) closePublishModal(); });
+  document.getElementById('pickerModal').addEventListener('click', e => { if (e.target === document.getElementById('pickerModal')) closePickerModal(); });
 </script>
 </body>
 </html>
