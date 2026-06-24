@@ -71,6 +71,12 @@
   .nav-links a:hover, .nav-links a.active { color: var(--brown-light); }
   .nav-cta { background: var(--brown-mid); color: var(--cream) !important; padding: 0.5rem 1.4rem !important; border-radius: 2px; }
   .nav-cta:hover { background: var(--brown-light) !important; color: var(--brown-dark) !important; }
+  .nav-has-dropdown { position: relative; }
+  .nav-dropdown { position: absolute; top: calc(100% + 1rem); left: 50%; transform: translateX(-50%) translateY(-6px); background: rgba(26,58,31,0.97); border: 1px solid rgba(168,197,160,0.2); border-radius: 4px; min-width: 210px; padding: 0.5rem 0; list-style: none; opacity: 0; visibility: hidden; transition: opacity 0.2s, transform 0.2s, visibility 0.2s; z-index: 200; }
+  .nav-dropdown li a { display: block; padding: 0.55rem 1.2rem; font-size: 0.78rem; letter-spacing: 0.08em; white-space: nowrap; }
+  .nav-dropdown li a:hover { background: rgba(168,197,160,0.1); color: var(--brown-light); }
+  .nav-has-dropdown:hover .nav-dropdown, .nav-has-dropdown:focus-within .nav-dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  .nav-has-dropdown > a::after { content: ' ▾'; font-size: 0.65rem; opacity: 0.7; }
 
   /* ─── PAGE HERO ─── */
   .page-hero {
@@ -223,10 +229,19 @@
   <a href="/" class="logo">Maddern's <span>Place</span></a>
   <ul class="nav-links">
     <li><a href="/#about">About</a></li>
-    <li><a href="/#services">Services</a></li>
-    <li><a href="/#gallery">Gallery</a></li>
+    <li class="nav-has-dropdown">
+      <a href="/#services">Services</a>
+      <ul class="nav-dropdown">
+        <li><a href="/turf-installation-adelaide/">🌿 Turf Installation</a></li>
+        <li><a href="/retaining-walls-adelaide/">🧱 Retaining Walls</a></li>
+        <li><a href="/irrigation/">💧 Irrigation Systems</a></li>
+        <li><a href="/lawn-renovation-adelaide/">✂️ Lawn Renovation</a></li>
+        <li><a href="/landscaping/">🏡 Full Landscaping</a></li>
+        <li><a href="/garden-design/">🌸 Garden Design</a></li>
+      </ul>
+    </li>
+    <li><a href="/projects/">Gallery</a></li>
     <li><a href="/blog/" class="active">Blog</a></li>
-    <li><a href="/shop/">Shop</a></li>
     <li><a href="/#contact" class="nav-cta">Get a Quote</a></li>
   </ul>
 </nav>
@@ -288,7 +303,7 @@
   // Fall back to localStorage (local drafts) if on localhost or file not found.
   async function getPosts() {
     try {
-      const r = await fetch('posts.json?v=' + Date.now());
+      const r = await fetch('/posts.json?v=' + Date.now());
       if (r.ok) return await r.json();
     } catch {}
     // Fallback: localStorage (local dev or if posts.json not yet created)
@@ -313,6 +328,7 @@
   function esc(s) {
     return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
+  function normPath(p) { if (!p || p.startsWith('http') || p.startsWith('data:') || p.startsWith('/')) return p; return '/' + p; }
 
   async function renderBlog() {
     const posts = (await getPosts())
@@ -335,7 +351,7 @@
     grid.innerHTML = posts.map(p => {
       const feat = p.images?.find(i => i.id === p.featuredImageId);
       // Image src can be a data URL (local) or a path (published via GitHub)
-      const imgSrc = feat?.data || feat?.path || null;
+      const imgSrc = feat?.data || normPath(feat?.path) || null;
       const imgHtml = imgSrc
         ? `<img src="${imgSrc}" alt="${esc(p.title)}" loading="lazy">`
         : '🌿';
@@ -359,7 +375,7 @@
 
     const feat = p.images?.find(i => i.id === p.featuredImageId);
     const hero = document.getElementById('modalHeroImg');
-    const heroSrc = feat?.data || feat?.path || null;
+    const heroSrc = feat?.data || normPath(feat?.path) || null;
     if (heroSrc) { hero.src = heroSrc; hero.alt = p.title; hero.style.display = 'block'; }
     else { hero.style.display = 'none'; }
 
@@ -372,7 +388,7 @@
     const galleryEl = document.getElementById('modalImgGallery');
     if (extras.length) {
       const imgs = extras.map(i => {
-        const src = i.data || i.path || '';
+        const src = i.data || normPath(i.path) || '';
         return src ? `<img src="${src}" alt="${esc(i.name)}" loading="lazy" onclick="openImgViewer('${src.replace(/'/g,"\\'")}')">` : '';
       }).filter(Boolean).join('');
       galleryEl.innerHTML = imgs
