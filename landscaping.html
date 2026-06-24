@@ -78,6 +78,12 @@
   .nav-links a:hover, .nav-links a.active { color: var(--brown-light); }
   .nav-cta { background: var(--brown-mid); color: var(--cream) !important; padding: 0.5rem 1.4rem !important; border-radius: 2px; }
   .nav-cta:hover { background: var(--brown-light) !important; color: var(--brown-dark) !important; }
+  .nav-has-dropdown { position: relative; }
+  .nav-dropdown { position: absolute; top: calc(100% + 1rem); left: 50%; transform: translateX(-50%) translateY(-6px); background: rgba(26,58,31,0.97); border: 1px solid rgba(168,197,160,0.2); border-radius: 4px; min-width: 210px; padding: 0.5rem 0; list-style: none; opacity: 0; visibility: hidden; transition: opacity 0.2s, transform 0.2s, visibility 0.2s; z-index: 200; }
+  .nav-dropdown li a { display: block; padding: 0.55rem 1.2rem; font-size: 0.78rem; letter-spacing: 0.08em; white-space: nowrap; }
+  .nav-dropdown li a:hover { background: rgba(168,197,160,0.1); color: var(--brown-light); }
+  .nav-has-dropdown:hover .nav-dropdown, .nav-has-dropdown:focus-within .nav-dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  .nav-has-dropdown > a::after { content: ' ▾'; font-size: 0.65rem; opacity: 0.7; }
 
   /* ─── PAGE HERO ─── */
   .page-hero {
@@ -264,11 +270,19 @@
   <a href="index.html" class="logo">Maddern's <span>Place</span></a>
   <ul class="nav-links">
     <li><a href="index.html#about">About</a></li>
-    <li><a href="index.html#services" class="active">Services</a></li>
-    <li><a href="index.html#process">Process</a></li>
-    <li><a href="index.html#gallery">Gallery</a></li>
+    <li class="nav-has-dropdown">
+      <a href="index.html#services" class="active">Services</a>
+      <ul class="nav-dropdown">
+        <li><a href="turf-installation-adelaide.html">🌿 Turf Installation</a></li>
+        <li><a href="retaining-walls-adelaide.html">🧱 Retaining Walls</a></li>
+        <li><a href="irrigation.html">💧 Irrigation Systems</a></li>
+        <li><a href="lawn-renovation-adelaide.html">✂️ Lawn Renovation</a></li>
+        <li><a href="landscaping.html">🏡 Full Landscaping</a></li>
+        <li><a href="garden-design.html">🌸 Garden Design</a></li>
+      </ul>
+    </li>
+    <li><a href="projects.html">Gallery</a></li>
     <li><a href="blog.html">Blog</a></li>
-    <li><a href="shop.html">Shop</a></li>
     <li><a href="index.html#contact" class="nav-cta">Get a Quote</a></li>
   </ul>
 </nav>
