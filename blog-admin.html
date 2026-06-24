@@ -489,19 +489,21 @@
   function getPosts() {
     try {
       const posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
-      // Migrate old images[]/featuredImageId format → cover/gallery
+      let dirty = false;
       posts.forEach(p => {
+        // Migrate old images[]/featuredImageId format → cover/gallery
         if (Array.isArray(p.images) && !p.cover) {
           const feat = p.images.find(i => i.id === p.featuredImageId);
           if (feat) p.cover = { data: feat.data, path: feat.path, name: feat.name };
           p.gallery = p.images.filter(i => i.id !== p.featuredImageId).map(i => ({ id: i.id, data: i.data, path: i.path, name: i.name }));
           delete p.images; delete p.featuredImageId;
+          dirty = true;
         }
         // Free up space: drop base64 data from images already on GitHub
-        if (p.cover?.path && p.cover?.data) { delete p.cover.data; }
-        if (Array.isArray(p.gallery)) p.gallery.forEach(g => { if (g.path && g.data) delete g.data; });
+        if (p.cover?.path && p.cover?.data) { delete p.cover.data; dirty = true; }
+        if (Array.isArray(p.gallery)) p.gallery.forEach(g => { if (g.path && g.data) { delete g.data; dirty = true; } });
       });
-      localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+      if (dirty) { try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch {} }
       return posts;
     } catch { return []; }
   }
