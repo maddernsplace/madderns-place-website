@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Schedule Admin — Maddern's Place</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:#1a3a1f; --green-mid:#2d5a34; --green-light:#4a8c55;
+    --green-pale:#a8c5a0; --brown-dark:#3d2b1a; --brown-mid:#6b4c2e;
+    --brown-light:#c4a882; --cream:#f5f0e8; --white:#fdfcfa;
+    --text-dark:#1e1e1e; --text-mid:#4a4a4a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Raleway',sans-serif;background:#f0ece4;color:var(--text-dark);min-height:100vh;}
+
+  /* ─── LOGIN ─── */
+  #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--green-deep),#213820);}
+  .login-box{background:var(--white);border-radius:8px;padding:3rem;max-width:380px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,0.25);}
+  .login-logo{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--green-deep);margin-bottom:0.3rem;}
+  .login-logo span{color:var(--green-light);font-style:italic;}
+  .login-sub{font-size:0.8rem;color:var(--text-mid);letter-spacing:0.08em;margin-bottom:2rem;}
+  .login-box label{font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;}
+  .login-box input{width:100%;padding:0.75rem 1rem;border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.9rem;margin-bottom:1.2rem;}
+  .login-box input:focus{outline:none;border-color:var(--green-mid);}
+  .btn-login{width:100%;padding:0.9rem;background:var(--green-mid);color:var(--cream);border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-login:hover{background:var(--green-deep);}
+  .login-err{color:#c0392b;font-size:0.82rem;margin-top:0.5rem;display:none;}
+  .forgot-link{text-align:center;margin-top:1rem;font-size:0.78rem;}
+  .forgot-link a{color:var(--green-light);cursor:pointer;text-decoration:none;}
+
+  /* ─── APP SHELL ─── */
+  #adminApp{display:none;min-height:100vh;}
+  .topbar{background:var(--green-deep);color:var(--cream);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;}
+  .topbar-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--brown-light);}
+  .topbar-logo span{color:var(--green-pale);font-style:italic;}
+  .topbar-actions{display:flex;gap:0.8rem;align-items:center;}
+  .btn{padding:0.5rem 1.2rem;border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+  .btn-primary{background:var(--green-mid);color:var(--cream);}
+  .btn-primary:hover{background:var(--green-light);}
+  .btn-secondary{background:transparent;color:var(--cream);border:1px solid rgba(245,240,232,0.3);}
+  .btn-secondary:hover{background:rgba(245,240,232,0.1);}
+  .btn-publish{background:var(--brown-mid);color:var(--cream);padding:0.5rem 1.4rem;border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-publish:hover{background:var(--brown-light);color:var(--brown-dark);}
+
+  .main{max-width:1000px;margin:0 auto;padding:2.5rem 2rem;}
+  .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+  .page-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--green-deep);}
+  .page-subtitle{font-size:0.85rem;color:var(--text-mid);margin-top:0.2rem;}
+
+  /* ─── ADD FORM ─── */
+  .add-form{background:var(--white);border-radius:6px;padding:2rem;margin-bottom:2rem;border:1px solid rgba(26,58,31,0.1);display:none;}
+  .add-form.open{display:block;}
+  .form-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--green-deep);margin-bottom:1.5rem;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+  .form-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}
+  .form-group{margin-bottom:1rem;}
+  .form-group label{font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;}
+  .form-group input,.form-group select,.form-group textarea{width:100%;padding:0.7rem 0.9rem;border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.9rem;color:var(--text-dark);background:var(--white);}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--green-mid);}
+  .form-group textarea{resize:vertical;min-height:80px;line-height:1.6;}
+  .form-actions{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn-save{padding:0.7rem 1.8rem;background:var(--green-mid);color:var(--cream);border:none;border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-save:hover{background:var(--green-deep);}
+  .btn-cancel{padding:0.7rem 1.4rem;background:transparent;color:var(--text-mid);border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.82rem;cursor:pointer;}
+  .btn-cancel:hover{background:var(--cream);}
+
+  /* ─── FILTERS ─── */
+  .filter-row{display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center;}
+  .filter-btn{padding:0.5rem 1rem;border:1px solid rgba(26,58,31,0.2);border-radius:20px;background:var(--white);font-family:'Raleway',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.04em;color:var(--text-mid);cursor:pointer;transition:all 0.15s;}
+  .filter-btn.active{background:var(--green-mid);color:var(--cream);border-color:var(--green-mid);}
+  .search-input{margin-left:auto;padding:0.5rem 0.9rem;border:1px solid rgba(26,58,31,0.2);border-radius:20px;font-family:'Raleway',sans-serif;font-size:0.82rem;min-width:220px;}
+  .search-input:focus{outline:none;border-color:var(--green-mid);}
+
+  /* ─── SCHEDULE LIST ─── */
+  .date-group{margin-bottom:1.8rem;}
+  .date-heading{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--green-deep);margin-bottom:0.7rem;padding-bottom:0.4rem;border-bottom:1px solid rgba(26,58,31,0.12);display:flex;align-items:center;gap:0.6rem;}
+  .date-heading .today-tag{background:var(--green-mid);color:var(--cream);font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.55rem;border-radius:10px;}
+  .job-list{display:flex;flex-direction:column;gap:0.8rem;}
+  .job-card{background:var(--white);border-radius:6px;padding:1.2rem 1.4rem;border:1px solid rgba(26,58,31,0.08);border-left:4px solid var(--green-mid);display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap;}
+  .job-card.status-in-progress{border-left-color:#c4841a;}
+  .job-card.status-completed{border-left-color:#8a8a8a;opacity:0.75;}
+  .job-card.status-cancelled{border-left-color:#c0392b;opacity:0.6;}
+  .job-main{flex:1;min-width:220px;}
+  .job-top{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:0.3rem;}
+  .job-customer{font-weight:600;color:var(--green-deep);font-size:1rem;}
+  .job-type-tag{font-size:0.72rem;color:var(--text-mid);background:var(--cream);padding:0.15rem 0.55rem;border-radius:10px;letter-spacing:0.03em;}
+  .status-badge{font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:10px;color:var(--white);background:var(--green-mid);}
+  .status-badge.status-in-progress{background:#c4841a;}
+  .status-badge.status-completed{background:#6b6b6b;}
+  .status-badge.status-cancelled{background:#c0392b;}
+  .job-meta{font-size:0.82rem;color:var(--text-mid);line-height:1.6;}
+  .job-meta strong{color:var(--text-dark);}
+  .job-notes{font-size:0.85rem;color:var(--text-mid);margin-top:0.5rem;font-style:italic;line-height:1.5;}
+  .job-time-price{text-align:right;font-size:0.82rem;color:var(--text-mid);min-width:110px;}
+  .job-time-price .time{font-weight:600;color:var(--green-deep);font-size:0.95rem;}
+  .job-actions{display:flex;gap:0.4rem;flex-shrink:0;width:100%;justify-content:flex-end;margin-top:0.3rem;}
+  .icon-btn{padding:0.35rem 0.7rem;border:1px solid rgba(26,58,31,0.15);border-radius:3px;background:none;cursor:pointer;font-size:0.78rem;color:var(--text-mid);transition:all 0.15s;font-family:'Raleway',sans-serif;}
+  .icon-btn:hover{background:var(--cream);}
+  .icon-btn.del:hover{background:#fde8e6;border-color:#c0392b;color:#c0392b;}
+  select.status-select{padding:0.35rem 0.5rem;border:1px solid rgba(26,58,31,0.15);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.76rem;color:var(--text-mid);background:var(--white);}
+
+  .empty-state{text-align:center;padding:4rem 2rem;color:var(--text-mid);}
+  .empty-state .icon{font-size:2.5rem;margin-bottom:1rem;}
+  .empty-state h3{font-family:'Playfair Display',serif;color:var(--green-deep);font-size:1.4rem;margin-bottom:0.5rem;}
+
+  /* ─── SETTINGS ─── */
+  .settings-card{background:var(--white);border-radius:6px;padding:2rem;border:1px solid rgba(26,58,31,0.1);}
+  .settings-title{font-weight:600;color:var(--green-deep);font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1.2rem;}
+  .settings-card input{width:100%;padding:0.7rem 0.9rem;border:1px solid rgba(26,58,31,0.2);border-radius:3px;font-family:'Raleway',sans-serif;font-size:0.88rem;margin-bottom:0.8rem;}
+  .settings-card input:focus{outline:none;border-color:var(--green-mid);}
+  .settings-row{display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;margin-top:0.5rem;}
+  #ghTestResult{font-size:0.82rem;margin-top:0.4rem;}
+
+  /* ─── TABS ─── */
+  .tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;border-bottom:1px solid rgba(26,58,31,0.1);padding-bottom:0;}
+  .tab-btn{padding:0.6rem 1.2rem;border:none;background:none;font-family:'Raleway',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-mid);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+  .tab-btn.active{color:var(--green-mid);border-bottom-color:var(--green-mid);}
+
+  /* ─── PUBLISH MODAL ─── */
+  .modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .publish-modal{background:var(--white);border-radius:8px;padding:2.5rem;max-width:440px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,0.3);}
+  .publish-modal h3{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--green-deep);margin-bottom:1rem;}
+  .publish-modal p{font-size:0.9rem;color:var(--text-mid);line-height:1.7;margin-bottom:1.5rem;}
+  .progress-bar{height:6px;background:#e8e4dc;border-radius:3px;overflow:hidden;margin-bottom:0.8rem;}
+  .progress-fill{height:100%;background:var(--green-mid);border-radius:3px;transition:width 0.3s;}
+  .progress-status{font-size:0.82rem;color:var(--text-mid);}
+  .publish-done{text-align:center;padding:1rem 0;}
+  .publish-done .done-icon{font-size:2.5rem;margin-bottom:0.8rem;}
+  .publish-error{color:#c0392b;font-size:0.85rem;margin-bottom:1rem;display:none;}
+  .modal-actions{display:flex;gap:0.8rem;justify-content:flex-end;margin-top:1.5rem;}
+
+  /* ─── TOAST ─── */
+  .toast{position:fixed;bottom:2rem;right:2rem;background:var(--green-deep);color:var(--cream);padding:0.8rem 1.5rem;border-radius:4px;font-size:0.85rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity 0.3s;z-index:999;}
+  .toast.show{opacity:1;}
+  .toast.err{background:#c0392b;}
+
+  /* ─── UNPUBLISHED BANNER ─── */
+  .unpublished-banner{background:#fffbe6;border:1px solid #c4a832;border-radius:4px;padding:0.8rem 1.2rem;margin-bottom:1.5rem;font-size:0.85rem;color:#7a6000;display:none;}
+  .unpublished-banner.show{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+
+  @media(max-width:600px){
+    .form-row,.form-row3{grid-template-columns:1fr;}
+    .job-card{flex-direction:column;}
+    .job-time-price{text-align:left;}
+    .search-input{margin-left:0;width:100%;}
+    .main{padding:1.5rem 1rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Maddern's <span>Place</span></div>
+    <div class="login-sub">JOB SCHEDULE ADMIN</div>
+    <label for="loginPw">Password</label>
+    <input type="password" id="loginPw" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <div class="login-err" id="loginErr">Incorrect password.</div>
+    <div class="forgot-link"><a onclick="doReset()">Forgot password?</a></div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="adminApp">
+  <div class="topbar">
+    <div class="topbar-logo">Maddern's <span>Place</span> &nbsp;·&nbsp; <span style="font-family:'Raleway',sans-serif;font-size:0.8rem;font-style:normal;opacity:0.7;letter-spacing:0.1em;">JOB SCHEDULE</span></div>
+    <div class="topbar-actions">
+      <a href="admin/index.html" class="btn btn-secondary" style="text-decoration:none;">← Admin</a>
+      <button class="btn-publish" onclick="openPublishModal()">🚀 Publish</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="tabs">
+      <button class="tab-btn active" id="tabJobs" onclick="showTab('jobs')">Schedule</button>
+      <button class="tab-btn" id="tabSettings" onclick="showTab('settings')">GitHub Settings</button>
+    </div>
+
+    <!-- JOBS TAB -->
+    <div id="viewJobs">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Job Schedule</div>
+          <div class="page-subtitle">Internal-only — plan and track upcoming landscaping jobs. Not shown on the public site.</div>
+        </div>
+        <button class="btn btn-primary" onclick="openForm()">+ Add Job</button>
+      </div>
+
+      <div class="unpublished-banner" id="unpublishedBanner">
+        <span>⚠️ You have unpublished changes.</span>
+        <button class="btn-publish" onclick="openPublishModal()" style="padding:0.35rem 1rem;font-size:0.75rem;">Publish Now</button>
+      </div>
+
+      <!-- Add / Edit form -->
+      <div class="add-form" id="addForm">
+        <div class="form-title" id="formTitle">Add Job</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Customer Name</label>
+            <input type="text" id="fCustomer" placeholder="e.g. John Smith">
+          </div>
+          <div class="form-group">
+            <label>Phone (optional)</label>
+            <input type="tel" id="fPhone" placeholder="e.g. 0412 345 678">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Site Address</label>
+          <input type="text" id="fAddress" placeholder="e.g. 12 Smith St, Hackham SA">
+        </div>
+        <div class="form-row3">
+          <div class="form-group">
+            <label>Job Type</label>
+            <select id="fType">
+              <option>Landscaping</option>
+              <option>Garden Design</option>
+              <option>Irrigation</option>
+              <option>Turf Installation</option>
+              <option>Lawn Renovation</option>
+              <option>Retaining Walls</option>
+              <option>Drainage</option>
+              <option>Paving</option>
+              <option>Gutter Cleaning</option>
+              <option>Mowing</option>
+              <option>Commercial</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="fDate">
+          </div>
+          <div class="form-group">
+            <label>Time (optional)</label>
+            <input type="time" id="fTime">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Status</label>
+            <select id="fStatus">
+              <option value="scheduled">Scheduled</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Estimated Price (optional)</label>
+            <input type="number" id="fPrice" placeholder="e.g. 2500" min="0" step="1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Notes (optional)</label>
+          <textarea id="fNotes" placeholder="Job details, materials, access notes, etc."></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" onclick="saveJob()">Save Job</button>
+          <button class="btn-cancel" onclick="closeForm()">Cancel</button>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <button class="filter-btn active" data-f="upcoming" onclick="setFilter('upcoming')">Upcoming</button>
+        <button class="filter-btn" data-f="today" onclick="setFilter('today')">Today</button>
+        <button class="filter-btn" data-f="past" onclick="setFilter('past')">Past</button>
+        <button class="filter-btn" data-f="all" onclick="setFilter('all')">All</button>
+        <input type="text" class="search-input" id="searchBox" placeholder="Search customer or address..." oninput="renderJobs()">
+      </div>
+
+      <div id="jobListContainer"></div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div id="viewSettings" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">GitHub Settings</div>
+          <div class="page-subtitle">These are shared with the other admin pages.</div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <div class="settings-title">GitHub Connection</div>
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">Personal Access Token</label>
+        <input type="password" id="ghToken" placeholder="ghp_...">
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">Repository</label>
+        <input type="text" id="ghRepo" placeholder="username/repo-name">
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">Branch</label>
+        <input type="text" id="ghBranch" placeholder="main">
+        <div class="settings-row">
+          <button class="btn btn-primary" onclick="saveGitHubSettings()">Save Settings</button>
+          <button class="btn btn-secondary" style="color:var(--text-mid);border-color:rgba(26,58,31,0.2);" onclick="testGitHubConnection()">Test Connection</button>
+        </div>
+        <div id="ghTestResult"></div>
+      </div>
+      <div class="settings-card" style="margin-top:1.5rem;">
+        <div class="settings-title">Change Password</div>
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">New Password</label>
+        <input type="password" id="newPass1" placeholder="New password">
+        <label style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-deep);display:block;margin-bottom:0.4rem;">Confirm Password</label>
+        <input type="password" id="newPass2" placeholder="Confirm new password" style="margin-bottom:1rem;">
+        <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PUBLISH MODAL -->
+<div class="modal-overlay" id="publishModal">
+  <div class="publish-modal">
+    <h3>Publish to GitHub</h3>
+    <p id="publishModalDesc">This will commit your job schedule to your GitHub repository as <code>jobs.json</code>. It is not linked from the public site.</p>
+    <div class="publish-progress" id="publishProgress" style="display:none;">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-status" id="progressStatus">Starting...</div>
+    </div>
+    <div class="publish-done" id="publishDone" style="display:none;">
+      <div class="done-icon">✅</div>
+      <p>Published successfully! Your schedule is saved.</p>
+    </div>
+    <div class="publish-error" id="publishError"></div>
+    <div class="modal-actions" id="modalActions">
+      <button class="btn btn-secondary" style="color:var(--text-mid);border-color:rgba(26,58,31,0.2);" onclick="closePublishModal()">Cancel</button>
+      <button class="btn-publish" id="confirmPublishBtn" onclick="runPublish()">🚀 Publish Now</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ─── CONSTANTS ───────────────────────────────────────────────────────────────
+  const JOBS_KEY     = 'madderns_jobs';
+  const PASS_KEY      = 'madderns_admin_pass';
+  const DIRTY_KEY     = 'madderns_jobs_dirty';
+  const DEFAULT_PASS  = 'madderns2024';
+
+  // ─── DATA ────────────────────────────────────────────────────────────────────
+  function getJobs() {
+    try { return JSON.parse(localStorage.getItem(JOBS_KEY) || '[]'); }
+    catch { return []; }
+  }
+  function saveJobsLocal(j) { localStorage.setItem(JOBS_KEY, JSON.stringify(j)); }
+  function getPass() { return localStorage.getItem(PASS_KEY) || DEFAULT_PASS; }
+  function uid() { return 'job_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
+  function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // ─── AUTH ────────────────────────────────────────────────────────────────────
+  let authed = sessionStorage.getItem('mp_jobs_auth') === '1' || sessionStorage.getItem('mp_auth') === '1';
+
+  function doLogin() {
+    if (document.getElementById('loginPw').value === getPass()) {
+      sessionStorage.setItem('mp_jobs_auth', '1');
+      authed = true;
+      enterApp();
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+      document.getElementById('loginPw').value = '';
+    }
+  }
+
+  function enterApp() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    loadGHSettings();
+    // Load latest jobs.json from GitHub if configured and nothing local yet, otherwise render local.
+    maybeLoadFromGitHub().finally(() => { renderJobs(); updateBanner(); });
+  }
+
+  function doReset() {
+    const np = prompt('Enter new password:');
+    if (!np) return;
+    const nc = prompt('Confirm new password:');
+    if (np !== nc) { alert('Passwords do not match.'); return; }
+    localStorage.setItem(PASS_KEY, np);
+    alert('Password updated. Please log in again.');
+    location.reload();
+  }
+
+  function changePassword() {
+    const p1 = document.getElementById('newPass1').value;
+    const p2 = document.getElementById('newPass2').value;
+    if (!p1) { toast('Enter a new password.', true); return; }
+    if (p1 !== p2) { toast('Passwords do not match.', true); return; }
+    localStorage.setItem(PASS_KEY, p1);
+    document.getElementById('newPass1').value = '';
+    document.getElementById('newPass2').value = '';
+    toast('Password updated!');
+  }
+
+  // ─── TABS ────────────────────────────────────────────────────────────────────
+  function showTab(tab) {
+    document.getElementById('viewJobs').style.display     = tab === 'jobs'     ? 'block' : 'none';
+    document.getElementById('viewSettings').style.display  = tab === 'settings' ? 'block' : 'none';
+    document.getElementById('tabJobs').classList.toggle('active',      tab === 'jobs');
+    document.getElementById('tabSettings').classList.toggle('active',  tab === 'settings');
+  }
+
+  // ─── FILTER / SEARCH ─────────────────────────────────────────────────────────
+  let currentFilter = 'upcoming';
+  function setFilter(f) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+    renderJobs();
+  }
+
+  // ─── FORM ────────────────────────────────────────────────────────────────────
+  let editingId = null;
+
+  function openForm(id) {
+    editingId = id || null;
+    const form = document.getElementById('addForm');
+    form.classList.add('open');
+    document.getElementById('formTitle').textContent = id ? 'Edit Job' : 'Add Job';
+
+    if (id) {
+      const j = getJobs().find(x => x.id === id);
+      if (j) {
+        document.getElementById('fCustomer').value = j.customer || '';
+        document.getElementById('fPhone').value    = j.phone || '';
+        document.getElementById('fAddress').value  = j.address || '';
+        document.getElementById('fType').value     = j.jobType || 'Landscaping';
+        document.getElementById('fDate').value     = j.date || '';
+        document.getElementById('fTime').value     = j.time || '';
+        document.getElementById('fStatus').value   = j.status || 'scheduled';
+        document.getElementById('fPrice').value    = j.price || '';
+        document.getElementById('fNotes').value    = j.notes || '';
+      }
+    } else {
+      document.getElementById('fCustomer').value = '';
+      document.getElementById('fPhone').value    = '';
+      document.getElementById('fAddress').value  = '';
+      document.getElementById('fType').value     = 'Landscaping';
+      document.getElementById('fDate').value     = new Date().toISOString().slice(0,10);
+      document.getElementById('fTime').value     = '';
+      document.getElementById('fStatus').value   = 'scheduled';
+      document.getElementById('fPrice').value    = '';
+      document.getElementById('fNotes').value    = '';
+    }
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function closeForm() {
+    document.getElementById('addForm').classList.remove('open');
+    editingId = null;
+  }
+
+  function saveJob() {
+    const customer = document.getElementById('fCustomer').value.trim();
+    const address  = document.getElementById('fAddress').value.trim();
+    const date     = document.getElementById('fDate').value;
+    if (!customer || !date) { toast('Customer name and date are required.', true); return; }
+
+    const data = {
+      customer,
+      phone:   document.getElementById('fPhone').value.trim(),
+      address,
+      jobType: document.getElementById('fType').value,
+      date,
+      time:    document.getElementById('fTime').value,
+      status:  document.getElementById('fStatus').value,
+      price:   document.getElementById('fPrice').value ? Number(document.getElementById('fPrice').value) : null,
+      notes:   document.getElementById('fNotes').value.trim(),
+    };
+
+    const jobs = getJobs();
+    if (editingId) {
+      const idx = jobs.findIndex(j => j.id === editingId);
+      if (idx !== -1) jobs[idx] = { ...jobs[idx], ...data };
+    } else {
+      jobs.push({ id: uid(), ...data });
+    }
+
+    saveJobsLocal(jobs);
+    localStorage.setItem(DIRTY_KEY, '1');
+    closeForm();
+    renderJobs();
+    updateBanner();
+    toast(editingId ? 'Job updated.' : 'Job added.');
+  }
+
+  function setStatus(id, status) {
+    const jobs = getJobs();
+    const j = jobs.find(x => x.id === id);
+    if (j) j.status = status;
+    saveJobsLocal(jobs);
+    localStorage.setItem(DIRTY_KEY, '1');
+    renderJobs();
+    updateBanner();
+  }
+
+  function deleteJob(id) {
+    if (!confirm('Delete this job?')) return;
+    const jobs = getJobs().filter(j => j.id !== id);
+    saveJobsLocal(jobs);
+    localStorage.setItem(DIRTY_KEY, '1');
+    renderJobs();
+    updateBanner();
+    toast('Job deleted.');
+  }
+
+  // ─── RENDER ──────────────────────────────────────────────────────────────────
+  const STATUS_LABEL = { scheduled: 'Scheduled', 'in-progress': 'In Progress', completed: 'Completed', cancelled: 'Cancelled' };
+
+  function todayStr() { return new Date().toISOString().slice(0,10); }
+
+  function renderJobs() {
+    const container = document.getElementById('jobListContainer');
+    const today = todayStr();
+    const search = (document.getElementById('searchBox').value || '').toLowerCase();
+
+    let jobs = getJobs().filter(j => {
+      if (search && !((j.customer||'').toLowerCase().includes(search) || (j.address||'').toLowerCase().includes(search))) return false;
+      if (currentFilter === 'upcoming') return j.date >= today;
+      if (currentFilter === 'today')    return j.date === today;
+      if (currentFilter === 'past')     return j.date < today;
+      return true;
+    });
+
+    jobs.sort((a,b) => (a.date + (a.time||'')).localeCompare(b.date + (b.time||'')) * (currentFilter === 'past' ? -1 : 1));
+
+    if (!jobs.length) {
+      container.innerHTML = `<div class="empty-state">
+        <div class="icon">📅</div>
+        <h3>No jobs found</h3>
+        <p>${getJobs().length ? 'Try a different filter or search.' : 'Click "+ Add Job" to schedule your first job.'}</p>
+      </div>`;
+      return;
+    }
+
+    // Group by date
+    const groups = {};
+    jobs.forEach(j => { (groups[j.date] = groups[j.date] || []).push(j); });
+
+    container.innerHTML = Object.keys(groups).map(date => {
+      const dateObj = new Date(date + 'T00:00:00');
+      const dateLabel = dateObj.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      const isToday = date === today;
+      const cards = groups[date].map(j => {
+        const statusClass = 'status-' + (j.status || 'scheduled');
+        return `<div class="job-card ${statusClass}">
+          <div class="job-main">
+            <div class="job-top">
+              <span class="job-customer">${esc(j.customer)}</span>
+              <span class="job-type-tag">${esc(j.jobType||'')}</span>
+              <span class="status-badge ${statusClass}">${STATUS_LABEL[j.status]||'Scheduled'}</span>
+            </div>
+            <div class="job-meta">
+              ${j.address ? `<strong>Address:</strong> ${esc(j.address)}<br>` : ''}
+              ${j.phone ? `<strong>Phone:</strong> ${esc(j.phone)}` : ''}
+            </div>
+            ${j.notes ? `<div class="job-notes">${esc(j.notes)}</div>` : ''}
+          </div>
+          <div class="job-time-price">
+            ${j.time ? `<div class="time">${esc(j.time)}</div>` : ''}
+            ${j.price != null ? `<div>$${Number(j.price).toLocaleString()}</div>` : ''}
+          </div>
+          <div class="job-actions">
+            <select class="status-select" onchange="setStatus('${j.id}', this.value)">
+              ${Object.keys(STATUS_LABEL).map(s => `<option value="${s}" ${s===j.status?'selected':''}>${STATUS_LABEL[s]}</option>`).join('')}
+            </select>
+            <button class="icon-btn" onclick="openForm('${j.id}')">Edit</button>
+            <button class="icon-btn del" onclick="deleteJob('${j.id}')">✕</button>
+          </div>
+        </div>`;
+      }).join('');
+      return `<div class="date-group">
+        <div class="date-heading">${dateLabel} ${isToday ? '<span class="today-tag">Today</span>' : ''}</div>
+        <div class="job-list">${cards}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ─── BANNER ──────────────────────────────────────────────────────────────────
+  function updateBanner() {
+    const dirty = localStorage.getItem(DIRTY_KEY) === '1';
+    document.getElementById('unpublishedBanner').classList.toggle('show', dirty);
+  }
+
+  // ─── TOAST ───────────────────────────────────────────────────────────────────
+  let toastTimer;
+  function toast(msg, err) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show' + (err ? ' err' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.className = 'toast', 3000);
+  }
+
+  // ─── GITHUB SETTINGS ─────────────────────────────────────────────────────────
+  function getGH() {
+    return {
+      token:  localStorage.getItem('mp_gh_token')  || '',
+      repo:   localStorage.getItem('mp_gh_repo')   || 'maddernsplace/madderns-place-website',
+      branch: localStorage.getItem('mp_gh_branch') || 'main'
+    };
+  }
+  function ghConfigured() { const g = getGH(); return !!(g.token && g.repo); }
+
+  function loadGHSettings() {
+    const g = getGH();
+    document.getElementById('ghToken').value  = g.token;
+    document.getElementById('ghRepo').value   = g.repo;
+    document.getElementById('ghBranch').value = g.branch;
+  }
+
+  function saveGitHubSettings() {
+    localStorage.setItem('mp_gh_token',  document.getElementById('ghToken').value.trim());
+    localStorage.setItem('mp_gh_repo',   document.getElementById('ghRepo').value.trim());
+    localStorage.setItem('mp_gh_branch', document.getElementById('ghBranch').value.trim() || 'main');
+    toast('GitHub settings saved!');
+  }
+
+  async function testGitHubConnection() {
+    const r = document.getElementById('ghTestResult');
+    r.textContent = 'Testing...'; r.style.color = '';
+    const { token, repo } = getGH();
+    if (!token || !repo) { r.textContent = '✕ Fill in token and repo first.'; r.style.color = '#c0392b'; return; }
+    try {
+      const res = await ghRequest('GET', `/repos/${repo}`, token);
+      r.textContent = `✓ Connected to ${res.full_name}`;
+      r.style.color = '#2d5a34';
+    } catch(e) {
+      r.textContent = '✕ ' + e.message;
+      r.style.color = '#c0392b';
+    }
+  }
+
+  // ─── GITHUB API ───────────────────────────────────────────────────────────────
+  async function ghRequest(method, path, token, body) {
+    const opts = {
+      method,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      }
+    };
+    if (body) opts.body = JSON.stringify(body);
+    const r = await fetch(`https://api.github.com${path}`, opts);
+    const json = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(json.message || `GitHub error ${r.status}`);
+    return json;
+  }
+
+  async function getFileSHA(repo, branch, path, token) {
+    try {
+      const d = await ghRequest('GET', `/repos/${repo}/contents/${encodeURIComponent(path)}?ref=${branch}`, token);
+      return d.sha;
+    } catch { return null; }
+  }
+
+  async function commitFile(repo, branch, filePath, content, message, token) {
+    const sha = await getFileSHA(repo, branch, filePath, token);
+    const body = { message, content, branch };
+    if (sha) body.sha = sha;
+    return ghRequest('PUT', `/repos/${repo}/contents/${encodeURIComponent(filePath)}`, token, body);
+  }
+
+  function b64Text(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+  // Pull the latest jobs.json from GitHub on login, so multiple devices/browsers stay in sync
+  // (this admin panel's data otherwise lives only in this browser's localStorage until published).
+  async function maybeLoadFromGitHub() {
+    if (!ghConfigured() || getJobs().length) return;
+    const { token, repo, branch } = getGH();
+    try {
+      const d = await ghRequest('GET', `/repos/${repo}/contents/jobs.json?ref=${branch}`, token);
+      const text = decodeURIComponent(escape(atob(d.content.replace(/\n/g,''))));
+      const jobs = JSON.parse(text);
+      if (Array.isArray(jobs) && jobs.length) saveJobsLocal(jobs);
+    } catch { /* no jobs.json yet, or not reachable — start empty */ }
+  }
+
+  // ─── PUBLISH ─────────────────────────────────────────────────────────────────
+  let publishing = false;
+
+  function openPublishModal() {
+    if (!ghConfigured()) {
+      toast('Set up GitHub settings first.', true);
+      showTab('settings');
+      return;
+    }
+    document.getElementById('publishModalDesc').style.display = '';
+    document.getElementById('publishProgress').style.display = 'none';
+    document.getElementById('publishDone').style.display = 'none';
+    document.getElementById('publishError').style.display = 'none';
+    document.getElementById('modalActions').style.display = 'flex';
+    document.getElementById('confirmPublishBtn').disabled = false;
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('publishModal').classList.add('open');
+  }
+
+  function closePublishModal() {
+    if (publishing) return;
+    document.getElementById('publishModal').classList.remove('open');
+  }
+
+  async function runPublish() {
+    if (publishing) return;
+    publishing = true;
+    document.getElementById('confirmPublishBtn').disabled = true;
+    document.getElementById('publishModalDesc').style.display = 'none';
+    document.getElementById('publishProgress').style.display = 'block';
+    document.getElementById('publishError').style.display = 'none';
+
+    const { token, repo, branch } = getGH();
+
+    try {
+      document.getElementById('progressFill').style.width = '50%';
+      document.getElementById('progressStatus').textContent = 'Updating jobs.json...';
+
+      const jobs = getJobs();
+      await commitFile(
+        repo, branch, 'jobs.json',
+        b64Text(JSON.stringify(jobs, null, 2)),
+        `Update job schedule (${jobs.length} jobs)`,
+        token
+      );
+
+      document.getElementById('progressFill').style.width = '100%';
+      localStorage.removeItem(DIRTY_KEY);
+      updateBanner();
+
+      document.getElementById('publishProgress').style.display = 'none';
+      document.getElementById('publishDone').style.display = 'block';
+      document.getElementById('modalActions').innerHTML =
+        `<button class="btn btn-primary" onclick="closePublishModal()">Done</button>`;
+
+    } catch(e) {
+      const errEl = document.getElementById('publishError');
+      errEl.textContent = 'Error: ' + e.message;
+      errEl.style.display = 'block';
+      document.getElementById('confirmPublishBtn').disabled = false;
+      document.getElementById('publishProgress').style.display = 'none';
+    } finally {
+      publishing = false;
+    }
+  }
+
+  // ─── INIT ────────────────────────────────────────────────────────────────────
+  if (authed) enterApp();
+</script>
+</body>
+</html>
