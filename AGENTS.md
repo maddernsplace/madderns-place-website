@@ -50,14 +50,18 @@ Live at **https://maddernsplace.com** (see `CNAME`).
   `projects.json`.
 - `blog/` — blog section; posts are driven by `posts.json`.
 - `admin/`, plus `site-admin.html`, `projects-admin.html`, `blog-admin.html`,
-  `reviews-admin.html`, `shop-admin.html` — **client-side CMS admin panels**
-  (password-gated in the browser, not a real auth system). See "Content model"
-  below for how they publish.
+  `reviews-admin.html`, `shop-admin.html`, `jobs-admin.html` — **client-side
+  CMS admin panels** (password-gated in the browser, not a real auth system).
+  See "Content model" below for how they publish. `jobs-admin.html` is an
+  internal-only job schedule (customer, address, job type, date/time, status,
+  notes) for the owner to plan work — it's not linked from or shown on the
+  public site.
 - Data files at repo root: `site-content.json` (homepage copy, services,
   process steps, contact info, supplier logos, chat widget config),
   `projects.json` (project gallery entries — this file is ~2.3MB, don't read
   it in full, `grep`/slice it), `posts.json` (blog posts), `reviews.json`,
-  `shop.json`, `beforeafter.json`.
+  `shop.json`, `beforeafter.json`, `jobs.json` (internal job schedule, used
+  only by `jobs-admin.html`).
 - `chat-worker.js` — source for a **Cloudflare Worker** (deployed separately,
   not part of this repo's build) that proxies chat messages from the site's
   chat widget to the Anthropic API (`claude-haiku-4-5-20251001`). It reads the
